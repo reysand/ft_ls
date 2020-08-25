@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/08/23 19:52:17 by fhelena          ###   ########.fr        #
+#    Updated: 2020/08/25 18:58:55 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,9 @@ PHONY			+= all
 all:			libft $(NAME)
 	@printf "$(COLOR_G)PASS:$(C_RESET)\tft_ls\n"
 
+debug:
+	@echo "$(OBJS)"
+
 PHONY			+= libft
 libft:
 	@$(MAKE) $(LIB_DIR)
@@ -63,8 +66,8 @@ check:			norme all
 	./$(NAME)
 
 $(NAME):		$(OBJS)
-	@printf "\r$(R_CLEAN)Linking: $< -> $@\n"
-	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $<
+	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
+	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
 
 $(BLD_DIR)/%.o:	%.c
 	@$(MKDIR) $(dir $@)

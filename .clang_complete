@@ -1,0 +1,4 @@
+-lncurses
+-lpanel
+-Iinclude
+-Ilibft/include

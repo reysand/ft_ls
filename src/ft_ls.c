@@ -6,24 +6,30 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 13:14:26 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/25 20:23:41 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/08/27 21:00:28 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#define OPTIONS "-Ralrt"
 
 static int	ft_ls(char *name, t_options *option)
 {
 	struct dirent	*entry;
 	DIR				*dir;
+	t_file			*head;
+	t_file			*file;
 
 	if (!(dir = opendir(name)))
 	{
 		ft_printf("ft_ls: %s: %s\n", name, strerror(errno));
 		return (EXIT_FAILURE);
 	}
+	file = NULL;
+	head = file;
 	while ((entry = readdir(dir)))
 	{
+		head = (t_file *)malloc(sizeof(t_file));
 		if ((entry->d_name)[0] != '.' && !option->dot_files)
 		{
 			ft_printf("%s\t", entry->d_name);
@@ -31,6 +37,26 @@ static int	ft_ls(char *name, t_options *option)
 	}
 	(void)closedir(dir);
 	return (EXIT_SUCCESS);
+}
+
+static void	parse_options(char c, t_options *option)
+{
+	if (c == 'a')
+		option->dot_files = 1;
+	else if (c == 'l')
+		option->long_format = 1;
+	else if (c == 'R')
+		option->recursive_read = 1;
+	else if (c == 'r')
+		option->reverse_sort = 1;
+	else if (c == 't')
+		option->time_sort = 1;
+	else
+	{
+		ft_printf("ft_ls: illegal option -- %c\n", c);
+		ft_printf("usage: ft_ls [%s] [file ...]\n", OPTIONS);
+		exit(EXIT_FAILURE);
+	}
 }
 
 static int	is_option(char *str, t_options *option)
@@ -42,22 +68,7 @@ static int	is_option(char *str, t_options *option)
 		i = 1;
 		while (str[i])
 		{
-			if (str[i] == 'a')
-				option->dot_files = 1;
-			else if (str[i] == 'l')
-				option->long_format = 1;
-			else if (str[i] == 'R')
-				option->recursive_read = 1;
-			else if (str[i] == 'r')
-				option->reverse_sort = 1;
-			else if (str[i] == 't')
-				option->time_sort = 1;
-			else
-			{
-				ft_printf("ft_ls: illegal option -- %c\n", str[i]);
-				ft_printf("usage: ft_ls [-Ralrt] [file ...]\n");
-				exit(EXIT_FAILURE);
-			}
+			parse_options(str[i], option);
 			++i;
 		}
 		return (0);

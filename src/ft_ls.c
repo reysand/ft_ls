@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 13:14:26 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/27 21:00:28 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/08/29 01:24:52 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,14 @@ static int	ft_ls(char *name, t_options *option)
 {
 	struct dirent	*entry;
 	DIR				*dir;
-	t_file			*head;
-	t_file			*file;
 
 	if (!(dir = opendir(name)))
 	{
 		ft_printf("ft_ls: %s: %s\n", name, strerror(errno));
 		return (EXIT_FAILURE);
 	}
-	file = NULL;
-	head = file;
 	while ((entry = readdir(dir)))
 	{
-		head = (t_file *)malloc(sizeof(t_file));
 		if ((entry->d_name)[0] != '.' && !option->dot_files)
 		{
 			ft_printf("%s\t", entry->d_name);

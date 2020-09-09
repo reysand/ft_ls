@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 13:51:15 by fhelena           #+#    #+#             */
-/*   Updated: 2020/07/28 16:31:22 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/08 16:10:52 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ typedef struct		s_flags
 	int				prec;
 	int				width;
 	char			mod;
-	unsigned char	flag;
-	unsigned char	min : 1;
-	unsigned char	plus : 1;
-	unsigned char	star : 1;
-	unsigned char	sharp : 1;
-	unsigned char	space : 1;
-	unsigned char	w_zero : 1;
-	unsigned char	p_zero : 1;
+	unsigned char	min:1;
+	unsigned char	plus:1;
+	unsigned char	flag:1;
+	unsigned char	star:1;
+	unsigned char	sharp:1;
+	unsigned char	space:1;
+	unsigned char	w_zero:1;
+	unsigned char	p_zero:1;
 }					t_flags;
 
 typedef	struct		s_type

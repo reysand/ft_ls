@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/08/25 18:58:55 by fhelena          ###   ########.fr        #
+#    Updated: 2020/09/09 15:02:36 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ RM				= rm -rf
 NORME			= $(shell norminette $(SRCS) $(INC_DIR)\
 				  | grep "Error" | wc -l | tr -d ' ')
 
-CFLAGS			= -Wall -Wextra -Werror -g
+CFLAGS			= -Wall -Wextra -Werror -Wpadded
 DFLAGS			= -MT $@ -MMD -MP
 IFLAGS			= -I $(INC_DIR) -I $(LIB_DIR)/$(INC_DIR)
 LFLAGS			= -L $(LIB_DIR) -lft
@@ -44,10 +44,7 @@ COLOR_Y			= \033[33m
 
 PHONY			+= all
 all:			libft $(NAME)
-	@printf "$(COLOR_G)PASS:$(C_RESET)\tft_ls\n"
-
-debug:
-	@echo "$(OBJS)"
+	@printf "$(COLOR_G)PASS:$(C_RESET)\t$(NAME)\n"
 
 PHONY			+= libft
 libft:
@@ -56,9 +53,9 @@ libft:
 PHONY			+= norme
 norme:
 ifeq ($(NORME), 0)
-	@printf "$(COLOR_G)PASS:$(C_RESET)\tnorminette\t[ft_ls]\n"
+	@printf "$(COLOR_G)PASS:$(C_RESET)\tnorminette\t[$(NAME)]\n"
 else
-	@printf "$(COLOR_R)PASS:$(C_RESET)\tnorminette\t[ft_ls] [$(NORME)]\n"
+	@printf "$(COLOR_R)PASS:$(C_RESET)\tnorminette\t[$(NAME)] [$(NORME)]\n"
 endif
 
 PHONY			+= check
@@ -78,13 +75,13 @@ PHONY			+= clean
 clean:
 	@$(MAKE) $(LIB_DIR) clean
 	@$(RM) $(OBJS)
-	@printf "$(COLOR_G)PASS:$(C_RESET)\tmake clean\t[ft_ls]\n"
+	@printf "$(COLOR_G)PASS:$(C_RESET)\tmake clean\t[$(NAME)]\n"
 
 PHONY			+= fclean
-fclean:
+fclean:			clean
 	@$(MAKE) $(LIB_DIR) fclean
 	@$(RM) $(NAME) $(BLD_DIR)
-	@printf "$(COLOR_G)PASS:$(C_RESET)\tmake fclean\t[ft_ls]\n"
+	@printf "$(COLOR_G)PASS:$(C_RESET)\tmake fclean\t[$(NAME)]\n"
 
 PHONY			+= re
 re:				fclean all

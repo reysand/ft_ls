@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:14:11 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/08 16:00:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:49:25 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,45 +75,50 @@ static int	ft_parser(const char *str, va_list ap, t_flags *data)
 	return (type_len + flags_count);
 }
 
-static void	init(t_flags *data)
+static int	ft_vprintf_fd(int fd, const char *format, va_list ap)
 {
-	data->mod = 0;
-	data->min = 0;
-	data->plus = 0;
-	data->flag = 0;
-	data->star = 0;
-	data->prec = 0;
-	data->width = 0;
-	data->sharp = 0;
-	data->space = 0;
-	data->w_zero = 0;
-	data->p_zero = 0;
-}
-
-int			ft_printf(const char *format, ...)
-{
-	va_list	ap;
 	t_flags	data;
 	int		i;
 	int		placeholder_len;
 
-	va_start(ap, format);
 	i = 0;
+	data.fd = fd;
 	data.len = 0;
 	while (format[i])
 	{
 		while (format[i] && format[i] != '%')
 		{
-			ft_putchar(format[i++]);
+			ft_putchar_fd(format[i++], data.fd);
 			++data.len;
 		}
 		if (format[i] == '%')
 		{
-			init(&data);
+			ptf_init(&data);
 			placeholder_len = ft_parser(&format[++i], ap, &data);
 			i += placeholder_len;
 		}
 	}
-	va_end(ap);
 	return (data.len);
+}
+
+int			ft_printf_fd(int fd, const char *format, ...)
+{
+	va_list	ap;
+	int		ret;
+
+	va_start(ap, format);
+	ret = ft_vprintf_fd(fd, format, ap);
+	va_end(ap);
+	return (ret);
+}
+
+int			ft_printf(const char *format, ...)
+{
+	va_list	ap;
+	int		ret;
+
+	va_start(ap, format);
+	ret = ft_vprintf_fd(STDIN_FILENO, format, ap);
+	va_end(ap);
+	return (ret);
 }

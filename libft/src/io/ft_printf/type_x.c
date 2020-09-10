@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/27 21:01:05 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/13 19:19:46 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:24:38 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	prec_parse(t_flags *data, char *s, int len)
 		return ;
 	if (data->prec > len)
 		print_prec(data, data->prec - len, 'x');
-	ft_putstr(s);
+	ft_putstr_fd(s, data->fd);
 	data->len += len;
 }
 
@@ -49,12 +49,12 @@ static void	width_parse(t_flags *data, char *s, char type)
 	prefix = ((type == 'x') ? (ft_strdup("0x")) : (ft_strdup("0X")));
 	if (data->sharp && !(len == 1 && s[0] == '0') && data->w_zero &&\
 			!data->p_zero)
-		ft_putstr(prefix);
+		ft_putstr_fd(prefix, data->fd);
 	if (!data->min)
 		print_width(data, width, type);
 	if (data->sharp && !(len == 1 && s[0] == '0') && (!data->w_zero ||\
 			data->p_zero))
-		ft_putstr(prefix);
+		ft_putstr_fd(prefix, data->fd);
 	if (data->sharp && !(len == 1 && s[0] == '0'))
 		data->len += 2;
 	free(prefix);

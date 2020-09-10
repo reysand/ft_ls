@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 13:51:15 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/08 16:10:52 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:10:51 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 typedef struct		s_flags
 {
+	int				fd;
 	int				len;
 	int				prec;
 	int				width;

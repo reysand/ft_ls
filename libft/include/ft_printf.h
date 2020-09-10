@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:14:54 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/02 19:17:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:48:44 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "structs.h"
 
 int			ft_printf(const char *format, ...);
+int			ft_printf_fd(int fd, const char *format, ...);
+void		ptf_init(t_flags *data);
 int			flags_parser(const char *str, t_flags *data, va_list ap, int type);
 
 /*

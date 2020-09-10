@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/28 17:59:06 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/13 19:38:08 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:39:03 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ void		print_sign(t_flags *data, int minus)
 {
 	if (data->plus && !minus)
 	{
-		ft_putchar('+');
+		ft_putchar_fd('+', data->fd);
 		++data->len;
 	}
 	if (data->space && minus && !data->plus)
 	{
-		ft_putchar(' ');
+		ft_putchar_fd(' ', data->fd);
 		++data->len;
 	}
 	if (minus && !data->min)
 	{
-		ft_putchar('-');
+		ft_putchar_fd('-', data->fd);
 		++data->len;
 	}
 }
@@ -74,4 +74,19 @@ char		*ptf_itoa_base(long long value, int base, char *b, char flag)
 	while ((n /= base) > 0)
 		str[i--] = b[n % base];
 	return (str);
+}
+
+void		ptf_init(t_flags *data)
+{
+	data->mod = 0;
+	data->min = 0;
+	data->plus = 0;
+	data->flag = 0;
+	data->star = 0;
+	data->prec = 0;
+	data->width = 0;
+	data->sharp = 0;
+	data->space = 0;
+	data->w_zero = 0;
+	data->p_zero = 0;
 }

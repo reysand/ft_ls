@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/28 17:59:30 by fhelena           #+#    #+#             */
-/*   Updated: 2020/07/31 16:12:47 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:26:44 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		print_width(t_flags *data, int width, char type)
 	c = get_char(data, type);
 	while (width--)
 	{
-		ft_putchar(c);
+		ft_putchar_fd(c, data->fd);
 		++data->len;
 	}
 }
@@ -47,7 +47,7 @@ void		print_prec(t_flags *data, int prec, char type)
 		c = '0';
 	while (prec--)
 	{
-		ft_putchar(c);
+		ft_putchar_fd(c, data->fd);
 		++data->len;
 	}
 }

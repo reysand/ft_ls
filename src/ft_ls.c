@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/06 18:16:00 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/08 13:17:12 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 20:59:00 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,12 @@ static int	ft_ls(char *name, t_options *option)
 {
 	struct dirent	*entry;
 	DIR				*dir;
-	t_file			*file;
 
 	if (!(dir = opendir(name)))
 	{
-		/*
-		ft_putstr_fd("ft_ls: ", STDERR_FILENO);
-		ft_putstr_fd(name, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		*/
-		dprintf(STDERR_FILENO, "ft_ls: %s: %s\n", name, strerror(errno));
+		ft_printf_fd(STDERR_FILENO, "ft_ls: %s: %s\n", name, strerror(errno));
 		return (EXIT_FAILURE);
 	}
-	file = (t_file *)malloc(sizeof(t_file));
 	while ((entry = readdir(dir)))
 	{
 		if ((entry->d_name)[0] != '.' && !option->dot_files)
@@ -44,7 +35,6 @@ static int	ft_ls(char *name, t_options *option)
 	closedir(dir);
 	return (EXIT_SUCCESS);
 }
-
 static char	**sort_args(int argc, char **argv)
 {
 	int		i;
@@ -124,32 +114,32 @@ int			main(int argc, char **argv)
 	t_options	options;
 	int			i;
 	int			ret;
-	int			optc;
+	int			option_count;
 
 	i = 1;
-	optc = 0;
+	option_count = 0;
 	init(&options);
 	argv = sort_args(argc, argv);
 	while (i < argc)
 	{
 		if (!is_option(argv[i], &options))
 		{
-			++optc;
+			++option_count;
 		}
 		else if (ft_ls(argv[i], &options))
 		{
 			ret = EXIT_FAILURE;
 		}
-		//ft_printf("argv[%d] %s\n", i, argv[i]);
+		ft_printf("%s\n", argv[i]);
 		++i;
 	}
-	if (optc == argc - 1)
+	if (option_count == argc - 1)
 	{
 		ret = ft_ls(".", &options);
 	}
-	ft_printf("\noptc = %d\nOptions[%s]: ", optc, OPTIONS);
+	ft_printf("\noptc = %d\nOptions[%s]: ", option_count, OPTIONS);
 	ft_printf("%d %d ", options.recursive_read, options.dot_files);
 	ft_printf("%d %d ", options.long_format, options.reverse_order);
 	ft_printf("%d\n", options.time_sort);
-	return (ret);
+	exit(ret);
 }

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/27 21:05:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/13 18:56:53 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:25:44 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	prec_parse(t_flags *data, char *s, int len)
 {
 	if (data->prec > len)
 		print_prec(data, data->prec - len, 'o');
-	ft_putstr(s);
+	ft_putstr_fd(s, data->fd);
 	data->len += len;
 }
 

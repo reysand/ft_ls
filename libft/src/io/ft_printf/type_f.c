@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/27 21:05:26 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/01 20:14:10 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:26:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,22 @@ static void	print(t_flags *data, char *nb, char *fl, int len)
 	if (nb[0] != '-')
 	{
 		if (data->plus)
-			ft_putchar('+');
+			ft_putchar_fd('+', data->fd);
 		if (data->space)
-			ft_putchar(' ');
+			ft_putchar_fd(' ', data->fd);
 		++len;
 	}
-	ft_putstr(nb);
+	ft_putstr_fd(nb, data->fd);
 	if (data->sharp && data->p_zero)
 	{
-		ft_putchar('.');
+		ft_putchar_fd('.', data->fd);
 		++data->len;
 	}
 	if (!data->p_zero)
 	{
-		ft_putchar('.');
+		ft_putchar_fd('.', data->fd);
 		++data->len;
-		ft_putstr(fl);
+		ft_putstr_fd(fl, data->fd);
 	}
 }
 

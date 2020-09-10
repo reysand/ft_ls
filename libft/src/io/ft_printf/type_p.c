@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/24 22:05:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/08/13 18:59:50 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:25:28 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	prec_parse(t_flags *data, char *s)
 {
 	if (data->p_zero && !data->prec && !ft_atoi(s))
 		return ;
-	ft_putstr(s);
+	ft_putstr_fd(s, data->fd);
 	data->len += ft_strlen(s);
 }
 
@@ -28,11 +28,11 @@ static void	width_parse(t_flags *data, char *s, char type)
 	len = ft_strlen(s);
 	width = get_width(data, len + 2, type);
 	if (data->w_zero && !data->p_zero && !data->prec)
-		ft_putstr("0x");
+		ft_putstr_fd("0x", data->fd);
 	if (!data->min)
 		print_width(data, width, type);
 	if (!data->w_zero || data->p_zero || data->prec)
-		ft_putstr("0x");
+		ft_putstr_fd("0x", data->fd);
 	data->len += 2;
 	prec_parse(data, s);
 	if (data->min)

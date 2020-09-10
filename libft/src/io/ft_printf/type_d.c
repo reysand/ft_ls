@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/27 20:28:51 by fhelena           #+#    #+#             */
-/*   Updated: 2020/07/31 16:18:46 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/10 01:26:27 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	prec_parse(t_flags *data, char *str, int length)
 		return ;
 	if (data->prec > length)
 		print_prec(data, data->prec - length, 'd');
-	ft_putstr(str);
+	ft_putstr_fd(str, data->fd);
 	data->len += length;
 }
 
@@ -26,7 +26,7 @@ static void	print_specials(t_flags *data, int negative_value)
 {
 	if (data->space && !data->plus)
 	{
-		ft_putchar(' ');
+		ft_putchar_fd(' ', data->fd);
 		++data->len;
 	}
 	if (data->w_zero && !data->prec)

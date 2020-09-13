@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/12 21:15:18 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/13 16:37:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ static int	is_option(char *str, t_option *option)
 	return (EXIT_FAILURE);
 }
 
+/*
+** Initialization of options
+*/
+
 static void	init(t_option *option)
 {
 	option->dot_files = 0;
@@ -96,32 +100,70 @@ int			main(int argc, char **argv)
 	int			j;
 	int			ret;
 
+	
 	i = 1;
 	init(&option);
+	// Count and parse options
 	while (i < argc && !is_option(argv[i], &option))
+	{
 		++i;
+	}
+	j = i - 1;
+	ft_printf_fd(STDERR_FILENO, "options_count: %d\n", i - 1);
+	ft_printf_fd(STDERR_FILENO, "argc: %d;\ti: %d ", argc, i);
 	if (argc - 1 == 0 || i - 1 == argc - 1)
+	{
 		i -= 1;
+	}
+	ft_printf_fd(STDERR_FILENO, "=> %d\n", i);
+	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", argc - i);
+	// Allocate memory for array of files
 	if (!(files = (char **)malloc(sizeof(char *) * (argc - i))))
-		return (EXIT_FAILURE);
+	{
+		exit(EXIT_FAILURE);
+	}
 	j = 0;
+	// Add files to new array
 	while (i < argc)
 	{
-		if (ft_strcmp(argv[i], "--") != 0 && argc != 1 && i != argc - 1)
+		ft_printf_fd(STDERR_FILENO, "%s ", argv[i]);
+		ft_printf_fd(STDERR_FILENO, " %d\n", j);
+		if (ft_strcmp(argv[i], "--") != 0 && argc != 1 && j + argc - i != argc)
+		{
 			files[j] = ft_strdup(argv[i]);
+		}
 		else
+		{
 			files[j] = ft_strdup(".");
+		}
+		ft_printf_fd(STDERR_FILENO, "-> %s\n", files[j]);
 		++i;
 		++j;
 	}
+	// Sort files
 	files = sort_args(j, files);
 	i = 0;
 	ret = EXIT_SUCCESS;
 	while (i < j)
 	{
+		ft_printf_fd(STDERR_FILENO, "file [%d]: %s\n", i, files[i]);
 		if (ft_ls(files[i], &option))
+		{
 			ret = EXIT_FAILURE;
+		}
+		ft_printf_fd(STDERR_FILENO, "file [%d]: ret = %d\n", i, ret);
 		++i;
 	}
-	return (ret);
+	i = 0;
+	while (i < j)
+	{
+		free(files[i]);
+		++i;
+	}
+	free(files);
+	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
+			option.recursive_read, option.dot_files, option.long_format, \
+			option.reverse_order, option.time_sort);
+	ft_printf_fd(STDERR_FILENO, "Return: %d\n", ret);
+	exit(ret);
 }

@@ -1,11 +1,10 @@
-options_count: 1
-argc: 2;	i: 2 => 1
+options_count: 0
+argc: 2;	i: 1 => 1
 files_count: 1
--a  0
--> -a
-file [0]: -a
-ft_ls: -a: No such file or directory
+test -> test
+file [0]: test
+ft_ls: test: No such file or directory
 file [0]: ret = 1
 
-Options[-Ralrt]: 0 1 0 0 0
+Options[-Ralrt]: 0 0 0 0 0
 Return: 1

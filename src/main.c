@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/13 16:37:10 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/13 20:25:09 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int			main(int argc, char **argv)
 	int			i;
 	int			j;
 	int			ret;
+	int			options_count;
 
-	
 	i = 1;
 	init(&option);
 	// Count and parse options
@@ -108,8 +108,8 @@ int			main(int argc, char **argv)
 	{
 		++i;
 	}
-	j = i - 1;
-	ft_printf_fd(STDERR_FILENO, "options_count: %d\n", i - 1);
+	options_count = i - 1;
+	ft_printf_fd(STDERR_FILENO, "options_count: %d\n", options_count);
 	ft_printf_fd(STDERR_FILENO, "argc: %d;\ti: %d ", argc, i);
 	if (argc - 1 == 0 || i - 1 == argc - 1)
 	{
@@ -124,11 +124,11 @@ int			main(int argc, char **argv)
 	}
 	j = 0;
 	// Add files to new array
+	ret = options_count + argc - i;
 	while (i < argc)
 	{
 		ft_printf_fd(STDERR_FILENO, "%s ", argv[i]);
-		ft_printf_fd(STDERR_FILENO, " %d\n", j);
-		if (ft_strcmp(argv[i], "--") != 0 && argc != 1 && j + argc - i != argc)
+		if (ft_strcmp(argv[i], "--") != 0 && argc != 1 && ret != argc)
 		{
 			files[j] = ft_strdup(argv[i]);
 		}

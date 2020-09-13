@@ -17,5 +17,3 @@ jobs:
       run: make
     - name: make check
       run: make check
-    - name: leaks
-      run: valgrind ./ft_ls -r -R -a -t -l test src -t Makefile -x

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/12 19:24:25 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/15 19:35:18 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@
 # include <sys/errno.h>
 # include "libft.h"
 
+typedef struct	s_args
+{
+	char		**argv;
+	int			argc;
+	int			files_count;
+	int			option_count;
+	int			sthelse;
+}				t_args;
+
 typedef struct	s_option
 {
 	int			dot_files;
@@ -26,6 +35,8 @@ typedef struct	s_option
 	int			recursive_read;
 }				t_option;
 
+int				options_parser(t_args *args, t_option *option);
+char			**files_parser(t_args *args);
 int				ft_ls(char *name, t_option *option);
 
 #endif

@@ -6,82 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/13 20:25:09 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/15 19:35:37 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 #define OPTIONS	"-Ralrt"
-
-static char	**sort_args(int argc, char **argv)
-{
-	int		i;
-	int		is_sorted;
-	char	*tmp;
-
-	i = 0;
-	is_sorted = 0;
-	while (i < argc - 1)
-	{
-		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
-		{
-			tmp = argv[i];
-			argv[i] = argv[i + 1];
-			argv[i + 1] = tmp;
-			is_sorted = 1;
-		}
-		++i;
-		if (i == argc - 1 && is_sorted)
-		{
-			i = 1;
-			is_sorted = 0;
-		}
-	}
-	return (argv);
-}
-
-static void	parse_options(char alpha, t_option *option)
-{
-	option->recursive_read = (alpha == 'R') ? 1 : option->recursive_read;
-	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
-	option->long_format = (alpha == 'l') ? 1 : option->long_format;
-	option->reverse_order = (alpha == 'r') ? 1 : option->reverse_order;
-	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
-}
-
-static int	is_option(char *str, t_option *option)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 1;
-	if (str[i - 1] == '-' && str[i])
-	{
-		if (str[i] == '-' && !str[i + 1])
-			return (EXIT_FAILURE);
-		while (str[i])
-		{
-			j = 1;
-			while (OPTIONS[j] != str[i] && j < ft_strlen(OPTIONS))
-				++j;
-			if (str[i] != OPTIONS[j])
-			{
-				ft_printf("ft_ls: illegal option -- %c\n", str[i]);
-				ft_printf("usage: ft_ls [%s] [file ...]\n", OPTIONS);
-				exit(EXIT_FAILURE);
-			}
-			parse_options(str[i], option);
-			++i;
-		}
-		return (EXIT_SUCCESS);
-	}
-	return (EXIT_FAILURE);
-}
-
-/*
-** Initialization of options
-*/
 
 static void	init(t_option *option)
 {
@@ -94,56 +25,24 @@ static void	init(t_option *option)
 
 int			main(int argc, char **argv)
 {
+	t_args		args;
 	t_option	option;
 	char		**files;
 	int			i;
 	int			j;
 	int			ret;
-	int			options_count;
 
-	i = 1;
+	args.argc = argc;
+	args.argv = argv;
 	init(&option);
-	// Count and parse options
-	while (i < argc && !is_option(argv[i], &option))
-	{
-		++i;
-	}
-	options_count = i - 1;
-	ft_printf_fd(STDERR_FILENO, "options_count: %d\n", options_count);
-	ft_printf_fd(STDERR_FILENO, "argc: %d;\ti: %d ", argc, i);
-	if (argc - 1 == 0 || i - 1 == argc - 1)
-	{
-		i -= 1;
-	}
-	ft_printf_fd(STDERR_FILENO, "=> %d\n", i);
-	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", argc - i);
-	// Allocate memory for array of files
-	if (!(files = (char **)malloc(sizeof(char *) * (argc - i))))
-	{
-		exit(EXIT_FAILURE);
-	}
-	j = 0;
-	// Add files to new array
-	ret = options_count + argc - i;
-	while (i < argc)
-	{
-		ft_printf_fd(STDERR_FILENO, "%s ", argv[i]);
-		if (ft_strcmp(argv[i], "--") != 0 && argc != 1 && ret != argc)
-		{
-			files[j] = ft_strdup(argv[i]);
-		}
-		else
-		{
-			files[j] = ft_strdup(".");
-		}
-		ft_printf_fd(STDERR_FILENO, "-> %s\n", files[j]);
-		++i;
-		++j;
-	}
-	// Sort files
-	files = sort_args(j, files);
-	i = 0;
+	options_parser(&args, &option);
+	files = files_parser(&args);
 	ret = EXIT_SUCCESS;
+	j = args.option_count;
+	if (j && (args.argc - 1 == 0 || j - 1 == args.argc - 1))
+		j -= 1;
+	i = 0;
+	j = args.argc - j;
 	while (i < j)
 	{
 		ft_printf_fd(STDERR_FILENO, "file [%d]: %s\n", i, files[i]);

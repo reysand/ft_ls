@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/15 19:37:29 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:13:34 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ char		**files_parser(t_args *args)
 	i = args->option_count;
 	if (i && (args->argc - 1 == 0 || i - 1 == args->argc - 1))
 		i -= 1;
-	ft_printf("%d\n", i);
-	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", args->argc - i);
 	if (args->argc - i > 1)
 		++i;
 	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", args->argc - i);
@@ -111,7 +109,7 @@ char		**files_parser(t_args *args)
 		exit(EXIT_FAILURE);
 	j = 0;
 	k = args->option_count + args->argc - i;
-	ft_printf("%d\n", k);
+	ft_printf("%d %d %d\n", k, i, args->argc);
 	while (i < args->argc)
 	{
 		ft_printf_fd(STDERR_FILENO, "%s ", args->argv[i]);

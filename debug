@@ -1,5 +1,8 @@
 options_count: 0
-files_count: 1
-./ft_ls -> .
-
-Options[-Ralrt]: 0 0 0 0 0
+files_count: 4
+-- -> .
+te -> te
+ff -> ff
+ft_ls: ff: No such file or directory
+ft_ls: te: No such file or directory
+ft_ls: 

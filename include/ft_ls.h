@@ -14,6 +14,7 @@
 # define FT_LS_H
 
 # include <dirent.h>
+# include <stdlib.h>
 # include <sys/errno.h>
 # include "libft.h"
 
@@ -21,9 +22,9 @@ typedef struct	s_args
 {
 	char		**argv;
 	int			argc;
-	int			files_count;
-	int			option_count;
-	int			sthelse;
+	int			files_c;
+	int			opt_c;
+	int			trash_need_to_change;
 }				t_args;
 
 typedef struct	s_option

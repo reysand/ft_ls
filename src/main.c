@@ -14,6 +14,10 @@
 
 #define OPTIONS	"-Ralrt"
 
+/*
+** Deallocating memory of matrix
+*/
+
 static void	ft_free(char **matrix, int size)
 {
 	int	i;
@@ -55,7 +59,7 @@ int			main(int argc, char **argv)
 	files = files_parser(&args);
 	i = 0;
 	ret = EXIT_SUCCESS;
-	while (i < args.files_count)
+	while (i < args.files_c)
 	{
 		if (ft_ls(files[i], &option))
 		{
@@ -63,7 +67,7 @@ int			main(int argc, char **argv)
 		}
 		++i;
 	}
-	ft_free(files, args.files_count);
+	ft_free(files, args.files_c);
 	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
 			option.recursive_read, option.dot_files, option.long_format, \
 			option.reverse_order, option.time_sort);

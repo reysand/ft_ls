@@ -1,6 +1,6 @@
 options_count: 0
-files_count: 1
-test -> test
-ft_ls: test: No such file or directory
+files_count: 2
+(2) -- -> -- (0)
+ft_ls: --: No such file or directory
 
 Options[-Ralrt]: 0 0 0 0 0

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/20 15:25:00 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/21 13:30:45 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,24 +140,26 @@ char		**files_parser(t_args *args)
 	if (!(files = (char **)malloc(sizeof(char *) * (args->argc - i))))
 		exit(EXIT_FAILURE);
 	j = 0;
+	ft_printf("argc %d i %d %d\n", args->argc, i, i + 1);
 	if (ft_strcmp(args->argv[i], "--") == 0)
 	{
-		if (args->argc <= i + 2)
+		if (i + 1 == args->argc)
 			files[j++] = ft_strdup(".");
 		++i;
 	}
 	while (i < args->argc)
 	{
-		ft_printf_fd(STDERR_FILENO, "%s ", args->argv[i]);
+		ft_printf_fd(STDERR_FILENO, "(%d) %s ", i, args->argv[i]);
 		if (args->files_c == 1 && args->files_c + args->opt_c == args->argc)
 			files[j] = ft_strdup(".");
 		else
 			files[j] = ft_strdup(args->argv[i]);
-		ft_printf_fd(STDERR_FILENO, "-> %s\n", files[j]);
+		ft_printf_fd(STDERR_FILENO, "-> %s (%d)\n", files[j], j);
 		++i;
 		++j;
 	}
 	ft_printf("files count new: %d\n", j);
+	args->files_c = j;
 	files = sort_args(j, files);
 	return (files);
 }

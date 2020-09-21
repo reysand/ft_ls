@@ -24,7 +24,7 @@ typedef struct	s_args
 	int			argc;
 	int			files_c;
 	int			opt_c;
-	int			trash_need_to_change;
+	int			trash_todo;
 }				t_args;
 
 typedef struct	s_option

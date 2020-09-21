@@ -52,5 +52,6 @@ Mkfile.old
 dkms.conf
 
 # ft_ls
+.idea/
 build/*
 ft_ls

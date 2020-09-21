@@ -1,6 +1,9 @@
-options_count: 0
+options_count: 1
+files_count: 3
+(3) -- -> -- (0)
+(4) test -> test (1)
 files_count: 2
-(2) -- -> -- (0)
 ft_ls: --: No such file or directory
+ft_ls: test: No such file or directory
 
-Options[-Ralrt]: 0 0 0 0 0
+Options[-Ralrt]: 0 1 0 0 0

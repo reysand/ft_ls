@@ -32,6 +32,37 @@ static void	ft_free(char **matrix, int size)
 }
 
 /*
+** Sorting arguments
+*/
+
+static char	**sort_args(int argc, char **argv)
+{
+	char	*tmp;
+	int		i;
+	int		is_sorted;
+
+	i = 0;
+	is_sorted = 0;
+	while (i < argc - 1)
+	{
+		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
+		{
+			tmp = argv[i];
+			argv[i] = argv[i + 1];
+			argv[i + 1] = tmp;
+			is_sorted = 1;
+		}
+		++i;
+		if (i == argc - 1 && is_sorted)
+		{
+			i = 1;
+			is_sorted = 0;
+		}
+	}
+	return (argv);
+}
+
+/*
 ** Initializing the t_args and t_option structures
 */
 
@@ -57,6 +88,7 @@ int			main(int argc, char **argv)
 	init(argc, argv, &args, &option);
 	options_parser(&args, &option);
 	files = files_parser(&args);
+	files = sort_args(args.files_c, files);
 	i = 0;
 	ret = EXIT_SUCCESS;
 	while (i < args.files_c)

@@ -6,44 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/21 13:30:45 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/21 13:48:45 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 #define OPTIONS "-Ralrt"
-
-/*
-** Sorting arguments
-*/
-
-static char	**sort_args(int argc, char **argv)
-{
-	char	*tmp;
-	int		i;
-	int		is_sorted;
-
-	i = 0;
-	is_sorted = 0;
-	while (i < argc - 1)
-	{
-		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
-		{
-			tmp = argv[i];
-			argv[i] = argv[i + 1];
-			argv[i + 1] = tmp;
-			is_sorted = 1;
-		}
-		++i;
-		if (i == argc - 1 && is_sorted)
-		{
-			i = 1;
-			is_sorted = 0;
-		}
-	}
-	return (argv);
-}
 
 /*
 ** Option selection
@@ -140,13 +109,9 @@ char		**files_parser(t_args *args)
 	if (!(files = (char **)malloc(sizeof(char *) * (args->argc - i))))
 		exit(EXIT_FAILURE);
 	j = 0;
-	ft_printf("argc %d i %d %d\n", args->argc, i, i + 1);
 	if (ft_strcmp(args->argv[i], "--") == 0)
-	{
-		if (i + 1 == args->argc)
+		if (++i == args->argc)
 			files[j++] = ft_strdup(".");
-		++i;
-	}
 	while (i < args->argc)
 	{
 		ft_printf_fd(STDERR_FILENO, "(%d) %s ", i, args->argv[i]);
@@ -158,8 +123,7 @@ char		**files_parser(t_args *args)
 		++i;
 		++j;
 	}
-	ft_printf("files count new: %d\n", j);
+	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", j);
 	args->files_c = j;
-	files = sort_args(j, files);
 	return (files);
 }

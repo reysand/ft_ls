@@ -18,26 +18,38 @@
 # include <sys/errno.h>
 # include "libft.h"
 
-typedef struct	s_args
-{
-	char		**argv;
-	int			argc;
-	int			files_c;
-	int			opt_c;
-	int			trash_todo;
-}				t_args;
+typedef struct dirent	t_dirent;
 
-typedef struct	s_option
+typedef struct			s_args
 {
-	int			dot_files;
-	int			time_sort;
-	int			long_format;
-	int			reverse_order;
-	int			recursive_read;
-}				t_option;
+	char				**argv;
+	int					argc;
+	int					files_c;
+	int					opt_c;
+	int					tmp_todo_delete;
+}						t_args;
 
-int				options_parser(t_args *args, t_option *option);
-char			**files_parser(t_args *args);
-int				ft_ls(char *name, t_option *option);
+typedef struct			s_option
+{
+	int					dot_files;
+	int					time_sort;
+	int					long_format;
+	int					reverse_order;
+	int					recursive_read;
+}						t_option;
+
+typedef struct			s_file
+{
+	char				*d_name;
+	int					d_ino;
+	int					d_reclen;
+	int					d_type;
+	int					d_namlen;
+	struct s_file		*next;
+}						t_file;
+
+int						options_parser(t_args *args, t_option *option);
+char					**files_parser(t_args *args);
+int						ft_ls(char *name, t_option *option);
 
 #endif

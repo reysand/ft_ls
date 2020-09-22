@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/19 17:20:45 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:58:55 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	**sort_args(int argc, char **argv)
 		++i;
 		if (i == argc - 1 && is_sorted)
 		{
-			i = 1;
+			i = 0;
 			is_sorted = 0;
 		}
 	}
@@ -94,9 +94,7 @@ int			main(int argc, char **argv)
 	while (i < args.files_c)
 	{
 		if (ft_ls(files[i], &option))
-		{
 			ret = EXIT_FAILURE;
-		}
 		++i;
 	}
 	ft_free(files, args.files_c);

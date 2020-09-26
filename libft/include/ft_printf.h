@@ -30,7 +30,7 @@ void		print_sign(t_flags *data, int minus);
 int			get_width(t_flags *data, int len, char type);
 void		print_prec(t_flags *data, int prec, char type);
 void		print_width(t_flags *data, int width, char type);
-char		*ptf_itoa_base(long long value, int base, char *b, char flag);
+char		*ptf_itoa_base(long long value, int base, const char *b, char flag);
 
 /*
 ** Types parsers

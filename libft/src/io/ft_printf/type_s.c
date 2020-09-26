@@ -42,7 +42,7 @@ static void	width_parse(t_flags *data, char *s, char type)
 	else
 	{
 		if (s[0] == 0 && type == 'c')
-			ft_putchar('\0');
+			ft_putchar_fd('\0', data->fd);
 		ft_putstr_fd(s, data->fd);
 		data->len += len;
 	}

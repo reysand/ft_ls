@@ -98,7 +98,7 @@ void		int_parse(t_flags *data, va_list ap)
 	else if (data->mod == M_H)
 		decimal = (short)va_arg(ap, int);
 	else if (data->mod == M_HH)
-		decimal = (char)va_arg(ap, int);
+		decimal = (unsigned char)va_arg(ap, int);
 	else
 		decimal = va_arg(ap, int);
 	str = ptf_itoa_base(decimal, 10, "0123456789", 1);

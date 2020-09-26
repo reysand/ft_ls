@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/22 15:58:55 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/26 19:51:32 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** Deallocating memory of matrix
 */
 
-static void	ft_free(char **matrix, int size)
+static void	free_matrix(char **matrix, int size)
 {
 	int	i;
 
@@ -77,29 +77,42 @@ static void	init(int argc, char **argv, t_args *args, t_option *option)
 	option->recursive_read = 0;
 }
 
+int			placeholder(char **files, t_args *args, t_option *option)
+{
+	t_file	*file;
+	int		i;
+	int		ret;
+
+	i = 0;
+	ret = EXIT_SUCCESS;
+	file = NULL;
+	while (i < args->files_c)
+	{
+		if (ft_ls(files[i], &file, option))
+		{
+			ret = EXIT_FAILURE;
+		}
+		++i;
+	}
+	sort_list(&file);
+	print_list(file);
+	free_list(file);
+	free_matrix(files, args->files_c);
+	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
+			option->recursive_read, option->dot_files, option->long_format, \
+			option->reverse_order, option->time_sort);
+	return (ret);
+}
+
 int			main(int argc, char **argv)
 {
 	t_args		args;
 	t_option	option;
 	char		**files;
-	int			i;
-	int			ret;
 
 	init(argc, argv, &args, &option);
 	options_parser(&args, &option);
 	files = files_parser(&args);
 	files = sort_args(args.files_c, files);
-	i = 0;
-	ret = EXIT_SUCCESS;
-	while (i < args.files_c)
-	{
-		if (ft_ls(files[i], &option))
-			ret = EXIT_FAILURE;
-		++i;
-	}
-	ft_free(files, args.files_c);
-	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
-			option.recursive_read, option.dot_files, option.long_format, \
-			option.reverse_order, option.time_sort);
-	exit(ret);
+	exit(placeholder(files, &args, &option));
 }

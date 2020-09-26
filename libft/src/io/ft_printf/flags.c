@@ -95,16 +95,12 @@ static int	get_len(const char *str, t_flags *data, va_list ap, int field)
 
 	i = 0;
 	if (str[i] == '.')
-	{
 		if (str[++i] == '0' || (!ft_isdigit(str[i]) && str[i] != '*'))
 		{
 			data->p_zero = 1;
 			if (str[i] == '0')
-			{
 				++i;
-			}
 		}
-	}
 	if (str[i] == '*')
 		tmp = va_arg(ap, int);
 	else

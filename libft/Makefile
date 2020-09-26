@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/21 23:28:59 by fhelena           #+#    #+#              #
-#    Updated: 2020/09/08 16:08:55 by fhelena          ###   ########.fr        #
+#    Updated: 2020/09/24 14:53:09 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,12 @@ SRC_DIR			= src
 INC_DIR			= include
 BLD_DIR			= build
 
--include src/char/char.mk
--include src/io/io.mk
--include src/lst/lst.mk
--include src/math/math.mk
--include src/mem/mem.mk
--include src/str/str.mk
+-include		$(SRC_DIR)/char/char.mk
+-include		$(SRC_DIR)/io/io.mk
+-include		$(SRC_DIR)/lst/lst.mk
+-include		$(SRC_DIR)/math/math.mk
+-include		$(SRC_DIR)/mem/mem.mk
+-include		$(SRC_DIR)/str/str.mk
 
 SRCS			= $(CHAR) $(IO) $(LST) $(MATH) $(MEM) $(STR)
 OBJS			= $(SRCS:%.c=$(BLD_DIR)/%.o)

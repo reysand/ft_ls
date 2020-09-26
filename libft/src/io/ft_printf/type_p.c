@@ -45,7 +45,7 @@ void		ptr_parse(t_flags *data, va_list ap)
 	char				*str;
 
 	p = va_arg(ap, unsigned long long);
-	str = ptf_itoa_base(p, 16, "0123456789abcdef", 0);
+	str = ptf_itoa_base((long long)p, 16, "0123456789abcdef", 0);
 	width_parse(data, str, 'p');
 	free(str);
 }

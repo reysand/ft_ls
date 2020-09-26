@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/21 13:48:45 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/25 15:10:17 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ static int	get_files_count(t_args *args)
 		++i;
 	}
 	args->files_c = args->argc - i;
-	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", args->files_c);
 	return (i);
 }
 

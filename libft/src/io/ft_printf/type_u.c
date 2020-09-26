@@ -26,7 +26,6 @@ static int	check_width(t_flags *data, int len)
 {
 	int	width;
 
-	width = 0;
 	if (data->prec >= len)
 		width = get_width(data, data->prec, 'x');
 	else

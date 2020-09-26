@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/09/09 15:02:36 by fhelena          ###   ########.fr        #
+#    Updated: 2020/09/24 14:52:47 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ INC_DIR			= include
 BLD_DIR			= build
 LIB_DIR			= libft
 
--include src/src.mk
+-include		$(SRC_DIR)/src.mk
 
 SRCS			= $(SRC)
 OBJS			= $(SRCS:%.c=$(BLD_DIR)/%.o)

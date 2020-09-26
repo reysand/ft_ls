@@ -33,7 +33,7 @@ void		print_sign(t_flags *data, int minus)
 
 long double	ft_power(long long number, int power)
 {
-	if (number == 0 || power < 0)
+	if (!number || power < 0)
 		return (0);
 	if (!power)
 		return (1);
@@ -50,7 +50,7 @@ static int	itoa_len(unsigned long long value, int base)
 	return (i);
 }
 
-char		*ptf_itoa_base(long long value, int base, char *b, char flag)
+char		*ptf_itoa_base(long long value, int base, const char *b, char flag)
 {
 	unsigned long long	n;
 	char				*str;

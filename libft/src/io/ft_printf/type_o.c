@@ -45,7 +45,7 @@ static void	width_parse(t_flags *data, char *s, char type)
 		print_width(data, width, type);
 	if (data->sharp && ft_atoi(s) && data->prec <= len)
 	{
-		ft_putchar('0');
+		ft_putchar_fd('0', data->fd);
 		++data->len;
 	}
 	prec_parse(data, s, len);
@@ -68,7 +68,7 @@ void		oct_parse(t_flags *data, va_list ap)
 		octal = (unsigned char)va_arg(ap, unsigned int);
 	else
 		octal = va_arg(ap, unsigned int);
-	str = ptf_itoa_base(octal, 8, "01234567", 0);
+	str = ptf_itoa_base((long long)octal, 8, "01234567", 0);
 	width_parse(data, str, 'o');
 	free(str);
 }

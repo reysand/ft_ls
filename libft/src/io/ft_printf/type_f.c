@@ -58,7 +58,7 @@ static char	*float_round(t_flags *data, long double f, long double tmp)
 
 	if (f < 0)
 		f = -f;
-	r = (f * (ft_power(10, data->prec + 1))) - (long long int)tmp * 10;
+	r = (f * (ft_power(10, data->prec + 1))) - (long long)tmp * 10;
 	if (r > 5)
 		fl = ptf_itoa_base((tmp + 1), 10, "0123456789", 1);
 	else
@@ -75,8 +75,8 @@ static char	*prec_parse(t_flags *data, long double f)
 
 	if (!data->flag && data->prec == 0)
 		data->prec = 6;
-	n = ft_power(10, data->prec);
-	f = f - (long long int)f;
+	n = (long long)ft_power(10, data->prec);
+	f = f - (long long)f;
 	tmp = f * n;
 	if (tmp < 0)
 		tmp = -tmp;
@@ -92,21 +92,21 @@ static char	*prec_parse(t_flags *data, long double f)
 
 void		float_parse(t_flags *data, va_list ap)
 {
-	long double		f;
-	long long int	fl;
-	char			*after;
-	char			*before;
-	int				len;
+	long double	f;
+	long long	fl;
+	char		*after;
+	char		*before;
+	int			len;
 
 	len = 1;
 	if (data->mod == M_BL)
 		f = va_arg(ap, long double);
 	else
 		f = va_arg(ap, double);
-	fl = f;
+	fl = (long long)f;
 	while ((fl /= 10) != 0)
 		++len;
-	before = ptf_itoa_base(f, 10, "0123456789", 1);
+	before = ptf_itoa_base((long long)f, 10, "0123456789", 1);
 	if (f < 0 || data->plus || data->space)
 		++len;
 	after = prec_parse(data, f);

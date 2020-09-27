@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/26 19:51:32 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:01:28 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	**sort_args(int argc, char **argv)
 ** Initializing the t_args and t_option structures
 */
 
-static void	init(int argc, char **argv, t_args *args, t_option *option)
+static void	structs_init(int argc, char **argv, t_args *args, t_option *option)
 {
 	args->argc = argc;
 	args->argv = argv;
@@ -94,7 +94,7 @@ int			placeholder(char **files, t_args *args, t_option *option)
 		}
 		++i;
 	}
-	sort_list(&file);
+	get_ascii_sort(&file);
 	print_list(file);
 	free_list(file);
 	free_matrix(files, args->files_c);
@@ -110,7 +110,7 @@ int			main(int argc, char **argv)
 	t_option	option;
 	char		**files;
 
-	init(argc, argv, &args, &option);
+	structs_init(argc, argv, &args, &option);
 	options_parser(&args, &option);
 	files = files_parser(&args);
 	files = sort_args(args.files_c, files);

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/26 18:09:43 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:20:29 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct			s_file
 int						options_parser(t_args *args, t_option *option);
 char					**files_parser(t_args *args);
 int						ft_ls(char *name, t_file **file, t_option *option);
-void					sort_list(t_file **head);
+void					get_ascii_sort(t_file **head);
 void					print_list(t_file *head);
 void					free_list(t_file *head);
 

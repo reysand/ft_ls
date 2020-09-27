@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/26 19:46:13 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:20:14 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,55 +22,6 @@ void		free_list(t_file *head)
 		head = head->next;
 		free(tmp->d_name);
 		free(tmp);
-	}
-}
-
-void		print_list(t_file *head)
-{
-	while (head != NULL)
-	{
-		ft_printf("%s\n", head->d_name);
-		head = head->next;
-	}
-}
-
-t_file		*swap(t_file *first, t_file *second)
-{
-	t_file	*temp;
-	t_file	*end;
-
-	temp = first;
-	end = second->next;
-	first = second;
-	first->next = temp;
-	temp->next = end;
-	return (first);
-}
-
-void		sort_list(t_file **head)
-{
-	t_file	*file;
-	t_file	*start;
-	int		is_sorted;
-
-	file = *head;
-	start = *head;
-	is_sorted = 0;
-	while (file->next)
-	{
-		if (ft_strcmp(file->d_name, file->next->d_name) > 0)
-		{
-			is_sorted = 1;
-			start->next = swap(file, file->next);
-		}
-		start = file;
-		file = file->next;
-		if (!file->next && is_sorted)
-		{
-			file = *head;
-			start = *head;
-			is_sorted = 0;
-		}
 	}
 }
 
@@ -117,8 +68,10 @@ int			ft_ls(char *name, t_file **file, t_option *option)
 	}
 	while ((entry = readdir(dir)))
 	{
-		get_info(&file, entry);
-		(void)option;
+		if (option->dot_files)
+			get_info(&file, entry);
+		else if ((entry->d_name)[0] != '.')
+			get_info(&file, entry);
 	}
 	closedir(dir);
 	return (EXIT_SUCCESS);

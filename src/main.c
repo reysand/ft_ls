@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/27 19:01:28 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:40:00 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,15 @@ int			placeholder(char **files, t_args *args, t_option *option)
 	while (i < args->files_c)
 	{
 		if (ft_ls(files[i], &file, option))
-		{
 			ret = EXIT_FAILURE;
-		}
 		++i;
 	}
-	get_ascii_sort(&file);
-	print_list(file);
-	free_list(file);
+	if (file)
+	{
+		get_ascii_sort(&file);
+		print_list(file);
+		free_list(file);
+	}
 	free_matrix(files, args->files_c);
 	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
 			option->recursive_read, option->dot_files, option->long_format, \

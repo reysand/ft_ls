@@ -6,12 +6,11 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/27 19:40:00 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:12:54 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
 #define OPTIONS	"-Ralrt"
 
 /*
@@ -29,6 +28,50 @@ static void	free_matrix(char **matrix, int size)
 		++i;
 	}
 	free(matrix);
+}
+
+/*
+** File and option handling with creating list of files
+*/
+
+int			args_handler(char **files, t_args *args, t_option *option)
+{
+	t_file	*file_info;
+	int		i;
+	int		ret;
+
+	i = 0;
+	ret = EXIT_SUCCESS;
+	file_info = NULL;
+	while (i < args->files_c)
+	{
+		if (ft_ls(files[i], &file_info, option, i, ret))
+			ret = EXIT_FAILURE;
+		/*
+		** Needed add to list of file_info
+		*/
+		/*
+		if (file_info)
+		{
+			if (i >= 0)
+			{
+				if (ret == EXIT_SUCCESS && i > 0 && i < args->files_c)
+					ft_printf("\n");
+				ft_printf("%s:\n", files[i]);
+			}
+			get_ascii_sort(&file_info);
+			print_list(file_info);
+			*/free_list(file_info);/*
+			file_info = NULL;
+		}
+		*/
+		++i;
+	}
+	free_matrix(files, args->files_c);
+	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
+			option->recursive_read, option->dot_files, option->long_format, \
+			option->reverse_order, option->time_sort);
+	return (ret);
 }
 
 /*
@@ -77,43 +120,15 @@ static void	structs_init(int argc, char **argv, t_args *args, t_option *option)
 	option->recursive_read = 0;
 }
 
-int			placeholder(char **files, t_args *args, t_option *option)
-{
-	t_file	*file;
-	int		i;
-	int		ret;
-
-	i = 0;
-	ret = EXIT_SUCCESS;
-	file = NULL;
-	while (i < args->files_c)
-	{
-		if (ft_ls(files[i], &file, option))
-			ret = EXIT_FAILURE;
-		++i;
-	}
-	if (file)
-	{
-		get_ascii_sort(&file);
-		print_list(file);
-		free_list(file);
-	}
-	free_matrix(files, args->files_c);
-	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
-			option->recursive_read, option->dot_files, option->long_format, \
-			option->reverse_order, option->time_sort);
-	return (ret);
-}
-
 int			main(int argc, char **argv)
 {
-	t_args		args;
-	t_option	option;
+	t_args		ls_args;
+	t_option	options;
 	char		**files;
 
-	structs_init(argc, argv, &args, &option);
-	options_parser(&args, &option);
-	files = files_parser(&args);
-	files = sort_args(args.files_c, files);
-	exit(placeholder(files, &args, &option));
+	structs_init(argc, argv, &ls_args, &options);
+	options_parser(&ls_args, &options);
+	files = files_parser(&ls_args);
+	files = sort_args(ls_args.files_c, files);
+	exit(args_handler(files, &ls_args, &options));
 }

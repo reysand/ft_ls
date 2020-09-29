@@ -11,8 +11,57 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
 #define OPTIONS "-Ralrt"
+
+/*
+** Counting files and returning index of the first file
+*/
+
+static int	get_files_count(t_args *args)
+{
+	int i;
+
+	i = args->opt_c;
+	if ((i == 0 && args->argc > 1) || (args->argc - i >= i + 1 && i != 0))
+	{
+		++i;
+	}
+	args->files_c = args->argc - i;
+	return (i);
+}
+
+/*
+** Copying files to a new array
+*/
+
+char		**files_parser(t_args *args)
+{
+	char	**files;
+	int		i;
+	int		j;
+
+	i = get_files_count(args);
+	if (!(files = (char **)malloc(sizeof(char *) * (args->argc - i))))
+		exit(EXIT_FAILURE);
+	j = 0;
+	if (ft_strcmp(args->argv[i], "--") == 0)
+		if (++i == args->argc)
+			files[j++] = ft_strdup(".");
+	while (i < args->argc)
+	{
+		ft_printf_fd(STDERR_FILENO, "(%d) %s ", i, args->argv[i]);
+		if (args->files_c == 1 && args->files_c + args->opt_c == args->argc)
+			files[j] = ft_strdup(".");
+		else
+			files[j] = ft_strdup(args->argv[i]);
+		ft_printf_fd(STDERR_FILENO, "-> %s (%d)\n", files[j], j);
+		++i;
+		++j;
+	}
+	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", j);
+	args->files_c = j;
+	return (files);
+}
 
 /*
 ** Option selection
@@ -75,54 +124,4 @@ int			options_parser(t_args *args, t_option *option)
 	args->opt_c = --i;
 	ft_printf_fd(STDERR_FILENO, "options_count: %d\n", args->opt_c);
 	return (i);
-}
-
-/*
-** Counting files and returning index of the first file
-*/
-
-static int	get_files_count(t_args *args)
-{
-	int i;
-
-	i = args->opt_c;
-	if ((i == 0 && args->argc > 1) || (args->argc - i >= i + 1 && i != 0))
-	{
-		++i;
-	}
-	args->files_c = args->argc - i;
-	return (i);
-}
-
-/*
-** Copying files to a new array
-*/
-
-char		**files_parser(t_args *args)
-{
-	char	**files;
-	int		i;
-	int		j;
-
-	i = get_files_count(args);
-	if (!(files = (char **)malloc(sizeof(char *) * (args->argc - i))))
-		exit(EXIT_FAILURE);
-	j = 0;
-	if (ft_strcmp(args->argv[i], "--") == 0)
-		if (++i == args->argc)
-			files[j++] = ft_strdup(".");
-	while (i < args->argc)
-	{
-		ft_printf_fd(STDERR_FILENO, "(%d) %s ", i, args->argv[i]);
-		if (args->files_c == 1 && args->files_c + args->opt_c == args->argc)
-			files[j] = ft_strdup(".");
-		else
-			files[j] = ft_strdup(args->argv[i]);
-		ft_printf_fd(STDERR_FILENO, "-> %s (%d)\n", files[j], j);
-		++i;
-		++j;
-	}
-	ft_printf_fd(STDERR_FILENO, "files_count: %d\n", j);
-	args->files_c = j;
-	return (files);
 }

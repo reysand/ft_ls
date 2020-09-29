@@ -6,13 +6,12 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/27 19:20:29 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/09/28 12:52:18 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
-
 # include <dirent.h>
 # include <stdlib.h>
 # include <sys/errno.h>
@@ -50,7 +49,7 @@ typedef struct			s_file
 
 int						options_parser(t_args *args, t_option *option);
 char					**files_parser(t_args *args);
-int						ft_ls(char *name, t_file **file, t_option *option);
+int						ft_ls(char *name, t_file **file, t_option *option, int i, int ret);
 void					get_ascii_sort(t_file **head);
 void					print_list(t_file *head);
 void					free_list(t_file *head);

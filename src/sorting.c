@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   options.c                                          :+:      :+:    :+:   */
+/*   sorting.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/28 11:38:26 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/06 13:37:57 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,35 @@ void			get_ascii_sort(t_file **head)
 		if (!list->next && is_sorted)
 			list = *head;
 	}
+}
+
+/*
+** Sorting arguments in ascii order
+*/
+
+char			**sort_args(int argc, char **argv)
+{
+	char	*tmp;
+	int		i;
+	int		is_sorted;
+
+	i = 0;
+	is_sorted = 0;
+	while (i < argc - 1)
+	{
+		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
+		{
+			tmp = argv[i];
+			argv[i] = argv[i + 1];
+			argv[i + 1] = tmp;
+			is_sorted = 1;
+		}
+		++i;
+		if (i == argc - 1 && is_sorted)
+		{
+			i = 0;
+			is_sorted = 0;
+		}
+	}
+	return (argv);
 }

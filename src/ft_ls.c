@@ -6,25 +6,12 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/28 14:29:14 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/05 10:47:12 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #define ERR_MSG	"ft_ls: %s: %s\n"
-
-void		free_list(t_file *head)
-{
-	t_file	*tmp;
-
-	while (head != NULL)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->d_name);
-		free(tmp);
-	}
-}
 
 static void	get_info(t_file ***head, t_dirent *entry)
 {
@@ -52,7 +39,7 @@ static void	get_info(t_file ***head, t_dirent *entry)
 	files->next = item;
 }
 
-int			ft_ls(char *name, t_file **file, t_option *option, int i, int ret)
+int			ft_ls(char *name, t_file **file, t_option *option)
 {
 	t_dirent	*entry;
 	DIR			*dir;
@@ -70,16 +57,12 @@ int			ft_ls(char *name, t_file **file, t_option *option, int i, int ret)
 			return (EXIT_FAILURE);
 		}
 	}
-	if (i > 1 && ret == EXIT_SUCCESS)
-		ft_printf("\n");
-	if (i > 1)
-		ft_printf("%s:\n", name);
 	while ((entry = readdir(dir)))
 	{
-		if (option->dot_files)
-			get_info(&file, entry);
-		else if ((entry->d_name)[0] != '.')
-			get_info(&file, entry);
+		if (option->dot_files || (entry->d_name)[0] != '.')
+		{
+			get_info(&file, entry); // Memory allocate (**files)
+		}
 	}
 	closedir(dir);
 	return (EXIT_SUCCESS);

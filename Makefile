@@ -6,22 +6,29 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/09/24 14:52:47 by fhelena          ###   ########.fr        #
+#    Updated: 2020/10/05 12:29:04 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= ft_ls
+LIB				= libft.a
+TARGET			= check.out
 
 SRC_DIR			= src
+TST_DIR			= tests
 INC_DIR			= include
 BLD_DIR			= build
 LIB_DIR			= libft
 
 -include		$(SRC_DIR)/src.mk
+-include		$(TST_DIR)/test.mk
 
 SRCS			= $(SRC)
+TSTS			= $(TEST)
 OBJS			= $(SRCS:%.c=$(BLD_DIR)/%.o)
 DEPS			= $(SRCS:%.c=$(BLD_DIR)/%.d)
+T_OBJS			= $(TSTS:%.c=$(BLD_DIR)/%.o)
+T_DEPS			= $(TSTS:%.c=$(BLD_DIR)/%.d)
 
 SHELL			= /bin/sh
 CC				?= gcc
@@ -31,7 +38,7 @@ RM				= rm -rf
 NORME			= $(shell norminette $(SRCS) $(INC_DIR)\
 				  | grep "Error" | wc -l | tr -d ' ')
 
-CFLAGS			= -Wall -Wextra -Werror -Wpadded
+CFLAGS			= -g -Wall -Wextra -Werror -Wpadded
 DFLAGS			= -MT $@ -MMD -MP
 IFLAGS			= -I $(INC_DIR) -I $(LIB_DIR)/$(INC_DIR)
 LFLAGS			= -L $(LIB_DIR) -lft
@@ -59,14 +66,15 @@ else
 endif
 
 PHONY			+= check
-check:			norme all
-	./$(NAME)
+check:			norme all $(TARGET)
+	@printf "$(COLOR_G)PASS:$(C_RESET)\t$(TARGET)\n"
+	./$(TARGET)
 
 $(NAME):		$(OBJS)
 	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
 	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
 
-$(BLD_DIR)/%.o:	%.c
+$(BLD_DIR)/%.o:	%.c $(LIB_DIR)/$(LIB)
 	@$(MKDIR) $(dir $@)
 	@printf "\r$(R_CLEAN)Assembling: $< -> $@"
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $< $(DFLAGS)

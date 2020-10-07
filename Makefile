@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/10/05 12:29:04 by fhelena          ###   ########.fr        #
+#    Updated: 2020/10/07 16:15:06 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,10 @@ check:			norme all $(TARGET)
 	./$(TARGET)
 
 $(NAME):		$(OBJS)
+	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
+	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
+
+$(TARGET):		$(T_OBJS)
 	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
 	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
 

@@ -6,29 +6,23 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/10/07 16:15:06 by fhelena          ###   ########.fr        #
+#    Updated: 2020/10/07 16:48:59 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= ft_ls
 LIB				= libft.a
-TARGET			= check.out
 
 SRC_DIR			= src
-TST_DIR			= tests
 INC_DIR			= include
 BLD_DIR			= build
 LIB_DIR			= libft
 
 -include		$(SRC_DIR)/src.mk
--include		$(TST_DIR)/test.mk
 
 SRCS			= $(SRC)
-TSTS			= $(TEST)
 OBJS			= $(SRCS:%.c=$(BLD_DIR)/%.o)
 DEPS			= $(SRCS:%.c=$(BLD_DIR)/%.d)
-T_OBJS			= $(TSTS:%.c=$(BLD_DIR)/%.o)
-T_DEPS			= $(TSTS:%.c=$(BLD_DIR)/%.d)
 
 SHELL			= /bin/sh
 CC				?= gcc
@@ -66,15 +60,10 @@ else
 endif
 
 PHONY			+= check
-check:			norme all $(TARGET)
-	@printf "$(COLOR_G)PASS:$(C_RESET)\t$(TARGET)\n"
-	./$(TARGET)
+check:			norme all
+	@printf "$(COLOR_G)PASS:$(C_RESET)\tcheck\n"
 
 $(NAME):		$(OBJS)
-	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
-	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
-
-$(TARGET):		$(T_OBJS)
 	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
 	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
 

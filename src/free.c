@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 10:13:40 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/05 10:55:08 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/07 16:40:27 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	free_list(t_file **head)
 /*
 ** Freeing the memory of a singly linked list of singly linked lists
 */
-/*
+
 void	free_list_lists(t_dirlist **head)
 {
 	t_dirlist	*next;
@@ -62,4 +62,3 @@ void	free_list_lists(t_dirlist **head)
 		*head = next;
 	}
 }
-*/

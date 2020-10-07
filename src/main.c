@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/05 12:16:50 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/07 16:38:49 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 
 	if (!(item = (t_dirlist *)malloc(sizeof(t_dirlist))))
 		exit(EXIT_FAILURE);
-	item->path = ft_strdup(name);
+	item->path = name;
 	item->dir = file_info;
 	item->next = NULL;
 	if (*head)
@@ -60,18 +60,11 @@ int			args_handler(char **files, t_args *args, t_option *option)
 		if (ft_ls(files[i], &file_info, option))
 			ret = EXIT_FAILURE;
 		get_ascii_sort(&file_info);
-		ft_printf("\tDir content (%s):\n", files[i]);
-		print_list(file_info);
-		dir_content_add(files[i], &list, file_info); // Memory allocate (*list)
-		//free_list(&file_info);
+		dir_content_add(files[i], &list, file_info);
 		++i;
 	}
-	ft_printf("\n\tList of dir contents:\n");
 	print_list_lists(list);
-	/*
-	free_list_lists(&list); // Memory deallocate (*list)
-	list = NULL;
-	*/
+	free_list_lists(&list);
 	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
 			option->recursive_read, option->dot_files, option->long_format, \
 			option->reverse_order, option->time_sort);
@@ -96,6 +89,6 @@ int			main(int argc, char **argv)
 	files = files_parser(&ls_args);
 	files = sort_args(ls_args.files_c, files);
 	ret = args_handler(files, &ls_args, &options);
-	free_matrix(files, ls_args.files_c); // Memory deallocate (**files)
+	free_matrix(files, ls_args.files_c);
 	return (ret);
 }

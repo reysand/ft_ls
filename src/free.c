@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 10:13:40 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/07 16:40:27 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/07 20:30:09 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@ void	free_matrix(char **matrix, int size)
 		++i;
 	}
 	free(matrix);
+}
+
+void	free_list_strings(t_list **head)
+{
+	t_list	*next;
+
+	while (*head)
+	{
+		next = (*head)->next;
+		ft_memdel((void *)head);
+		*head = next;
+	}
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/07 16:39:13 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/07 20:15:54 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ int			ft_ls(char *name, t_file **file_info, t_option *option)
 	if (!(dir = opendir(name)))
 	{
 		if (errno == ENOTDIR)
-		{
-			ft_printf("%s\n", name);
 			return (EXIT_SUCCESS);
-		}
 		else
 		{
 			ft_printf_fd(STDERR_FILENO, ERR_MSG, name, strerror(errno));

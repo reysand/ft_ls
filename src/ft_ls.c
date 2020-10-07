@@ -19,7 +19,7 @@ static void	get_info(t_file ***head, t_dirent *entry)
 	t_file	*item;
 
 	if (!(item = (t_file *)malloc(sizeof(t_file))))
-		return ;
+		exit(EXIT_FAILURE);
 	item->d_ino = entry->d_ino;
 	item->d_type = entry->d_type;
 	item->d_reclen = entry->d_reclen;

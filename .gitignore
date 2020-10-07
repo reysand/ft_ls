@@ -53,6 +53,7 @@ dkms.conf
 
 # ft_ls
 .idea/
-build/*
-ft_ls
+build/
+cmake-build-debug/
 debug
+ft_ls

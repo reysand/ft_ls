@@ -17,14 +17,14 @@
 ** Adding lists to the end of a list
 */
 
-static void	dir_list_add(char *name, t_dirlist **head, t_file *file_info)
+static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 {
 	t_dirlist	*list;
 	t_dirlist	*item;
 
 	if (!(item = (t_dirlist *)malloc(sizeof(t_dirlist))))
-		return ;
-	item->path = name;
+		exit(EXIT_FAILURE);
+	item->path = ft_strdup(name);
 	item->dir = file_info;
 	item->next = NULL;
 	if (*head)
@@ -38,7 +38,6 @@ static void	dir_list_add(char *name, t_dirlist **head, t_file *file_info)
 	{
 		*head = item;
 	}
-	//free_list_lists(item);
 }
 
 /*
@@ -54,31 +53,21 @@ int			args_handler(char **files, t_args *args, t_option *option)
 
 	i = 0;
 	ret = EXIT_SUCCESS;
-	(void)files;
-	file_info = NULL;
 	list = NULL;
 	while (i < args->files_c)
 	{
+		file_info = NULL;
 		if (ft_ls(files[i], &file_info, option))
 			ret = EXIT_FAILURE;
 		get_ascii_sort(&file_info);
 		ft_printf("\tDir content (%s):\n", files[i]);
 		print_list(file_info);
-		dir_list_add(files[i], &list, file_info); // Memory allocate (*list)
-		free_list(&file_info);
+		dir_content_add(files[i], &list, file_info); // Memory allocate (*list)
+		//free_list(&file_info);
 		++i;
 	}
 	ft_printf("\n\tList of dir contents:\n");
-	if (list) {
-		ft_printf("pass\n");
-		if (list->dir)
-			ft_printf("pass2\n");
-		else
-			ft_printf("fail2\n");
-	}
-	else
-		ft_printf("fail\n");
-	//print_list_lists(list);
+	print_list_lists(list);
 	/*
 	free_list_lists(&list); // Memory deallocate (*list)
 	list = NULL;

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/07 20:35:34 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/08 12:55:51 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int			args_handler(char **files, t_args *args, t_option *option)
 	t_list		*not_dirs;
 	int			i;
 	int			count;
+	int			temp;
 	int			ret;
 
 	i = 0;
@@ -82,14 +83,14 @@ int			args_handler(char **files, t_args *args, t_option *option)
 	while (i < args->files_c)
 	{
 		file_info = NULL;
-		if (ft_ls(files[i], &file_info, option))
+		if ((temp = ft_ls(files[i], &file_info, option)))
 			ret = EXIT_FAILURE;
 		if (file_info)
 		{
 			get_ascii_sort(&file_info);
 			dir_content_add(files[i], &list, file_info);
 		}
-		else if (!file_info && !ret)
+		else if (!file_info && !temp)
 			not_dir_add(files[i], &not_dirs);
 		++i;
 	}

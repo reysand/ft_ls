@@ -6,14 +6,18 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/08 12:55:51 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/09 20:33:57 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #define OPTIONS	"-Ralrt"
 
-static void	not_dir_add(char *file, t_list **head)
+/*
+**
+*/
+
+static void	enotdir_add(char *file, t_list **head)
 {
 	t_list *temp;
 	t_list *item;
@@ -63,71 +67,107 @@ static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 }
 
 /*
+** test
+*/
+/*
+void		recursive(char *path, t_dirlist **list, t_file *file_info, t_option *option)
+{
+	t_file	*temp;
+
+	temp = file_info;
+	while (temp)
+	{
+		ft_ls(ft_strjoin(path, temp->d_name), &file_info, option);
+		if (file_info)
+		{
+			get_ascii_sort(&file_info);
+			dir_content_add(ft_strjoin(path, temp->d_name), list, file_info);
+		}
+		temp = temp->next;
+	}
+}
+*/
+/*
 ** File and option handling with creating list of files
 */
 
-int			args_handler(char **files, t_args *args, t_option *option)
+void		args_handler(char **files, t_args *args, t_option *option)
 {
 	t_file		*file_info;
 	t_dirlist	*list;
 	t_list		*not_dirs;
 	int			i;
-	int			count;
-	int			temp;
 	int			ret;
 
 	i = 0;
-	ret = EXIT_SUCCESS;
 	list = NULL;
 	not_dirs = NULL;
 	while (i < args->files_c)
 	{
 		file_info = NULL;
-		if ((temp = ft_ls(files[i], &file_info, option)))
-			ret = EXIT_FAILURE;
+		if ((ret = ft_ls(files[i], &file_info, option)))
+			args->ret_v = EXIT_FAILURE;
 		if (file_info)
 		{
 			get_ascii_sort(&file_info);
 			dir_content_add(files[i], &list, file_info);
+			/*
+			if (option->recursive_read)
+			{
+				recursive(ft_strjoin(files[i], "/"), &list, file_info, option);
+			}
+			*/
 		}
-		else if (!file_info && !temp)
-			not_dir_add(files[i], &not_dirs);
+		else if (!file_info && !ret)
+			enotdir_add(files[i], &not_dirs);
 		++i;
 	}
-	print_list_strings(not_dirs);
-	count = 0;
-	if (list && not_dirs)
-	{
-		ft_printf("\n");
-		count = 1;
-	}
-	free_list_strings(&not_dirs);
-	print_list_lists(count, list);
-	free_list_lists(&list);
-	ft_printf_fd(STDERR_FILENO, "\nOptions[%s]: %d %d %d %d %d\n", OPTIONS, \
-			option->recursive_read, option->dot_files, option->long_format, \
-			option->reverse_order, option->time_sort);
-	return (ret);
+	ls_output(not_dirs, list);
 }
+
+/*
+**
+*/
+
+void		ls_init(t_dirlist *list, t_list *not_dirs, t_option *options)
+{
+	list = NULL;
+	not_dirs = NULL;
+	options->dot_files = 0;
+	options->time_sort = 0;
+	options->long_format = 0;
+	options->reverse_order = 0;
+	options->recursive_read = 0;
+}
+
+/*
+** Main function
+** TODO: may be move free_matrix in anything else function
+** TODO: t_dirlist and t_list
+*/
 
 int			main(int argc, char **argv)
 {
 	t_args		ls_args;
 	t_option	options;
+	t_dirlist	list;
+	t_list		not_dirs;
 	char		**files;
-	int			ret;
 
 	ls_args.argc = argc;
 	ls_args.argv = argv;
-	options.dot_files = 0;
-	options.time_sort = 0;
-	options.long_format = 0;
-	options.reverse_order = 0;
-	options.recursive_read = 0;
+	ls_args.ret_v = EXIT_SUCCESS;
+	ls_init(&list, &not_dirs, &options);
 	options_parser(&ls_args, &options);
 	files = files_parser(&ls_args);
 	files = sort_args(ls_args.files_c, files);
-	ret = args_handler(files, &ls_args, &options);
+	args_handler(files, &ls_args, &options);
 	free_matrix(files, ls_args.files_c);
-	return (ret);
+	ft_printf_fd(STDERR_FILENO, "Options[%s]: ", OPTIONS);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.long_format);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.reverse_order);
+	ft_printf_fd(STDERR_FILENO, "%d\n", options.time_sort);
+	return (ls_args.ret_v);
 }

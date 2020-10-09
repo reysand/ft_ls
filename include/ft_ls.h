@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/07 20:21:08 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/09 19:20:50 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct			s_args
 {
 	char				**argv;
 	int					argc;
-	int					temp;
+	int					ret_v;
 	int					opt_c;
 	int					files_c;
 }						t_args;
@@ -58,9 +58,9 @@ typedef struct			s_option
 int						options_parser(t_args *args, t_option *option);
 char					**files_parser(t_args *args);
 char					**sort_args(int argc, char **argv);
-int						ft_ls(char *name, t_file **file, t_option *option);
+int						ft_ls(char *name, t_file **file_info, t_option *option);
 void					get_ascii_sort(t_file **head);
-void					print_matrix(char **matrix);
+void					ls_output(t_list *not_dirs, t_dirlist *list);
 void					print_list_strings(t_list *head);
 void					print_list_lists(int count, t_dirlist *head);
 void					print_list(t_file *head);

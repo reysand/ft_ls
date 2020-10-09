@@ -6,16 +6,12 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/09 20:33:57 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/09 20:45:25 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #define OPTIONS	"-Ralrt"
-
-/*
-**
-*/
 
 static void	enotdir_add(char *file, t_list **head)
 {
@@ -67,27 +63,6 @@ static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 }
 
 /*
-** test
-*/
-/*
-void		recursive(char *path, t_dirlist **list, t_file *file_info, t_option *option)
-{
-	t_file	*temp;
-
-	temp = file_info;
-	while (temp)
-	{
-		ft_ls(ft_strjoin(path, temp->d_name), &file_info, option);
-		if (file_info)
-		{
-			get_ascii_sort(&file_info);
-			dir_content_add(ft_strjoin(path, temp->d_name), list, file_info);
-		}
-		temp = temp->next;
-	}
-}
-*/
-/*
 ** File and option handling with creating list of files
 */
 
@@ -111,12 +86,6 @@ void		args_handler(char **files, t_args *args, t_option *option)
 		{
 			get_ascii_sort(&file_info);
 			dir_content_add(files[i], &list, file_info);
-			/*
-			if (option->recursive_read)
-			{
-				recursive(ft_strjoin(files[i], "/"), &list, file_info, option);
-			}
-			*/
 		}
 		else if (!file_info && !ret)
 			enotdir_add(files[i], &not_dirs);
@@ -124,10 +93,6 @@ void		args_handler(char **files, t_args *args, t_option *option)
 	}
 	ls_output(not_dirs, list);
 }
-
-/*
-**
-*/
 
 void		ls_init(t_dirlist *list, t_list *not_dirs, t_option *options)
 {

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 20:39:15 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 21:03:17 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,21 +120,26 @@ void		args_handler(char **files, t_args *args, t_option *option)
 			dir_content_add(files[i], &list, file_info);
 			if (option->recursive_read)
 			{
-				t_file *file_list;
-				file_list = file_info;
-				while (file_list)
+				t_dirlist	*temp_list;
+				temp_list = list;
+				while (temp_list)
 				{
+					t_file	*temp_dirs;
+					temp_dirs = temp_list->dir;
 					path = ft_strjoin(files[i], "/");
-					path = ft_strjoin(path, file_list->d_name);
-					//recursive(path, list, option);
-					file_info = NULL;
-					ls_recursive(path, &file_info, option);
-					if (file_info)
+					while (temp_dirs)
 					{
-						get_ascii_sort(&file_info);
-						dir_content_add(path, &list, file_info);
+						path = ft_strjoin(path, temp_dirs->d_name);
+						file_info = NULL;
+						ls_recursive(path, &file_info, option);
+						if (file_info)
+						{
+							get_ascii_sort(&file_info);
+							dir_content_add(path, &list, file_info);
+						}
+						temp_dirs = temp_dirs->next;
 					}
-					file_list = file_list->next;
+					temp_list = temp_list->next;
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 18:11:00 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 18:12:26 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void	ls_output(t_list *not_dirs, t_dirlist *list)
 	if (list && not_dirs)
 	{
 		ft_printf("\n");
-		if (!list->next)
-			ft_printf("%s:\n", list->path);
 	}
 	free_list_strings(&not_dirs);
 	print_list_lists(list);

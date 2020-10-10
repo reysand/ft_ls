@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 17:48:31 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 20:39:15 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,37 @@ static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 }
 
 /*
+** TODO: rename function
+*/
+/*
+void		recursive(char *path, t_dirlist *list, t_option *option, \
+						int (*func)(char *, t_file **, t_option *))
+{
+	t_file	*file_info;
+
+	file_info = NULL;
+	func(path, &file_info, option);
+	if (file_info)
+	{
+		get_ascii_sort(&file_info);
+		dir_content_add(path, &list, file_info);
+	}
+}
+
+void		recursive(char *path, t_dirlist *list, t_option *option)
+{
+	t_file	*file_info;
+
+	file_info = NULL;
+	ls_recursive(path, &file_info, option);
+	if (file_info)
+	{
+		get_ascii_sort(&file_info);
+		dir_content_add(path, &list, file_info);
+	}
+}
+*/
+/*
 ** File and option handling with creating list of files
 */
 
@@ -90,13 +121,13 @@ void		args_handler(char **files, t_args *args, t_option *option)
 			if (option->recursive_read)
 			{
 				t_file *file_list;
-
 				file_list = file_info;
 				while (file_list)
 				{
-					file_info = NULL;
 					path = ft_strjoin(files[i], "/");
 					path = ft_strjoin(path, file_list->d_name);
+					//recursive(path, list, option);
+					file_info = NULL;
 					ls_recursive(path, &file_info, option);
 					if (file_info)
 					{
@@ -115,35 +146,33 @@ void		args_handler(char **files, t_args *args, t_option *option)
 }
 
 /*
-** Main function
 ** TODO: may be move free_matrix in anything else function
-** TODO: t_dirlist and t_list
+** TODO: move all initializations to another function
 */
 
 int			main(int argc, char **argv)
 {
-	t_args		ls_args;
+	t_args		ls_data;
 	t_option	options;
 	char		**files;
 
-	ls_args.argc = argc;
-	ls_args.argv = argv;
-	ls_args.ret_v = EXIT_SUCCESS;
+	ls_data.argc = argc;
+	ls_data.argv = argv;
+	ls_data.ret_v = EXIT_SUCCESS;
 	options.dot_files = 0;
 	options.time_sort = 0;
 	options.long_format = 0;
 	options.reverse_order = 0;
 	options.recursive_read = 0;
-	options_parser(&ls_args, &options);
-	files = files_parser(&ls_args);
-	files = sort_args(ls_args.files_c, files);
-	args_handler(files, &ls_args, &options);
-	free_matrix(files, ls_args.files_c);
+	options_parser(&ls_data, &options);
+	files = files_parser(&ls_data);
+	args_handler(files, &ls_data, &options);
+	free_matrix(files, ls_data.files_c);
 	ft_printf_fd(STDERR_FILENO, "Options[%s]: ", OPTIONS);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.long_format);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.reverse_order);
 	ft_printf_fd(STDERR_FILENO, "%d\n", options.time_sort);
-	return (ls_args.ret_v);
+	return (ls_data.ret_v);
 }

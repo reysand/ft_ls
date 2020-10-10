@@ -57,6 +57,7 @@ char		**files_parser(t_args *args)
 		++j;
 	}
 	args->files_c = j;
+	files = sort_args(args->files_c, files);
 	return (files);
 }
 

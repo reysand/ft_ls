@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/09 20:05:12 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 18:11:00 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,14 @@ void	print_list(t_file *head)
 ** Prints lists of directory contents with formatting
 */
 
-void	print_list_lists(int count, t_dirlist *head)
+void	print_list_lists(t_dirlist *head)
 {
+	t_dirlist *first;
+
+	first = head;
 	while (head)
 	{
-		if (head->next || count > 0)
+		if (!(!head->next && head == first))
 			ft_printf("%s:\n", head->path);
 		print_list(head->dir);
 		if (head->next)
@@ -55,22 +58,16 @@ void	print_list_lists(int count, t_dirlist *head)
 	}
 }
 
-/*
-** TODO: change count to something else
-*/
-
 void	ls_output(t_list *not_dirs, t_dirlist *list)
 {
-	int	count;
-
-	count = 0;
 	print_list_strings(not_dirs);
 	if (list && not_dirs)
 	{
 		ft_printf("\n");
-		count = 1;
+		if (!list->next)
+			ft_printf("%s:\n", list->path);
 	}
 	free_list_strings(&not_dirs);
-	print_list_lists(count, list);
+	print_list_lists(list);
 	free_list_lists(&list);
 }

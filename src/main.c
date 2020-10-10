@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/09 20:45:25 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 17:48:31 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		args_handler(char **files, t_args *args, t_option *option)
 	t_file		*file_info;
 	t_dirlist	*list;
 	t_list		*not_dirs;
+	char		*path;
 	int			i;
 	int			ret;
 
@@ -86,23 +87,31 @@ void		args_handler(char **files, t_args *args, t_option *option)
 		{
 			get_ascii_sort(&file_info);
 			dir_content_add(files[i], &list, file_info);
+			if (option->recursive_read)
+			{
+				t_file *file_list;
+
+				file_list = file_info;
+				while (file_list)
+				{
+					file_info = NULL;
+					path = ft_strjoin(files[i], "/");
+					path = ft_strjoin(path, file_list->d_name);
+					ls_recursive(path, &file_info, option);
+					if (file_info)
+					{
+						get_ascii_sort(&file_info);
+						dir_content_add(path, &list, file_info);
+					}
+					file_list = file_list->next;
+				}
+			}
 		}
 		else if (!file_info && !ret)
 			enotdir_add(files[i], &not_dirs);
 		++i;
 	}
 	ls_output(not_dirs, list);
-}
-
-void		ls_init(t_dirlist *list, t_list *not_dirs, t_option *options)
-{
-	list = NULL;
-	not_dirs = NULL;
-	options->dot_files = 0;
-	options->time_sort = 0;
-	options->long_format = 0;
-	options->reverse_order = 0;
-	options->recursive_read = 0;
 }
 
 /*
@@ -115,14 +124,16 @@ int			main(int argc, char **argv)
 {
 	t_args		ls_args;
 	t_option	options;
-	t_dirlist	list;
-	t_list		not_dirs;
 	char		**files;
 
 	ls_args.argc = argc;
 	ls_args.argv = argv;
 	ls_args.ret_v = EXIT_SUCCESS;
-	ls_init(&list, &not_dirs, &options);
+	options.dot_files = 0;
+	options.time_sort = 0;
+	options.long_format = 0;
+	options.reverse_order = 0;
+	options.recursive_read = 0;
 	options_parser(&ls_args, &options);
 	files = files_parser(&ls_args);
 	files = sort_args(ls_args.files_c, files);

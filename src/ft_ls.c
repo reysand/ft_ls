@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 17:43:10 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 17:44:51 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int			ft_ls(char *name, t_file **file_info, t_option *option)
 
 	if (!(dir = opendir(name)))
 	{
-		// if first entry in recursion or not recursion
 		if (errno == ENOTDIR)
 			return (EXIT_SUCCESS);
 		else

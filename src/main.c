@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 21:03:17 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 21:17:46 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,44 +63,15 @@ static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 }
 
 /*
-** TODO: rename function
-*/
-/*
-void		recursive(char *path, t_dirlist *list, t_option *option, \
-						int (*func)(char *, t_file **, t_option *))
-{
-	t_file	*file_info;
-
-	file_info = NULL;
-	func(path, &file_info, option);
-	if (file_info)
-	{
-		get_ascii_sort(&file_info);
-		dir_content_add(path, &list, file_info);
-	}
-}
-
-void		recursive(char *path, t_dirlist *list, t_option *option)
-{
-	t_file	*file_info;
-
-	file_info = NULL;
-	ls_recursive(path, &file_info, option);
-	if (file_info)
-	{
-		get_ascii_sort(&file_info);
-		dir_content_add(path, &list, file_info);
-	}
-}
-*/
-/*
 ** File and option handling with creating list of files
 */
 
 void		args_handler(char **files, t_args *args, t_option *option)
 {
 	t_file		*file_info;
+	t_file		*temp_dirs;
 	t_dirlist	*list;
+	t_dirlist	*temp_list;
 	t_list		*not_dirs;
 	char		*path;
 	int			i;
@@ -120,11 +91,9 @@ void		args_handler(char **files, t_args *args, t_option *option)
 			dir_content_add(files[i], &list, file_info);
 			if (option->recursive_read)
 			{
-				t_dirlist	*temp_list;
 				temp_list = list;
 				while (temp_list)
 				{
-					t_file	*temp_dirs;
 					temp_dirs = temp_list->dir;
 					path = ft_strjoin(files[i], "/");
 					while (temp_dirs)

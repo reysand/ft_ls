@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/09 20:45:25 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/10 21:17:46 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ static void	dir_content_add(char *name, t_dirlist **head, t_file *file_info)
 void		args_handler(char **files, t_args *args, t_option *option)
 {
 	t_file		*file_info;
+	t_file		*temp_dirs;
 	t_dirlist	*list;
+	t_dirlist	*temp_list;
 	t_list		*not_dirs;
+	char		*path;
 	int			i;
 	int			ret;
 
@@ -86,6 +89,28 @@ void		args_handler(char **files, t_args *args, t_option *option)
 		{
 			get_ascii_sort(&file_info);
 			dir_content_add(files[i], &list, file_info);
+			if (option->recursive_read)
+			{
+				temp_list = list;
+				while (temp_list)
+				{
+					temp_dirs = temp_list->dir;
+					path = ft_strjoin(files[i], "/");
+					while (temp_dirs)
+					{
+						path = ft_strjoin(path, temp_dirs->d_name);
+						file_info = NULL;
+						ls_recursive(path, &file_info, option);
+						if (file_info)
+						{
+							get_ascii_sort(&file_info);
+							dir_content_add(path, &list, file_info);
+						}
+						temp_dirs = temp_dirs->next;
+					}
+					temp_list = temp_list->next;
+				}
+			}
 		}
 		else if (!file_info && !ret)
 			enotdir_add(files[i], &not_dirs);
@@ -94,45 +119,34 @@ void		args_handler(char **files, t_args *args, t_option *option)
 	ls_output(not_dirs, list);
 }
 
-void		ls_init(t_dirlist *list, t_list *not_dirs, t_option *options)
-{
-	list = NULL;
-	not_dirs = NULL;
-	options->dot_files = 0;
-	options->time_sort = 0;
-	options->long_format = 0;
-	options->reverse_order = 0;
-	options->recursive_read = 0;
-}
-
 /*
-** Main function
 ** TODO: may be move free_matrix in anything else function
-** TODO: t_dirlist and t_list
+** TODO: move all initializations to another function
 */
 
 int			main(int argc, char **argv)
 {
-	t_args		ls_args;
+	t_args		ls_data;
 	t_option	options;
-	t_dirlist	list;
-	t_list		not_dirs;
 	char		**files;
 
-	ls_args.argc = argc;
-	ls_args.argv = argv;
-	ls_args.ret_v = EXIT_SUCCESS;
-	ls_init(&list, &not_dirs, &options);
-	options_parser(&ls_args, &options);
-	files = files_parser(&ls_args);
-	files = sort_args(ls_args.files_c, files);
-	args_handler(files, &ls_args, &options);
-	free_matrix(files, ls_args.files_c);
+	ls_data.argc = argc;
+	ls_data.argv = argv;
+	ls_data.ret_v = EXIT_SUCCESS;
+	options.dot_files = 0;
+	options.time_sort = 0;
+	options.long_format = 0;
+	options.reverse_order = 0;
+	options.recursive_read = 0;
+	options_parser(&ls_data, &options);
+	files = files_parser(&ls_data);
+	args_handler(files, &ls_data, &options);
+	free_matrix(files, ls_data.files_c);
 	ft_printf_fd(STDERR_FILENO, "Options[%s]: ", OPTIONS);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.long_format);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.reverse_order);
 	ft_printf_fd(STDERR_FILENO, "%d\n", options.time_sort);
-	return (ls_args.ret_v);
+	return (ls_data.ret_v);
 }

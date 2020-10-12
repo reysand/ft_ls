@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 17:44:51 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/11 18:26:32 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,6 @@ static void	get_info(t_file ***head, t_dirent *entry)
 		files = files->next;
 	}
 	files->next = item;
-}
-
-int			ls_recursive(char *name, t_file **file_info, t_option *option)
-{
-	t_dirent	*entry;
-	DIR			*dir;
-
-	if (!(dir = opendir(name)))
-	{
-		return (EXIT_FAILURE);
-	}
-	while ((entry = readdir(dir)))
-	{
-		if (option->dot_files || (entry->d_name)[0] != '.')
-		{
-			get_info(&file_info, entry);
-		}
-	}
-	closedir(dir);
-	return (EXIT_SUCCESS);
 }
 
 int			ft_ls(char *name, t_file **file_info, t_option *option)

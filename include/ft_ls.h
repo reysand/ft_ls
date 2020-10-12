@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 18:24:28 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/11 19:37:06 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int						options_parser(t_args *args, t_option *option);
 char					**files_parser(t_args *args);
 char					**sort_args(int argc, char **argv);
 int						ft_ls(char *name, t_file **file_info, t_option *option);
-int						ls_recursive(char *name, t_file **file_info, t_option *option);
 void					get_ascii_sort(t_file **head);
 void					ls_output(t_list *not_dirs, t_dirlist *list);
 void					free_matrix(char **matrix, int size);

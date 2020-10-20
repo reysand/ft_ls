@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
 #define ERR_MSG	"ft_ls: %s: %s\n"
 
 static void	get_info(t_file ***head, t_dirent *entry)

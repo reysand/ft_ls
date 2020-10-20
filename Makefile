@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/10/07 16:48:59 by fhelena          ###   ########.fr        #
+#    Updated: 2020/10/20 15:31:54 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ check:			norme all
 	@printf "$(COLOR_G)PASS:$(C_RESET)\tcheck\n"
 
 $(NAME):		$(OBJS)
-	@printf "\r$(R_CLEAN)Linking: $^ -> $@\n"
+	@printf "\r$(R_CLEAN)Linking: $(subst $(subst ,, ),\n\t,$^)\n"
 	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
 
 $(BLD_DIR)/%.o:	%.c $(LIB_DIR)/$(LIB)

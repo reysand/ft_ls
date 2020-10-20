@@ -6,11 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 18:12:26 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/20 17:55:03 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+#define OPTIONS	"-Ralrt"
 
 /*
 ** Prints files that are not directories
@@ -42,14 +44,14 @@ void	print_list(t_file *head)
 ** Prints lists of directory contents with formatting
 */
 
-void	print_list_lists(t_dirlist *head)
+void	print_list_lists(t_dirlist *head, int dir_path)
 {
 	t_dirlist *first;
 
 	first = head;
 	while (head)
 	{
-		if (!(!head->next && head == first))
+		if (first != head || dir_path)
 			ft_printf("%s:\n", head->path);
 		print_list(head->dir);
 		if (head->next)
@@ -58,14 +60,32 @@ void	print_list_lists(t_dirlist *head)
 	}
 }
 
-void	ls_output(t_list *not_dirs, t_dirlist *list)
+void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c)
 {
+	int	dir_path;
+
+	dir_path = 0;
 	print_list_strings(not_dirs);
 	if (list && not_dirs)
 	{
+		dir_path = 1;
 		ft_printf("\n");
 	}
+	else if (list && files_c > 1)
+	{
+		dir_path = 1;
+	}
 	free_list_strings(&not_dirs);
-	print_list_lists(list);
+	print_list_lists(list, dir_path);
 	free_list_lists(&list);
+}
+
+void	debug_output(t_option options)
+{
+	ft_printf_fd(STDERR_FILENO, "Options[%s]: ", OPTIONS);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.long_format);
+	ft_printf_fd(STDERR_FILENO, "%d ", options.reverse_order);
+	ft_printf_fd(STDERR_FILENO, "%d\n", options.time_sort);
 }

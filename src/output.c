@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/20 17:55:03 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/21 15:16:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,23 @@ void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c)
 
 	dir_path = 0;
 	print_list_strings(not_dirs);
-	if (list && not_dirs)
+	if (list && (not_dirs || files_c > 1))
 	{
 		dir_path = 1;
-		ft_printf("\n");
-	}
-	else if (list && files_c > 1)
-	{
-		dir_path = 1;
+		if (not_dirs)
+		{
+			ft_printf("\n");
+		}
 	}
 	free_list_strings(&not_dirs);
 	print_list_lists(list, dir_path);
 	free_list_lists(&list);
 }
 
-void	debug_output(t_option options)
+void	debug_output(t_args ls_data, t_option options)
 {
+	ft_printf_fd(STDERR_FILENO, "Options\t- %d\n", ls_data.opt_c);
+	ft_printf_fd(STDERR_FILENO, "Files\t- %d\n", ls_data.files_c);
 	ft_printf_fd(STDERR_FILENO, "Options[%s]: ", OPTIONS);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
 	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);

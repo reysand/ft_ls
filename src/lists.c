@@ -20,6 +20,7 @@ void	enotdir_add(char *file, t_list **head)
 	if (!(item = (t_list *)malloc(sizeof(t_list))))
 		exit(EXIT_FAILURE);
 	item->content = file;
+	item->content_size = sizeof(char *);
 	item->next = NULL;
 	if (*head)
 	{

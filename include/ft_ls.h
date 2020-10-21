@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/20 18:16:06 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/21 15:16:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	free_matrix(char **matrix, int size);
 ** For debugging
 */
 
+void	recursive_read(char *path, int rec, t_args *args, t_option *option);
 void	print_list(t_file *head);
-void	debug_output(t_option options);
+void	debug_output(t_args ls_data, t_option options);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/21 16:17:46 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/22 16:32:33 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct			s_file
 	int					d_type;
 	int					d_reclen;
 	int					d_namlen;
+	int					d_seekoff;
+	int	temp;
 }						t_file;
 
 typedef struct			s_dirlist
@@ -46,13 +48,13 @@ typedef struct			s_args
 	int					files_c;
 }						t_args;
 
-typedef struct			s_option
+typedef struct			s_opts
 {
 	int					dot_files;
 	int					time_sort;
 	int					long_format;
 	int					reverse_order;
 	int					recursive_read;
-}						t_option;
+}						t_opts;
 
 #endif

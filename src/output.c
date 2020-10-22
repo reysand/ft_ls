@@ -79,7 +79,7 @@ void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c)
 	free_list_lists(&list);
 }
 
-void	debug_output(t_args ls_data, t_option options)
+void	debug_output(t_args ls_data, t_opts options)
 {
 	ft_printf_fd(STDERR_FILENO, "Options\t- %d\n", ls_data.opt_c);
 	ft_printf_fd(STDERR_FILENO, "Files\t- %d\n", ls_data.files_c);

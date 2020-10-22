@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/14 15:04:34 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/22 20:05:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_file	*swap_nodes(t_file *head)
 	first->next = end;
 	return (head);
 }
-
+/*
 void			get_reverse_sort(t_file **head)
 {
 	t_file	*list;
@@ -68,7 +68,7 @@ void			get_reverse_sort(t_file **head)
 			list = *head;
 	}
 }
-
+*/
 void			get_ascii_sort(t_file **head)
 {
 	t_file	*list;
@@ -100,11 +100,12 @@ void			get_ascii_sort(t_file **head)
 
 /*
 ** Sorting arguments in ascii order
+** May be remove
 */
 
-char			**sort_args(int argc, char **argv)
+char			**sort_ascii_args(int argc, char **argv)
 {
-	char	*tmp;
+	char	*temp;
 	int		i;
 	int		is_sorted;
 
@@ -114,9 +115,9 @@ char			**sort_args(int argc, char **argv)
 	{
 		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
 		{
-			tmp = argv[i];
+			temp = argv[i];
 			argv[i] = argv[i + 1];
-			argv[i + 1] = tmp;
+			argv[i + 1] = temp;
 			is_sorted = 1;
 		}
 		++i;
@@ -127,4 +128,40 @@ char			**sort_args(int argc, char **argv)
 		}
 	}
 	return (argv);
+}
+
+char			**sort_reverse_args(int argc, char **argv)
+{
+	char	*temp;
+	int		i;
+	int		is_sorted;
+
+	i = 0;
+	is_sorted = 0;
+	while (i < argc - 1)
+	{
+		if (ft_strcmp(argv[i], argv[i + 1]) < 0)
+		{
+			temp = argv[i];
+			argv[i] = argv[i + 1];
+			argv[i + 1] = temp;
+			is_sorted = 1;
+		}
+		++i;
+		if (i == argc - 1 && is_sorted)
+		{
+			i = 0;
+			is_sorted = 0;
+		}
+	}
+	return (argv);
+}
+
+char			**args_sorting(char **files, t_args ls_data, t_opts option)
+{
+	if (!option.time_sort && !option.reverse_order)
+		sort_ascii_args(ls_data.files_c, files);
+	if (option.reverse_order)
+		sort_reverse_args(ls_data.files_c, files);
+	return (files);
 }

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/20 15:48:46 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/22 19:06:33 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** Counting files and returning index of the first file
 */
 
-static int	get_files_count(t_args *args)
+static int	get_file_pos(t_args *args)
 {
 	int i;
 
@@ -42,8 +42,8 @@ char		**files_parser(t_args *args)
 	int		i;
 	int		j;
 
-	i = get_files_count(args);
-	if (!(files = (char **)malloc(sizeof(char *) * (args->argc - i))))
+	i = get_file_pos(args);
+	if (!(files = (char **)malloc(sizeof(char *) * (args->files_c))))
 		exit(EXIT_FAILURE);
 	j = 0;
 	if (ft_strcmp(args->argv[i], "--") == 0)
@@ -59,7 +59,6 @@ char		**files_parser(t_args *args)
 		++j;
 	}
 	args->files_c = j;
-	files = sort_args(args->files_c, files);
 	return (files);
 }
 
@@ -67,7 +66,7 @@ char		**files_parser(t_args *args)
 ** Option selection
 */
 
-static void	get_options(char alpha, t_option *option)
+static void	get_options(char alpha, t_opts *option)
 {
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
 	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
@@ -80,7 +79,7 @@ static void	get_options(char alpha, t_option *option)
 ** Verification option
 */
 
-static int	is_option(char *str, t_option *option)
+static int	is_option(char *str, t_opts *option)
 {
 	size_t	i;
 	size_t	j;
@@ -113,7 +112,7 @@ static int	is_option(char *str, t_option *option)
 ** ls_data->opt_c - options count
 */
 
-void		options_parser(t_args *ls_data, t_option *option)
+void		options_parser(t_args *ls_data, t_opts *option)
 {
 	int	i;
 

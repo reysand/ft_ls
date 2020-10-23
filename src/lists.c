@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/23 15:12:27 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 17:20:40 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	dir_content_add(char *path, t_dirlist **head, t_file *dir_info)
 
 	if (!(item = (t_dirlist *)malloc(sizeof(t_dirlist))))
 		exit(EXIT_FAILURE);
-	item->path = path;
+	item->path = ft_strdup(path);
 	item->dir = dir_info;
 	item->next = NULL;
 	if (*head)

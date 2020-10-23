@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/23 15:11:40 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 17:52:24 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	free_matrix(char **matrix, int size);
 */
 
 void	print_list(t_file *head);
+void	print_list_lists(t_dirlist *head, int dir_path);
 void	debug_output(t_args ls_data, t_opts options);
 
 #endif

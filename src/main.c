@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/23 16:29:01 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 19:42:01 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,25 @@
 static int	is_valid_dir(t_file *file)
 {
 	if (file->d_type == DT_DIR)
+	{
 		if (ft_strcmp(file->d_name, ".") && ft_strcmp(file->d_name, ".."))
+		{
 			return (0);
+		}
+	}
 	return (1);
+}
+
+static char	*get_path(char *dir, char *subdir)
+{
+	char	*temp;
+	char	*dir_path;
+
+	dir_path = ft_strjoin(dir, "/");
+	temp = dir_path;
+	dir_path = ft_strjoin(dir_path, subdir);
+	free(temp);
+	return (dir_path);
 }
 
 static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
@@ -37,13 +53,15 @@ static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
 	{
 		if (!ft_strcmp(dirs->path, path))
 		{
-			ft_printf_fd(STDERR_FILENO, "%s %s\n", dirs->path, path);
 			file = dirs->dir;
 			while (file)
 			{
-				dir_path = ft_strjoin(path, "/");
-				dir_path = ft_strjoin(dir_path, file->d_name);
-				dir_handler(dir_path, 1, ls_data, option);
+				if (!is_valid_dir(file))
+				{
+					dir_path = get_path(path, file->d_name);
+					dir_handler(dir_path, 1, ls_data, option);
+					free(dir_path);
+				}
 				file = file->next;
 			}
 			return ;
@@ -58,9 +76,6 @@ void		dir_handler(char *path, int recursion, t_args *args, t_opts option)
 	int		ret;
 
 	dir_info = NULL;
-	if (option.recursive_read && recursion)
-		if (is_valid_dir(args->dirs->dir))
-			return ;
 	if ((ret = ft_ls(path, &dir_info, option)) && !recursion)
 		args->ret_v = EXIT_FAILURE;
 	if (dir_info)

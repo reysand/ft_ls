@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/21 15:16:10 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 17:52:24 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ void	print_list_lists(t_dirlist *head, int dir_path)
 	}
 }
 
-void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c)
+void	ls_output(t_list *not_dirs, t_dirlist *dirs, int files_c)
 {
 	int	dir_path;
 
 	dir_path = 0;
 	print_list_strings(not_dirs);
-	if (list && (not_dirs || files_c > 1))
+	if (dirs && (not_dirs || files_c > 1))
 	{
 		dir_path = 1;
 		if (not_dirs)
@@ -75,8 +75,8 @@ void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c)
 		}
 	}
 	free_list_strings(&not_dirs);
-	print_list_lists(list, dir_path);
-	free_list_lists(&list);
+	print_list_lists(dirs, dir_path);
+	free_list_lists(&dirs);
 }
 
 void	debug_output(t_args ls_data, t_opts options)

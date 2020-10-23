@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/23 14:13:27 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 17:20:40 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_LS_STRUCTS_H
 
 # include <dirent.h>
-#include <ft_list.h>
+# include <ft_list.h>
 
 typedef struct dirent	t_dirent;
 
@@ -27,7 +27,7 @@ typedef struct			s_file
 	int					d_reclen;
 	int					d_namlen;
 	int					d_seekoff;
-	int	temp;
+	int					temp;
 }						t_file;
 
 typedef struct			s_dirlist
@@ -40,7 +40,7 @@ typedef struct			s_dirlist
 typedef struct			s_args
 {
 	t_dirlist			*dirs;
-	t_list				*not_dirs; // t_file
+	t_list				*not_dirs;
 	char				**argv;
 	int					argc;
 	int					ret_v;

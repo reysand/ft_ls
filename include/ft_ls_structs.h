@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/22 16:32:33 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 14:13:27 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct			s_dirlist
 typedef struct			s_args
 {
 	t_dirlist			*dirs;
-	t_list				*not_dirs;
+	t_list				*not_dirs; // t_file
 	char				**argv;
 	int					argc;
 	int					ret_v;

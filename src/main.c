@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/22 20:08:01 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 16:29:01 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,17 @@ static int	is_valid_dir(t_file *file)
 
 static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
 {
-	t_dirlist	*list;
+	t_dirlist	*dirs;
 	t_file		*file;
 	char		*dir_path;
 
-	list = ls_data->dirs;
-	while (list)
+	dirs = ls_data->dirs;
+	while (dirs)
 	{
-		if (!ft_strcmp(list->path, path))
+		if (!ft_strcmp(dirs->path, path))
 		{
-			file = list->dir;
+			ft_printf_fd(STDERR_FILENO, "%s %s\n", dirs->path, path);
+			file = dirs->dir;
 			while (file)
 			{
 				dir_path = ft_strjoin(path, "/");
@@ -45,8 +46,9 @@ static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
 				dir_handler(dir_path, 1, ls_data, option);
 				file = file->next;
 			}
+			return ;
 		}
-		list = list->next;
+		dirs = dirs->next;
 	}
 }
 
@@ -64,9 +66,7 @@ void		dir_handler(char *path, int recursion, t_args *args, t_opts option)
 	if (dir_info)
 	{
 		if (!option.time_sort && !option.reverse_order)
-			get_ascii_sort(&dir_info);
-		if (option.reverse_order)
-			get_ascii_sort(&dir_info); // reverse
+			get_ascii_sorted(&dir_info);
 		dir_content_add(path, &args->dirs, dir_info);
 		if (option.recursive_read)
 			recursive_handler(path, args, option);
@@ -93,7 +93,6 @@ int			main(int argc, char **argv)
 	ls_data.ret_v = EXIT_SUCCESS;
 	options_parser(&ls_data, &options);
 	files = files_parser(&ls_data);
-	files = args_sorting(files, ls_data, options);
 	i = 0;
 	while (i < ls_data.files_c)
 	{

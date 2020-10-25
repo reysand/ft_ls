@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/06 13:37:57 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 19:41:06 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ static t_file	*swap_nodes(t_file *head)
 	return (head);
 }
 
-void			get_ascii_sort(t_file **head)
+/*
+** Sorting list in ascii order
+*/
+
+void			get_ascii_sorted(t_file **head)
 {
 	t_file	*list;
 	t_file	*prev;
@@ -60,9 +64,9 @@ void			get_ascii_sort(t_file **head)
 ** Sorting arguments in ascii order
 */
 
-char			**sort_args(int argc, char **argv)
+char			**get_ascii_sorted_args(int argc, char **argv)
 {
-	char	*tmp;
+	char	*temp;
 	int		i;
 	int		is_sorted;
 
@@ -72,9 +76,9 @@ char			**sort_args(int argc, char **argv)
 	{
 		if (ft_strcmp(argv[i], argv[i + 1]) > 0)
 		{
-			tmp = argv[i];
+			temp = argv[i];
 			argv[i] = argv[i + 1];
-			argv[i + 1] = tmp;
+			argv[i + 1] = temp;
 			is_sorted = 1;
 		}
 		++i;

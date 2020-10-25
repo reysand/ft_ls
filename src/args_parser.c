@@ -6,18 +6,19 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/05 10:47:02 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 17:20:39 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
 #define OPTIONS "-Ralrt"
 
 /*
 ** Counting files and returning index of the first file
 */
 
-static int	get_files_count(t_args *args)
+static int	get_file_position(t_args *args)
 {
 	int i;
 
@@ -32,6 +33,7 @@ static int	get_files_count(t_args *args)
 
 /*
 ** Copying files to a new array
+** args->files_c - files count
 */
 
 char		**files_parser(t_args *args)
@@ -40,8 +42,8 @@ char		**files_parser(t_args *args)
 	int		i;
 	int		j;
 
-	i = get_files_count(args);
-	if (!(files = (char **)malloc(sizeof(char *) * (args->argc - i))))
+	i = get_file_position(args);
+	if (!(files = (char **)malloc(sizeof(char *) * (args->files_c))))
 		exit(EXIT_FAILURE);
 	j = 0;
 	if (ft_strcmp(args->argv[i], "--") == 0)
@@ -57,7 +59,7 @@ char		**files_parser(t_args *args)
 		++j;
 	}
 	args->files_c = j;
-	files = sort_args(args->files_c, files);
+	files = get_ascii_sorted_args(args->files_c, files);
 	return (files);
 }
 
@@ -65,7 +67,7 @@ char		**files_parser(t_args *args)
 ** Option selection
 */
 
-static void	get_options(char alpha, t_option *option)
+static void	get_options(char alpha, t_opts *option)
 {
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
 	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
@@ -78,7 +80,7 @@ static void	get_options(char alpha, t_option *option)
 ** Verification option
 */
 
-static int	is_option(char *str, t_option *option)
+static int	is_option(char *str, t_opts *option)
 {
 	size_t	i;
 	size_t	j;
@@ -87,7 +89,7 @@ static int	is_option(char *str, t_option *option)
 	if (str[i - 1] == '-' && str[i])
 	{
 		if (str[i] == '-' && !str[i + 1])
-			return (EXIT_FAILURE);
+			return (1);
 		while (str[i])
 		{
 			j = 1;
@@ -101,24 +103,30 @@ static int	is_option(char *str, t_option *option)
 			}
 			get_options(str[i++], option);
 		}
-		return (EXIT_SUCCESS);
+		return (0);
 	}
-	return (EXIT_FAILURE);
+	return (1);
 }
 
 /*
 ** Counting options
+** ls_data->opt_c - options count
 */
 
-int			options_parser(t_args *args, t_option *option)
+void		options_parser(t_args *ls_data, t_opts *option)
 {
 	int	i;
 
+	option->dot_files = 0;
+	option->time_sort = 0;
+	option->long_format = 0;
+	option->reverse_order = 0;
+	option->recursive_read = 0;
 	i = 1;
-	while (i < args->argc && !is_option(args->argv[i], option))
+	while (i < ls_data->argc && !is_option(ls_data->argv[i], option))
 	{
 		++i;
 	}
-	args->opt_c = --i;
-	return (i);
+	--i;
+	ls_data->opt_c = i;
 }

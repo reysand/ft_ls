@@ -6,65 +6,38 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/10 18:24:28 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 17:52:24 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include <dirent.h>
 # include <stdlib.h>
 # include <sys/errno.h>
+# include "ft_ls_structs.h"
 # include "libft.h"
 
-typedef struct dirent	t_dirent;
+void	options_parser(t_args *ls_data, t_opts *option);
+char	**files_parser(t_args *args);
+char	**get_ascii_sorted_args(int argc, char **argv);
+void	dir_handler(char *path, int rec, t_args *args, t_opts option);
+int		ft_ls(char *name, t_file **file_info, t_opts option);
+void	get_ascii_sorted(t_file **head);
+void	dir_content_add(char *path, t_dirlist **head, t_file *dir_info);
+void	enotdir_add(char *file, t_list **head);
+void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c);
+void	free_list_strings(t_list **head);
+void	free_list_lists(t_dirlist **head);
+void	free_list(t_file **head);
+void	free_matrix(char **matrix, int size);
 
-typedef struct			s_file
-{
-	struct s_file		*next;
-	char				*d_name;
-	int					d_ino;
-	int					d_type;
-	int					d_reclen;
-	int					d_namlen;
-}						t_file;
+/*
+** For debugging
+*/
 
-typedef struct			s_dirlist
-{
-	struct s_dirlist	*next;
-	t_file				*dir;
-	char				*path;
-}						t_dirlist;
-
-typedef struct			s_args
-{
-	char				**argv;
-	int					argc;
-	int					ret_v;
-	int					opt_c;
-	int					files_c;
-}						t_args;
-
-typedef struct			s_option
-{
-	int					dot_files;
-	int					time_sort;
-	int					long_format;
-	int					reverse_order;
-	int					recursive_read;
-}						t_option;
-
-int						options_parser(t_args *args, t_option *option);
-char					**files_parser(t_args *args);
-char					**sort_args(int argc, char **argv);
-int						ft_ls(char *name, t_file **file_info, t_option *option);
-int						ls_recursive(char *name, t_file **file_info, t_option *option);
-void					get_ascii_sort(t_file **head);
-void					ls_output(t_list *not_dirs, t_dirlist *list);
-void					free_matrix(char **matrix, int size);
-void					free_list_strings(t_list **head);
-void					free_list(t_file **head);
-void					free_list_lists(t_dirlist **head);
+void	print_list(t_file *head);
+void	print_list_lists(t_dirlist *head, int dir_path);
+void	debug_output(t_args ls_data, t_opts options);
 
 #endif

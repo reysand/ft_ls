@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 10:13:40 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/07 20:30:09 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/23 19:12:56 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	free_list_lists(t_dirlist **head)
 	while (*head)
 	{
 		next = (*head)->next;
+		free((*head)->path);
 		free_list(&((*head)->dir));
 		ft_memdel((void *)head);
 		*head = next;

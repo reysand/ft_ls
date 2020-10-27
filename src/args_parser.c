@@ -6,13 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/23 17:20:39 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/27 13:21:43 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define OPTIONS "-Ralrt"
+#define OPTIONS "-Ralrt1"
 
 /*
 ** Counting files and returning index of the first file
@@ -59,7 +59,7 @@ char		**files_parser(t_args *args)
 		++j;
 	}
 	args->files_c = j;
-	files = get_ascii_sorted_args(args->files_c, files);
+	//files = get_ascii_sorted_args(args->files_c, files);
 	return (files);
 }
 

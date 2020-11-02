@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/10/23 17:20:39 by fhelena          ###   ########.fr        #
+#    Updated: 2020/11/02 10:20:18 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ RM				= rm -rf
 NORME			= $(shell norminette $(SRCS) $(INC_DIR)\
 				  | grep "Error" | wc -l | tr -d ' ')
 
-CFLAGS			= -g -Wall -Wextra -Werror -Wpadded
+CFLAGS			= -g -Wall -Wextra -Werror# -Wpadded
 DFLAGS			= -MT $@ -MMD -MP
 IFLAGS			= -I $(INC_DIR) -I $(LIB_DIR)/$(INC_DIR)
 LFLAGS			= -L $(LIB_DIR) -lft

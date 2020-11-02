@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/23 17:20:39 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/10/27 20:35:11 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define ERR_MSG	"ft_ls: %s: %s\n"
 
-static void	get_info(t_file ***head, t_dirent *entry)
+static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 {
 	t_file	*dir_info;
 	t_file	*file_info;
@@ -27,13 +27,14 @@ static void	get_info(t_file ***head, t_dirent *entry)
 	file_info->d_namlen = entry->d_namlen;
 	file_info->d_seekoff = entry->d_seekoff;
 	file_info->d_name = ft_strdup(entry->d_name);
+	stat(full_path, &file_info->f_stat);
 	file_info->next = NULL;
-	if (**head == NULL)
+	if (*head == NULL)
 	{
-		**head = file_info;
+		*head = file_info;
 		return ;
 	}
-	dir_info = **head;
+	dir_info = *head;
 	while (dir_info->next)
 	{
 		dir_info = dir_info->next;
@@ -45,7 +46,9 @@ int			ft_ls(char *path, t_file **dir_info, t_opts option)
 {
 	t_dirent	*entry;
 	DIR			*dir;
+	char		*full_path;
 
+	ft_printf_fd(STDERR_FILENO, "dir_info(ft_ls)\t\t\t= %p\n", dir_info);
 	if (!(dir = opendir(path)))
 	{
 		if (errno == ENOTDIR)
@@ -62,7 +65,9 @@ int			ft_ls(char *path, t_file **dir_info, t_opts option)
 	{
 		if (option.dot_files || (entry->d_name)[0] != '.')
 		{
-			get_info(&dir_info, entry);
+			full_path = get_path(path, entry->d_name);
+			get_info(full_path, dir_info, entry);
+			free(full_path);
 		}
 	}
 	closedir(dir);

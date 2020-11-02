@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:31:07 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/02 12:19:32 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,12 @@ void		dir_handler(char *path, int recursion, t_args *args, t_opts option)
 		args->ret_v = EXIT_FAILURE;
 	if (dir_info)
 	{
-		if (!option.time_sort && !option.reverse_order)
+		if (!option.time_sort)
 			get_ascii_sorted(&dir_info);
 		if (option.time_sort)
 			get_time_sorted(&dir_info);
+		if (option.reverse_order)
+			get_reverse_sorted(&dir_info);
 		dir_content_add(path, &args->dirs, dir_info);
 		if (option.recursive_read)
 			recursive_handler(path, args, option);

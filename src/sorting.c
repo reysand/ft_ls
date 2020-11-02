@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:30:36 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/02 12:18:56 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,25 @@ void			get_ascii_sorted(t_file **head)
 		if (!list->next && is_sorted)
 			list = *head;
 	}
+}
+
+void			get_reverse_sorted(t_file **head)
+{
+	t_file	*prev;
+	t_file	*list;
+	t_file	*next;
+
+	prev = NULL;
+	list = *head;
+	next = NULL;
+	while (list)
+	{
+		next = list->next;
+		list->next = prev;
+		prev = list;
+		list = next;
+	}
+	*head = prev;
 }
 
 void			get_time_sorted(t_file **head)

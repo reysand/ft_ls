@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/02 11:50:57 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/04 19:23:21 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	get_ascii_sorted(t_file **head);
 void	get_reverse_sorted(t_file **head);
 void	get_time_sorted(t_file **head);
 void	dir_content_add(char *path, t_dirlist **head, t_file *dir_info);
-void	enotdir_add(char *file, t_list **head);
-void	ls_output(t_list *not_dirs, t_dirlist *list, int files_c);
-void	free_list_strings(t_list **head);
+void	enotdir_add(char *file, t_file **head);
+void	ls_output(t_file *not_dirs, t_dirlist *list, int files_c);
+void	free_list_strings(t_file **head);
 void	free_list_lists(t_dirlist **head);
 void	free_list(t_file **head);
 void	free_matrix(char **matrix, int size);
@@ -40,6 +40,5 @@ void	free_matrix(char **matrix, int size);
 
 char	*get_path(char *dir, char *subdir);
 void	print_list(t_file *head);
-void	debug_output(t_args ls_data, t_opts options);
 
 #endif

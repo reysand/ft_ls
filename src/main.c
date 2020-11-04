@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/02 12:19:32 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/04 19:22:05 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,6 @@ static int	is_valid_dir(t_file *file)
 		}
 	}
 	return (1);
-}
-
-char	*get_path(char *dir, char *subdir)
-{
-	char	*temp;
-	char	*dir_path;
-
-	dir_path = ft_strjoin(dir, "/");
-	temp = dir_path;
-	dir_path = ft_strjoin(dir_path, subdir);
-	free(temp);
-	return (dir_path);
 }
 
 static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
@@ -80,10 +68,10 @@ void		dir_handler(char *path, int recursion, t_args *args, t_opts option)
 		args->ret_v = EXIT_FAILURE;
 	if (dir_info)
 	{
-		if (!option.time_sort)
-			get_ascii_sorted(&dir_info);
 		if (option.time_sort)
 			get_time_sorted(&dir_info);
+		else
+			get_ascii_sorted(&dir_info);
 		if (option.reverse_order)
 			get_reverse_sorted(&dir_info);
 		dir_content_add(path, &args->dirs, dir_info);
@@ -102,8 +90,8 @@ int			main(int argc, char **argv)
 {
 	t_args	ls_data;
 	t_opts	options;
-	int		i;
 	char	**files;
+	int		i;
 
 	ls_data.argc = argc;
 	ls_data.argv = argv;
@@ -118,8 +106,15 @@ int			main(int argc, char **argv)
 		dir_handler(files[i], 0, &ls_data, options);
 		++i;
 	}
+	/*
+	if (options.time_sort)
+		get_time_sorted(&ls_data.not_dirs);
+	else
+		get_ascii_sorted(&ls_data.not_dirs);
+	if (options.reverse_order)
+		get_reverse_sorted(&ls_data.not_dirs);
+	*/
 	ls_output(ls_data.not_dirs, ls_data.dirs, ls_data.files_c);
 	free_matrix(files, ls_data.files_c);
-	debug_output(ls_data, options);
 	return (ls_data.ret_v);
 }

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:44:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/04 19:42:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@
 ** Adding files to the end of the list
 */
 
-void	enotdir_add(char *file, t_list **head)
+void	enotdir_add(char *file, t_file **head)
 {
-	t_list *not_dirs;
-	t_list *item;
+	t_file	*not_dirs;
+	t_file	*item;
 
-	if (!(item = (t_list *)malloc(sizeof(t_list))))
+	if (!(item = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
-	item->content = file;
-	item->content_size = sizeof(char *);
+	item->d_name = ft_strdup(file);
 	item->next = NULL;
+	stat(file, &item->f_stat);
 	if (*head)
 	{
 		not_dirs = *head;

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:35:11 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/04 17:47:52 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,24 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	dir_info->next = file_info;
 }
 
+char		*get_path(char *dir, char *subdir)
+{
+	char	*temp;
+	char	*dir_path;
+
+	dir_path = ft_strjoin(dir, "/");
+	temp = dir_path;
+	dir_path = ft_strjoin(dir_path, subdir);
+	free(temp);
+	return (dir_path);
+}
+
 int			ft_ls(char *path, t_file **dir_info, t_opts option)
 {
 	t_dirent	*entry;
 	DIR			*dir;
 	char		*full_path;
 
-	ft_printf_fd(STDERR_FILENO, "dir_info(ft_ls)\t\t\t= %p\n", dir_info);
 	if (!(dir = opendir(path)))
 	{
 		if (errno == ENOTDIR)

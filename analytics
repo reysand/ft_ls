@@ -1,0 +1,33 @@
+args_parser	- 5
+	get_file_position
+	files_parser
+	get_options
+	is_option
+	options_parser
+ft_ls		- 3
+	get_info
+	get_path
+	ft_ls
+free		- 3
+	free_matrix
+	free_list
+	free_list_lists
+lists		- 2
+	enotdir_add
+	dir_content_add
+main		- 4
+	is_valid_dir
+	recursive_handler
+	sorting
+	dir_handler
+	main
+output		- 3
+	print_list
+	print_list_lists
+	ls_output
+sorting		- 5
+	swap_nodes
+	get_ascii_sorted
+	get_time_sorted
+	get_reverse_sorted
+	get_ascii_sorted_args

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/04 19:22:05 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/05 19:55:34 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,15 @@ int			main(int argc, char **argv)
 		dir_handler(files[i], 0, &ls_data, options);
 		++i;
 	}
-	/*
-	if (options.time_sort)
-		get_time_sorted(&ls_data.not_dirs);
-	else
-		get_ascii_sorted(&ls_data.not_dirs);
-	if (options.reverse_order)
-		get_reverse_sorted(&ls_data.not_dirs);
-	*/
+	if (ls_data.not_dirs)
+	{
+		if (options.time_sort)
+			get_time_sorted(&ls_data.not_dirs);
+		else
+			get_ascii_sorted(&ls_data.not_dirs);
+		if (options.reverse_order)
+			get_reverse_sorted(&ls_data.not_dirs);
+	}
 	ls_output(ls_data.not_dirs, ls_data.dirs, ls_data.files_c);
 	free_matrix(files, ls_data.files_c);
 	return (ls_data.ret_v);

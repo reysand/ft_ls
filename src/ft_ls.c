@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/04 17:47:52 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/05 16:54:23 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	file_info->d_namlen = entry->d_namlen;
 	file_info->d_seekoff = entry->d_seekoff;
 	file_info->d_name = ft_strdup(entry->d_name);
-	stat(full_path, &file_info->f_stat);
+	stat(full_path, &file_info->stat);
 	file_info->next = NULL;
 	if (*head == NULL)
 	{

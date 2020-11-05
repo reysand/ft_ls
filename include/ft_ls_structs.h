@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/04 19:25:34 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/05 16:42:29 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct stat		t_stat;
 typedef struct			s_file
 {
 	struct s_file		*next;
-	struct stat			f_stat;
+	struct stat			stat;
 	char				*d_name;
 	int					d_ino;
 	int					d_type;

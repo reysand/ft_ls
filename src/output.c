@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/04 19:42:48 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/04 19:47:47 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,7 @@ void	ls_output(t_file *not_dirs, t_dirlist *dirs, int files_c)
 			ft_printf("\n");
 		}
 	}
-	if (not_dirs)
-	{
-		free_list(&not_dirs);
-	}
+	free_list(&not_dirs);
 	print_list_lists(dirs, dir_path);
-	if (dirs)
-	{
-		free_list_lists(&dirs);
-	}
+	free_list_lists(&dirs);
 }

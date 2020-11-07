@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/05 16:42:29 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/06 18:44:50 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct			s_opts
 	int					dot_files;
 	int					time_sort;
 	int					long_format;
-	int					reverse_order;
+	int					reverse_sort;
 	int					recursive_read;
 }						t_opts;
 

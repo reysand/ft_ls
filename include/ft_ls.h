@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/04 19:23:21 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/07 15:25:54 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	**files_parser(t_args *args);
 char	**get_ascii_sorted_args(int argc, char **argv);
 void	dir_handler(char *path, int rec, t_args *args, t_opts option);
 int		ft_ls(char *name, t_file **file_info, t_opts option);
+void	get_sorted(t_file **head, t_opts option);
 void	get_ascii_sorted(t_file **head);
 void	get_reverse_sorted(t_file **head);
 void	get_time_sorted(t_file **head);

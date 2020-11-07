@@ -6,17 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/04 19:47:47 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/07 21:37:31 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 #define OPTIONS	"-Ralrt"
-
-/*
-** Prints files that are the contents of a directory or are not directories
-*/
 
 void	print_list(t_file *head)
 {
@@ -26,10 +22,6 @@ void	print_list(t_file *head)
 		head = head->next;
 	}
 }
-
-/*
-** Prints lists of directory contents with formatting
-*/
 
 void	print_list_lists(t_dirlist *head, int dir_path)
 {

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/03 19:17:06 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/07 21:36:39 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,71 +14,54 @@
 
 #define OPTIONS "-Ralrt1"
 
-/*
-** Counting files and returning index of the first file
-*/
-
-static int	get_file_position(t_args *args)
+static int	get_file_position(t_args *ls)
 {
 	int i;
 
-	i = args->opt_c;
-	if ((i == 0 && args->argc > 1) || (args->argc - i >= i + 1 && i != 0))
+	i = ls->opt_c;
+	if ((i == 0 && ls->argc > 1) || (ls->argc - i >= i + 1 && i != 0))
 	{
 		++i;
 	}
-	args->files_c = args->argc - i;
+	ls->files_c = ls->argc - i;
 	return (i);
 }
 
-/*
-** Copying files to a new array
-** args->files_c - files count
-*/
-
-char		**files_parser(t_args *args)
+char		**files_parser(t_args *ls)
 {
 	char	**files;
 	int		i;
 	int		j;
 
-	i = get_file_position(args);
-	if (!(files = (char **)malloc(sizeof(char *) * (args->files_c))))
+	i = get_file_position(ls);
+	if (!(files = (char **)malloc(sizeof(char *) * (ls->files_c))))
 		exit(EXIT_FAILURE);
 	j = 0;
-	if (ft_strcmp(args->argv[i], "--") == 0)
-		if (++i == args->argc)
+	if (ft_strcmp(ls->argv[i], "--") == 0)
+		if (++i == ls->argc)
 			files[j++] = ft_strdup(".");
-	while (i < args->argc)
+	while (i < ls->argc)
 	{
-		if (args->files_c == 1 && args->files_c + args->opt_c == args->argc)
+		if (ls->files_c == 1 && ls->files_c + ls->opt_c == ls->argc)
 			files[j] = ft_strdup(".");
 		else
-			files[j] = ft_strdup(args->argv[i]);
+			files[j] = ft_strdup(ls->argv[i]);
 		++i;
 		++j;
 	}
-	args->files_c = j;
-	files = get_ascii_sorted_args(args->files_c, files);
+	ls->files_c = j;
+	files = get_ascii_sorted_args(ls->files_c, files);
 	return (files);
 }
-
-/*
-** Option selection
-*/
 
 static void	get_options(char alpha, t_opts *option)
 {
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
 	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
 	option->long_format = (alpha == 'l') ? 1 : option->long_format;
-	option->reverse_order = (alpha == 'r') ? 1 : option->reverse_order;
+	option->reverse_sort = (alpha == 'r') ? 1 : option->reverse_sort;
 	option->recursive_read = (alpha == 'R') ? 1 : option->recursive_read;
 }
-
-/*
-** Verification option
-*/
 
 static int	is_option(char *str, t_opts *option)
 {
@@ -108,25 +91,19 @@ static int	is_option(char *str, t_opts *option)
 	return (1);
 }
 
-/*
-** Counting options
-** ls_data->opt_c - options count
-*/
-
-void		options_parser(t_args *ls_data, t_opts *option)
+void		options_parser(t_args *ls, t_opts *option)
 {
 	int	i;
 
 	option->dot_files = 0;
 	option->time_sort = 0;
 	option->long_format = 0;
-	option->reverse_order = 0;
+	option->reverse_sort = 0;
 	option->recursive_read = 0;
 	i = 1;
-	while (i < ls_data->argc && !is_option(ls_data->argv[i], option))
+	while (i < ls->argc && !is_option(ls->argv[i], option))
 	{
 		++i;
 	}
-	--i;
-	ls_data->opt_c = i;
+	ls->opt_c = i - 1;
 }

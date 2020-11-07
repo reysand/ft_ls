@@ -6,17 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/05 19:55:34 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/07 21:37:22 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 #define OPTIONS	"-Ralrt"
-
-/*
-** Check a valid dir for recursive reading
-*/
 
 static int	is_valid_dir(t_file *file)
 {
@@ -30,13 +26,13 @@ static int	is_valid_dir(t_file *file)
 	return (1);
 }
 
-static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
+static void	recursive_handler(char *path, t_args *ls, t_opts option)
 {
 	t_dirlist	*dirs;
 	t_file		*file;
 	char		*dir_path;
 
-	dirs = ls_data->dirs;
+	dirs = ls->dirs;
 	while (dirs)
 	{
 		if (!ft_strcmp(dirs->path, path))
@@ -47,7 +43,7 @@ static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
 				if (!is_valid_dir(file))
 				{
 					dir_path = get_path(path, file->d_name);
-					dir_handler(dir_path, 1, ls_data, option);
+					dir_handler(dir_path, 1, ls, option);
 					free(dir_path);
 				}
 				file = file->next;
@@ -58,64 +54,77 @@ static void	recursive_handler(char *path, t_args *ls_data, t_opts option)
 	}
 }
 
-void		dir_handler(char *path, int recursion, t_args *args, t_opts option)
+/*
+** function:	dir_handler
+** arguments:	char *path, int recursion, t_args *ls, t_opts option
+** description:
+** return:		(void)
+**
+** BUG:
+** FIXME: rename dir_handler
+** NOTE:
+** TODO: init of t_args struct move to another function
+** TODO: move sortings of not_dirs in another function
+** XXX:
+*/
+
+void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 {
 	t_file	*dir_info;
 	int		ret;
 
 	dir_info = NULL;
 	if ((ret = ft_ls(path, &dir_info, option)) && !recursion)
-		args->ret_v = EXIT_FAILURE;
+		ls->ret_v = EXIT_FAILURE;
 	if (dir_info)
 	{
-		if (option.time_sort)
-			get_time_sorted(&dir_info);
-		else
-			get_ascii_sorted(&dir_info);
-		if (option.reverse_order)
-			get_reverse_sorted(&dir_info);
-		dir_content_add(path, &args->dirs, dir_info);
+		get_sorted(&dir_info, option);
+		dir_content_add(path, &ls->dirs, dir_info);
 		if (option.recursive_read)
-			recursive_handler(path, args, option);
+			recursive_handler(path, ls, option);
 	}
 	else if (!dir_info && !ret && !recursion)
-		enotdir_add(path, &args->not_dirs);
+		enotdir_add(path, &ls->not_dirs);
 }
 
 /*
-** files - array of dirs, existing files and non-existent files
+** function:	main
+** arguments:	int argc, char **argv
+** description:
+** return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
+**
+** BUG:
+** FIXME: rename char **files
+** NOTE:
+** TODO: init of t_args struct move to another function
+** XXX:
 */
 
 int			main(int argc, char **argv)
 {
-	t_args	ls_data;
+	t_args	ls;
 	t_opts	options;
 	char	**files;
 	int		i;
 
-	ls_data.argc = argc;
-	ls_data.argv = argv;
-	ls_data.dirs = NULL;
-	ls_data.not_dirs = NULL;
-	ls_data.ret_v = EXIT_SUCCESS;
-	options_parser(&ls_data, &options);
-	files = files_parser(&ls_data);
+	ls.argc = argc;
+	ls.argv = argv;
+	ls.dirs = NULL;
+	ls.not_dirs = NULL;
+	ls.ret_v = EXIT_SUCCESS;
+	options_parser(&ls, &options);
+	files = files_parser(&ls);
 	i = 0;
-	while (i < ls_data.files_c)
+	while (i < ls.files_c)
 	{
-		dir_handler(files[i], 0, &ls_data, options);
+		dir_handler(files[i], 0, &ls, options);
 		++i;
 	}
-	if (ls_data.not_dirs)
+	if (ls.not_dirs)
 	{
-		if (options.time_sort)
-			get_time_sorted(&ls_data.not_dirs);
-		else
-			get_ascii_sorted(&ls_data.not_dirs);
-		if (options.reverse_order)
-			get_reverse_sorted(&ls_data.not_dirs);
+		get_sorted(&ls.not_dirs, options);
 	}
-	ls_output(ls_data.not_dirs, ls_data.dirs, ls_data.files_c);
-	free_matrix(files, ls_data.files_c);
-	return (ls_data.ret_v);
+	ls_output(ls.not_dirs, ls.dirs, ls.files_c);
+	free_matrix(files, ls.files_c);
+	return (ls.ret_v);
 }

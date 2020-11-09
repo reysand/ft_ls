@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/06 18:44:50 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/09 13:45:13 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,13 @@
 # include <sys/stat.h>
 
 typedef struct dirent	t_dirent;
-
 typedef struct stat		t_stat;
 
 /*
-** sizeof(d_name) instead of ft_strlen(d_name)
-** NOT_POSIX:
-** d_type change to (l)stat
-** d_reclen
-** d_namlen
-** d_seekoff in linux d_off
+** struct:		t_file
+** description:
+**
+** NOTE: sizeof(d_name) instead of ft_strlen(d_name)
 */
 
 typedef struct			s_file
@@ -36,11 +33,16 @@ typedef struct			s_file
 	struct stat			stat;
 	char				*d_name;
 	int					d_ino;
-	int					d_type;
-	int					d_reclen;
-	int					d_namlen;
-	int					d_seekoff;
 }						t_file;
+
+/*
+** struct:		t_dirlist
+** description:
+**
+** NOTE: May be instead of add t_file to t_dirlist print t_file,
+**       free them and go to next without using t_dirlist.
+**       dirs change to t_file from t_dirlist
+*/
 
 typedef struct			s_dirlist
 {

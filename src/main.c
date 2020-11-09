@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/07 21:37:22 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/09 13:45:30 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 #define OPTIONS	"-Ralrt"
 
-static int	is_valid_dir(t_file *file)
+static int	is_valid_dir(char *dir_path, t_file *file)
 {
-	if (file->d_type == DT_DIR)
+	stat(dir_path, &file->stat);
+	if ((file->stat.st_mode & S_IFDIR) == S_IFDIR)
 	{
 		if (ft_strcmp(file->d_name, ".") && ft_strcmp(file->d_name, ".."))
 		{
@@ -40,12 +41,13 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 			file = dirs->dir;
 			while (file)
 			{
-				if (!is_valid_dir(file))
+				dir_path = get_path(path, file->d_name);
+				ft_printf_fd(STDERR_FILENO, "LOGS: %s\n", dir_path);
+				if (!is_valid_dir(dir_path, file))
 				{
-					dir_path = get_path(path, file->d_name);
 					dir_handler(dir_path, 1, ls, option);
-					free(dir_path);
 				}
+				free(dir_path);
 				file = file->next;
 			}
 			return ;

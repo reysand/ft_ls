@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/07 21:37:49 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/09 12:22:38 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_file	*swap_nodes(t_file *head)
 ** description:
 ** return:		(void)
 **
-** BUG: Wrong sorting
+** BUG: Wrong sorting 'Makefile'
 ** FIXME:
 ** NOTE:
 ** TODO:
@@ -51,50 +51,43 @@ void			get_time_sorted(t_file **head)
 	list = *head;
 	while (list->next)
 	{
-		ft_printf("LOGS: %s\t%s\n", list->d_name, list->next->d_name);
 		if (list == *head)
 		{
 			is_sorted = 0;
 			prev = list;
 		}
+		ft_printf("LOGS: prev =\t%s\nLOGS: list =\t%s\n", prev->d_name, list->d_name);
 		time_curr = (long long)list->stat.st_mtimespec.tv_sec;
 		time_next = (long long)list->next->stat.st_mtimespec.tv_sec;
 		if (time_curr < time_next)
 		{
 			is_sorted = 1;
-			if (prev == list && list == *head)
+			ft_printf("LOGS: swap:\t----------\n");
+			if (list == *head)
 			{
 				*head = swap_nodes(list);
-				ft_printf("\tfirst\n");
-				print_list(*head);
+				prev = *head;
+				list = (*head)->next;
 			}
 			else
 			{
 				prev->next = swap_nodes(list);
-				print_list(prev->next);
-				ft_printf("909090909099000\n");
-				print_list(*head);
+				list = prev->next->next;
+				prev = prev->next;
 			}
 		}
 		else
 		{
-			list = prev->next;
+			prev = list;
+			list = list->next;
 		}
-		ft_printf("########\n");
-		//prev = list;
-		//list = list->next;
-		ft_printf("%s\n", prev->d_name);
-		ft_printf("%s\n", list->d_name);
-		ft_printf("XXXXXXXXXXXXX\n");
-		/*
-		if (!list && is_sorted)
+		if (!list->next && is_sorted)
 		{
-			ft_printf("\tList:\n");
-			print_list(*head);
 			list = *head;
 		}
-		*/
 	}
+	ft_printf("\nLOGS: list =\t%s\n", list->d_name);
+	ft_printf("LOGS: list =\t%s\n", list->next);
 }
 
 void			get_ascii_sorted(t_file **head)
@@ -137,7 +130,7 @@ void			get_sorted(t_file **head, t_opts option)
 	if (option.time_sort)
 	{
 		get_time_sorted(head);
-		ft_printf("++++++++\n");
+		ft_printf("++++++++++\n");
 	}
 	else
 		get_ascii_sorted(head);

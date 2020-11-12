@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/07 21:37:11 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/11 17:23:34 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	enotdir_add(char *file, t_file **head)
 
 	if (!(item = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
-	item->d_name = ft_strdup(file);
+	item->name = ft_strdup(file);
 	stat(file, &item->stat);
 	item->next = NULL;
 	if (*head)

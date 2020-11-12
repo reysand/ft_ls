@@ -1,0 +1,703 @@
+diff --git a/include/ft_ls.h b/include/ft_ls.h
+index e48daff..57e9345 100644
+--- a/include/ft_ls.h
++++ b/include/ft_ls.h
+@@ -6,30 +6,56 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/07 15:25:54 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 20:14:45 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+ #ifndef FT_LS_H
+ # define FT_LS_H
+ 
+-# include <stdlib.h>
+ # include <sys/errno.h>
+ # include "ft_ls_structs.h"
+ # include "libft.h"
+ 
+-void	options_parser(t_args *ls_data, t_opts *option);
+-char	**files_parser(t_args *args);
++/*
++** args_parser.c
++*/
++void	options_parser(t_args *ls, t_opts *option);
++char	**files_parser(t_args *ls);
++
++/*
++** sorting.c
++*/
+ char	**get_ascii_sorted_args(int argc, char **argv);
+-void	dir_handler(char *path, int rec, t_args *args, t_opts option);
+-int		ft_ls(char *name, t_file **file_info, t_opts option);
+ void	get_sorted(t_file **head, t_opts option);
+ void	get_ascii_sorted(t_file **head);
+ void	get_reverse_sorted(t_file **head);
+ void	get_time_sorted(t_file **head);
++
++/*
++** main.c
++*/
++void	dir_handler(char *path, int rec, t_args *args, t_opts option);
++
++/*
++** ft_ls.c
++*/
++int		ft_ls(char *name, t_file **file_info, t_opts option);
++
++/*
++** lists.c
++*/
+ void	dir_content_add(char *path, t_dirlist **head, t_file *dir_info);
+ void	enotdir_add(char *file, t_file **head);
+-void	ls_output(t_file *not_dirs, t_dirlist *list, int files_c);
++
++/*
++** output.c
++*/
++void	ls_output(t_file *not_dirs, t_file *dirs, int files_c);
++
++/*
++** free.c
++*/
+ void	free_list_strings(t_file **head);
+ void	free_list_lists(t_dirlist **head);
+ void	free_list(t_file **head);
+@@ -38,7 +64,6 @@ void	free_matrix(char **matrix, int size);
+ /*
+ ** For debugging
+ */
+-
+ char	*get_path(char *dir, char *subdir);
+ void	print_list(t_file *head);
+ 
+diff --git a/include/ft_ls_structs.h b/include/ft_ls_structs.h
+index 5b02ef7..4cb4c00 100644
+--- a/include/ft_ls_structs.h
++++ b/include/ft_ls_structs.h
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/09 13:45:13 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 19:59:26 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -14,25 +14,25 @@
+ # define FT_LS_STRUCTS_H
+ 
+ # include <dirent.h>
+-# include <ft_list.h>
+ # include <sys/stat.h>
+ 
+ typedef struct dirent	t_dirent;
+ typedef struct stat		t_stat;
+ 
+ /*
+-** struct:		t_file
+-** description:
++** Struct:		t_file
++** Description:
+ **
+-** NOTE: sizeof(d_name) instead of ft_strlen(d_name)
++** TODO:		delete d_name and d_ino
+ */
+ 
+ typedef struct			s_file
+ {
+ 	struct s_file		*next;
+ 	struct stat			stat;
+-	char				*d_name;
+-	int					d_ino;
++	char				*name;
++	char				*path;
++	char				*full_path;
+ }						t_file;
+ 
+ /*
+@@ -51,9 +51,17 @@ typedef struct			s_dirlist
+ 	char				*path;
+ }						t_dirlist;
+ 
++/*
++** Struct:		s_args
++** Description:
++**
++** TODO:		Delete t_dirlist *dirs
++*/
++
+ typedef struct			s_args
+ {
+-	t_dirlist			*dirs;
++	//t_dirlist			*dirs;
++	t_file				*dirs;
+ 	t_file				*not_dirs;
+ 	char				**argv;
+ 	int					argc;
+@@ -62,6 +70,11 @@ typedef struct			s_args
+ 	int					files_c;
+ }						t_args;
+ 
++/*
++** Struct:		s_opts
++** Description:
++*/
++
+ typedef struct			s_opts
+ {
+ 	int					dot_files;
+diff --git a/src/args_parser.c b/src/args_parser.c
+index 751ff15..8e36443 100644
+--- a/src/args_parser.c
++++ b/src/args_parser.c
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/07 21:36:39 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 19:19:46 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -14,6 +14,13 @@
+ 
+ #define OPTIONS "-Ralrt1"
+ 
++/*
++** Function:	get_file_position
++** Arguments:	t_args *ls
++** Description:	get first file position in args
++** Return:		(int){i}
++*/
++
+ static int	get_file_position(t_args *ls)
+ {
+ 	int i;
+@@ -27,6 +34,13 @@ static int	get_file_position(t_args *ls)
+ 	return (i);
+ }
+ 
++/*
++** Function:	files_parser
++** Arguments:	t_args *ls
++** Description:	get array of files
++** Return:		(char **){files}
++*/
++
+ char		**files_parser(t_args *ls)
+ {
+ 	char	**files;
+@@ -54,6 +68,13 @@ char		**files_parser(t_args *ls)
+ 	return (files);
+ }
+ 
++/*
++** Function:	get_options
++** Arguments:	char alpha, t_opts *option
++** Description:	set options
++** Return:		(void)
++*/
++
+ static void	get_options(char alpha, t_opts *option)
+ {
+ 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
+@@ -63,6 +84,13 @@ static void	get_options(char alpha, t_opts *option)
+ 	option->recursive_read = (alpha == 'R') ? 1 : option->recursive_read;
+ }
+ 
++/*
++** Function:	is_option
++** Arguments:	char *str, t_opts *option
++** Description:	check is str a valid option
++** Return:		(int){0,1}
++*/
++
+ static int	is_option(char *str, t_opts *option)
+ {
+ 	size_t	i;
+@@ -91,6 +119,13 @@ static int	is_option(char *str, t_opts *option)
+ 	return (1);
+ }
+ 
++/*
++** Function:	options_parser
++** Arguments:	t_args *ls, t_opts *option
++** Description:	init options and get options count
++** Return:		(void)
++*/
++
+ void		options_parser(t_args *ls, t_opts *option)
+ {
+ 	int	i;
+diff --git a/src/free.c b/src/free.c
+index 73e1279..94807b9 100644
+--- a/src/free.c
++++ b/src/free.c
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/10/05 10:13:40 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/07 21:36:55 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 19:34:03 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -32,7 +32,7 @@ void	free_list(t_file **head)
+ 	while (*head)
+ 	{
+ 		next = (*head)->next;
+-		free((*head)->d_name);
++		free((*head)->name);
+ 		ft_memdel((void *)head);
+ 		*head = next;
+ 	}
+diff --git a/src/ft_ls.c b/src/ft_ls.c
+index cec1460..883f2a2 100644
+--- a/src/ft_ls.c
++++ b/src/ft_ls.c
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/09 13:37:56 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 19:30:18 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -14,49 +14,69 @@
+ 
+ #define ERR_MSG	"ft_ls: %s: %s\n"
+ 
++/*
++** Function:	get_info
++** Arguments:	char *full_path, t_file **head, t_dirent *entry
++** Description:	fill list of dirs
++** Return:		(void)
++*/
++
+ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
+ {
+-	t_file	*dir_info;
+-	t_file	*file_info;
++	t_file	*dirs;
++	t_file	*file;
+ 
+-	if (!(file_info = (t_file *)malloc(sizeof(t_file))))
++	if (!(file = (t_file *)malloc(sizeof(t_file))))
+ 		exit(EXIT_FAILURE);
+-	file_info->d_ino = entry->d_ino;
+-	file_info->d_name = ft_strdup(entry->d_name);
+-	stat(full_path, &file_info->stat);
+-	file_info->next = NULL;
++	file->name = ft_strdup(entry->d_name);
++	stat(full_path, &file->stat);
++	file->next = NULL;
+ 	if (*head == NULL)
+ 	{
+-		*head = file_info;
++		*head = file;
+ 		return ;
+ 	}
+-	dir_info = *head;
+-	while (dir_info->next)
++	dirs = *head;
++	while (dirs->next)
+ 	{
+-		dir_info = dir_info->next;
++		dirs = dirs->next;
+ 	}
+-	dir_info->next = file_info;
++	dirs->next = file;
+ }
+ 
+-char		*get_path(char *dir, char *subdir)
++/*
++** Function:	get_path
++** Arguments:	char *path, char *name
++** Description:	get full path for dir
++** Return:		(char *){full_path}
++*/
++
++char		*get_path(char *path, char *name)
+ {
+ 	char	*temp;
+-	char	*dir_path;
++	char	*full_path;
+ 
+-	dir_path = ft_strjoin(dir, "/");
+-	temp = dir_path;
+-	dir_path = ft_strjoin(dir_path, subdir);
++	full_path = ft_strjoin(path, "/");
++	temp = full_path;
++	full_path = ft_strjoin(full_path, name);
+ 	free(temp);
+-	return (dir_path);
++	return (full_path);
+ }
+ 
+-int			ft_ls(char *path, t_file **dir_info, t_opts option)
++/*
++** Function:	ft_ls
++** Arguments:	char *path, t_file **dirs, t_opts option
++** Description:	try to open dir
++** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
++*/
++
++int			ft_ls(char *path, t_file **dirs, t_opts option)
+ {
+ 	t_dirent	*entry;
+-	DIR			*dir;
++	DIR			*dir_stream;
+ 	char		*full_path;
+ 
+-	if (!(dir = opendir(path)))
++	if (!(dir_stream = opendir(path)))
+ 	{
+ 		if (errno == ENOTDIR)
+ 		{
+@@ -68,15 +88,15 @@ int			ft_ls(char *path, t_file **dir_info, t_opts option)
+ 			return (EXIT_FAILURE);
+ 		}
+ 	}
+-	while ((entry = readdir(dir)))
++	while ((entry = readdir(dir_stream)))
+ 	{
+ 		if (option.dot_files || (entry->d_name)[0] != '.')
+ 		{
+ 			full_path = get_path(path, entry->d_name);
+-			get_info(full_path, dir_info, entry);
++			get_info(full_path, dirs, entry);
+ 			free(full_path);
+ 		}
+ 	}
+-	closedir(dir);
++	closedir(dir_stream);
+ 	return (EXIT_SUCCESS);
+ }
+diff --git a/src/lists.c b/src/lists.c
+index e939532..62682a7 100644
+--- a/src/lists.c
++++ b/src/lists.c
+@@ -6,21 +6,34 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/07 21:37:11 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 19:31:34 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+ #include "ft_ls.h"
+ 
+-void	enotdir_add(char *file, t_file **head)
++/*
++** Function:	enotdir_add
++** Arguments:	char *name, t_file **head
++** Description:
++** Return:		(void)
++**
++** BUG:
++** FIXME:
++** NOTE:
++** TODO:
++** XXX:
++*/
++
++void	enotdir_add(char *name, t_file **head)
+ {
+ 	t_file	*not_dirs;
+ 	t_file	*item;
+ 
+ 	if (!(item = (t_file *)malloc(sizeof(t_file))))
+ 		exit(EXIT_FAILURE);
+-	item->d_name = ft_strdup(file);
+-	stat(file, &item->stat);
++	item->name = ft_strdup(name);
++	stat(name, &item->stat);
+ 	item->next = NULL;
+ 	if (*head)
+ 	{
+diff --git a/src/main.c b/src/main.c
+index c628cc2..c7dbde3 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/09 13:45:30 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 20:15:03 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -14,12 +14,25 @@
+ 
+ #define OPTIONS	"-Ralrt"
+ 
++/*
++** Function:	is_valid_dir
++** Arguments:	char *path, t_args *ls, t_opts option
++** Description:
++** Return:		(void)
++**
++** BUG:
++** FIXME:		Rewrite all
++** NOTE:
++** TODO:
++** XXX:
++*/
++
+ static int	is_valid_dir(char *dir_path, t_file *file)
+ {
+ 	stat(dir_path, &file->stat);
+ 	if ((file->stat.st_mode & S_IFDIR) == S_IFDIR)
+ 	{
+-		if (ft_strcmp(file->d_name, ".") && ft_strcmp(file->d_name, ".."))
++		if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+ 		{
+ 			return (0);
+ 		}
+@@ -27,21 +40,34 @@ static int	is_valid_dir(char *dir_path, t_file *file)
+ 	return (1);
+ }
+ 
++/*
++** Function:	recursive_handker
++** Arguments:	char *path, t_args *ls, t_opts option
++** Description:
++** Return:		(void)
++**
++** BUG:
++** FIXME:		Rewrite all
++** NOTE:
++** TODO:
++** XXX:
++*/
++
+ static void	recursive_handler(char *path, t_args *ls, t_opts option)
+ {
+-	t_dirlist	*dirs;
+-	t_file		*file;
+-	char		*dir_path;
++	t_file	*dirs;
++	t_file	*file;
++	char	*dir_path;
+ 
+ 	dirs = ls->dirs;
+ 	while (dirs)
+ 	{
+ 		if (!ft_strcmp(dirs->path, path))
+ 		{
+-			file = dirs->dir;
++			file = dirs;
+ 			while (file)
+ 			{
+-				dir_path = get_path(path, file->d_name);
++				dir_path = get_path(path, file->name);
+ 				ft_printf_fd(STDERR_FILENO, "LOGS: %s\n", dir_path);
+ 				if (!is_valid_dir(dir_path, file))
+ 				{
+@@ -57,49 +83,45 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
+ }
+ 
+ /*
+-** function:	dir_handler
+-** arguments:	char *path, int recursion, t_args *ls, t_opts option
+-** description:
+-** return:		(void)
++** Function:	dir_handler
++** Arguments:	char *path, int recursion, t_args *ls, t_opts option
++** Description:
++** Return:		(void)
+ **
+ ** BUG:
+-** FIXME: rename dir_handler
++** FIXME:		Rename dir_handler
+ ** NOTE:
+-** TODO: init of t_args struct move to another function
+-** TODO: move sortings of not_dirs in another function
++** TODO:
+ ** XXX:
+ */
+ 
+ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
+ {
+-	t_file	*dir_info;
+ 	int		ret;
+ 
+-	dir_info = NULL;
+-	if ((ret = ft_ls(path, &dir_info, option)) && !recursion)
++	ls->dirs = NULL;
++	if ((ret = ft_ls(path, &ls->dirs, option)) && !recursion)
+ 		ls->ret_v = EXIT_FAILURE;
+-	if (dir_info)
++	if (ls->dirs)
+ 	{
+-		get_sorted(&dir_info, option);
+-		dir_content_add(path, &ls->dirs, dir_info);
++		get_sorted(&ls->dirs, option);
++		//TODO: print ls->dirs
++		//dir_content_add(path, &ls->dirs, dir_info);
+ 		if (option.recursive_read)
+ 			recursive_handler(path, ls, option);
+ 	}
+-	else if (!dir_info && !ret && !recursion)
++	else if (!ls->dirs && !ret && !recursion)
+ 		enotdir_add(path, &ls->not_dirs);
+ }
+ 
+ /*
+-** function:	main
+-** arguments:	int argc, char **argv
+-** description:
+-** return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
++** Function:	main
++** Arguments:	int argc, char **argv
++** Description:
++** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
+ **
+-** BUG:
+-** FIXME: rename char **files
+-** NOTE:
+-** TODO: init of t_args struct move to another function
+-** XXX:
++** FIXME:		Rename char **files
++** TODO:		Init of t_args struct move to another function
+ */
+ 
+ int			main(int argc, char **argv)
+diff --git a/src/output.c b/src/output.c
+index 59e694d..f690621 100644
+--- a/src/output.c
++++ b/src/output.c
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/07 21:37:31 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 20:32:24 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -18,31 +18,39 @@ void	print_list(t_file *head)
+ {
+ 	while (head)
+ 	{
+-		ft_printf("%s\n", head->d_name);
++		ft_printf("%s\n", head->name);
+ 		head = head->next;
+ 	}
+ }
+ 
+-void	print_list_lists(t_dirlist *head, int dir_path)
+-{
+-	t_dirlist *first;
++/*
++** Function:	print_list_formated
++** Arguments:	t_file *head, int dir_path
++** Description:
++** Return:		(void)
++**
++** BUG:
++** FIXME:
++** NOTE:		rewrite print next line
++** TODO:
++** XXX:
++*/
+ 
+-	first = head;
+-	while (head)
+-	{
+-		if (first != head || dir_path)
+-			ft_printf("%s:\n", head->path);
+-		print_list(head->dir);
+-		if (head->next)
+-			ft_printf("\n");
+-		head = head->next;
+-	}
++void	print_list_formated(t_file *head, int dir_path)
++{
++	if (dir_path)
++		ft_printf("%s:\n", head->path);
++	print_list(head);
++	if (head->next)
++		ft_printf("\n");
++	head = head->next;
+ }
+ 
+-void	ls_output(t_file *not_dirs, t_dirlist *dirs, int files_c)
++void	ls_output(t_file *not_dirs, t_file *dirs, int files_c)
+ {
+ 	int	dir_path;
+ 
++	ft_printf("\tls_output\n\n");
+ 	dir_path = 0;
+ 	print_list(not_dirs);
+ 	if (dirs && (not_dirs || files_c > 1))
+@@ -54,6 +62,6 @@ void	ls_output(t_file *not_dirs, t_dirlist *dirs, int files_c)
+ 		}
+ 	}
+ 	free_list(&not_dirs);
+-	print_list_lists(dirs, dir_path);
+-	free_list_lists(&dirs);
++	print_list_formated(dirs, dir_path);
++	free_list(&dirs);
+ }
+diff --git a/src/sorting.c b/src/sorting.c
+index f15e98a..ef4d46d 100644
+--- a/src/sorting.c
++++ b/src/sorting.c
+@@ -6,7 +6,7 @@
+ /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
+-/*   Updated: 2020/11/09 12:22:38 by fhelena          ###   ########.fr       */
++/*   Updated: 2020/11/10 20:36:13 by fhelena          ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -56,7 +56,7 @@ void			get_time_sorted(t_file **head)
+ 			is_sorted = 0;
+ 			prev = list;
+ 		}
+-		ft_printf("LOGS: prev =\t%s\nLOGS: list =\t%s\n", prev->d_name, list->d_name);
++		ft_printf("LOGS: prev =\t%s\nLOGS: list =\t%s\n", prev->name, list->name);
+ 		time_curr = (long long)list->stat.st_mtimespec.tv_sec;
+ 		time_next = (long long)list->next->stat.st_mtimespec.tv_sec;
+ 		if (time_curr < time_next)
+@@ -86,7 +86,7 @@ void			get_time_sorted(t_file **head)
+ 			list = *head;
+ 		}
+ 	}
+-	ft_printf("\nLOGS: list =\t%s\n", list->d_name);
++	ft_printf("\nLOGS: list =\t%s\n", list->name);
+ 	ft_printf("LOGS: list =\t%s\n", list->next);
+ }
+ 
+@@ -104,7 +104,7 @@ void			get_ascii_sorted(t_file **head)
+ 			is_sorted = 0;
+ 			prev = list;
+ 		}
+-		if (ft_strcmp(list->d_name, list->next->d_name) > 0)
++		if (ft_strcmp(list->name, list->next->name) > 0)
+ 		{
+ 			is_sorted = 1;
+ 			if (prev == list && list == *head)
+@@ -150,6 +150,13 @@ void			get_sorted(t_file **head, t_opts option)
+ 	}
+ }
+ 
++/*
++** Function:	get_ascii_sorted_args
++** Arguments:	int argc, char **argv
++** Description:
++** Return:		(char **){argv}
++*/
++
+ char			**get_ascii_sorted_args(int argc, char **argv)
+ {
+ 	char	*temp;

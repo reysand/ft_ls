@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/09 13:45:13 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/11 18:34:04 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,22 @@ typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
 /*
-** struct:		t_file
-** description:
-**
-** NOTE: sizeof(d_name) instead of ft_strlen(d_name)
+** Struct:		t_file
+** Description:
 */
 
 typedef struct			s_file
 {
 	struct s_file		*next;
 	struct stat			stat;
-	char				*d_name;
-	int					d_ino;
+	char				*name;
+	char				*path;
+	char				*full_path;
 }						t_file;
 
 /*
-** struct:		t_dirlist
-** description:
+** Struct:		t_dirlist
+** Description:
 **
 ** NOTE: May be instead of add t_file to t_dirlist print t_file,
 **       free them and go to next without using t_dirlist.
@@ -51,9 +50,15 @@ typedef struct			s_dirlist
 	char				*path;
 }						t_dirlist;
 
+/*
+** Struct:		t_args
+** Description:
+*/
+
 typedef struct			s_args
 {
 	t_dirlist			*dirs;
+	t_file				*files;
 	t_file				*not_dirs;
 	char				**argv;
 	int					argc;
@@ -61,6 +66,11 @@ typedef struct			s_args
 	int					opt_c;
 	int					files_c;
 }						t_args;
+
+/*
+** Struct:		t_opts
+** Desctiption:
+*/
 
 typedef struct			s_opts
 {

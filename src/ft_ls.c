@@ -6,13 +6,11 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/09 13:37:56 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/12 20:44:47 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-#define ERR_MSG	"ft_ls: %s: %s\n"
 
 static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 {
@@ -21,8 +19,7 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 
 	if (!(file_info = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
-	file_info->d_ino = entry->d_ino;
-	file_info->d_name = ft_strdup(entry->d_name);
+	file_info->name = ft_strdup(entry->d_name);
 	stat(full_path, &file_info->stat);
 	file_info->next = NULL;
 	if (*head == NULL)
@@ -61,11 +58,6 @@ int			ft_ls(char *path, t_file **dir_info, t_opts option)
 		if (errno == ENOTDIR)
 		{
 			return (EXIT_SUCCESS);
-		}
-		else
-		{
-			ft_printf_fd(STDERR_FILENO, ERR_MSG, path, strerror(errno));
-			return (EXIT_FAILURE);
 		}
 	}
 	while ((entry = readdir(dir)))

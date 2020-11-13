@@ -6,13 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/12 21:02:31 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/13 21:07:47 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define OPTIONS	"-Ralrt1"
+#define OPTIONS	"-Ralrt"
 
 static int	is_valid_dir(char *dir_path, t_file *file)
 {
@@ -42,7 +42,6 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 			while (file)
 			{
 				dir_path = get_path(path, file->name);
-				//ft_printf_fd(STDERR_FILENO, "LOGS: %s\n", dir_path);
 				if (!is_valid_dir(dir_path, file))
 				{
 					dir_handler(dir_path, 1, ls, option);
@@ -75,9 +74,7 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 	int		ret;
 
 	dir_info = NULL;
-	if ((ret = ft_ls(path, &dir_info, option)) && !recursion)
-		ls->ret_v = EXIT_FAILURE;
-	//ft_printf("LOGS: %s %d %d %d %d\n", path, !dir_info, !ret, ret, !recursion);
+	ret = ft_ls(path, &dir_info, option);
 	if (dir_info)
 	{
 		get_sorted(&dir_info, option);
@@ -85,7 +82,7 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 		if (option.recursive_read)
 			recursive_handler(path, ls, option);
 	}
-	else if (!dir_info && ret == 2)
+	else if (!dir_info && ret)
 	{
 		dir_content_add(path, &ls->dirs, dir_info);
 	}
@@ -107,29 +104,30 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 
 #define ERR_MSG "ft_ls: %s: %s\n"
 
-int		test(char **files, t_args *ls)
+void		test(char **files, t_args *ls, t_opts option)
 {
 	t_stat	f_stat;
 	int		i;
-	int		ret;
 
 	i = 0;
-	//ft_printf("\tFunction: test\n");
-	ret = EXIT_SUCCESS;
+	ls->ret_v = EXIT_SUCCESS;
 	while (i < ls->files_c)
 	{
-		if (stat(files[i], &f_stat) != -1)
+		if (lstat(files[i], &f_stat) != -1)
 		{
 			enotdir_add(files[i], &ls->files);
 		}
 		else
 		{
-			ret = EXIT_FAILURE;
+			ls->ret_v = EXIT_FAILURE;
 			ft_printf_fd(STDERR_FILENO, ERR_MSG, files[i], strerror(errno));
 		}
 		++i;
 	}
-	return (ret);
+	if (ls->files)
+	{
+		get_sorted(&ls->files, option);
+	}
 }
 
 /*
@@ -138,11 +136,7 @@ int		test(char **files, t_args *ls)
 ** Description:
 ** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
 **
-** BUG:
 ** FIXME:		rename char **files
-** NOTE:
-** TODO:		init of t_args struct move to another function
-** XXX:
 */
 
 int			main(int argc, char **argv)
@@ -155,20 +149,11 @@ int			main(int argc, char **argv)
 
 	ls.argc = argc;
 	ls.argv = argv;
-	ls.files = NULL;
 	ls.dirs = NULL;
 	ls.not_dirs = NULL;
-	ls.ret_v = EXIT_SUCCESS;
 	options_parser(&ls, &options);
 	files = files_parser(&ls);
-	if (test(files, &ls))
-		ls.ret_v = EXIT_FAILURE;
-	if (ls.files)
-	{
-		get_sorted(&ls.files, options);
-	}
-	//print_list(ls.files);
-	//ft_printf("$$$$$$$$$$$$$$$$\n");
+	test(files, &ls, options);
 	i = 0;
 	files_list = ls.files;
 	while (files_list)
@@ -178,9 +163,7 @@ int			main(int argc, char **argv)
 	}
 	free_list(&ls.files);
 	if (ls.not_dirs)
-	{
 		get_sorted(&ls.not_dirs, options);
-	}
 	ls_output(ls.not_dirs, ls.dirs, ls.files_c);
 	free_matrix(files, ls.files_c);
 	return (ls.ret_v);

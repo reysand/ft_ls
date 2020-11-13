@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/11 18:34:04 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/13 17:53:10 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_LS_STRUCTS_H
 
 # include <dirent.h>
-# include <ft_list.h>
 # include <sys/stat.h>
 
 typedef struct dirent	t_dirent;

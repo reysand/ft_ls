@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/12 13:47:12 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/13 20:28:44 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,9 @@ void			get_sorted(t_file **head, t_opts option)
 	t_file	*list;
 	t_file	*next;
 
-	//print_list(*head);
-	//ft_printf("==========\n");
 	get_ascii_sorted(head);
 	//print_list(*head);
-	//ft_printf("\n\n\n");
+	//ft_printf("------------\n");
 	if (option.time_sort)
 	{
 		// if time equal only ascii sort

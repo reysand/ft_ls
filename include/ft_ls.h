@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/10 20:50:08 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/13 17:50:50 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 /*
 ** args_parser.c
 */
-void	options_parser(t_args *ls_data, t_opts *option);
-char	**files_parser(t_args *args);
+void	options_parser(t_args *ls, t_opts *option);
+char	**files_parser(t_args *ls);
 
 /*
 ** sorting.c
@@ -31,7 +31,7 @@ char	**get_ascii_sorted_args(int argc, char **argv);
 /*
 ** main.c
 */
-void	dir_handler(char *path, int rec, t_args *args, t_opts option);
+void	dir_handler(char *path, int rec, t_args *ls, t_opts option);
 
 /*
 ** ft_ls.c

@@ -6,13 +6,13 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/07 21:36:39 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/13 18:06:04 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define OPTIONS "-Ralrt1"
+#define OPTIONS "-Ralrt"
 
 static int	get_file_position(t_args *ls)
 {
@@ -33,6 +33,7 @@ char		**files_parser(t_args *ls)
 	int		i;
 	int		j;
 
+	ls->files = NULL;
 	i = get_file_position(ls);
 	if (!(files = (char **)malloc(sizeof(char *) * (ls->files_c))))
 		exit(EXIT_FAILURE);

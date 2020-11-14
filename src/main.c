@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/13 21:07:47 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/14 19:25:43 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 
 #define ERR_MSG "ft_ls: %s: %s\n"
 
-void		test(char **files, t_args *ls, t_opts option)
+static void	test(char **files, t_args *ls, t_opts option)
 {
 	t_stat	f_stat;
 	int		i;
@@ -164,7 +164,7 @@ int			main(int argc, char **argv)
 	free_list(&ls.files);
 	if (ls.not_dirs)
 		get_sorted(&ls.not_dirs, options);
-	ls_output(ls.not_dirs, ls.dirs, ls.files_c);
+	ls_output(ls.not_dirs, ls.dirs, ls.files_c, options);
 	free_matrix(files, ls.files_c);
 	return (ls.ret_v);
 }

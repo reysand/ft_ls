@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/13 17:50:50 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/14 20:46:22 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define FT_LS_H
 
 # include <sys/errno.h>
+# include <pwd.h>
+# include <grp.h>
+# include <time.h>
 # include "ft_ls_structs.h"
 # include "libft.h"
 
@@ -55,12 +58,18 @@ void	enotdir_add(char *file, t_file **head);
 /*
 ** output.c
 */
-void	ls_output(t_file *not_dirs, t_dirlist *list, int files_c);
+void	ls_output(t_file *not_dirs, t_dirlist *list, int files_c, t_opts option);
+
+/*
+** long_format.c
+*/
+int		get_total(t_file *head);
+void	get_mode(int mode);
+void	get_time(t_stat stat);
 
 /*
 ** free.c
 */
-void	free_list_strings(t_file **head);
 void	free_list_lists(t_dirlist **head);
 void	free_list(t_file **head);
 void	free_matrix(char **matrix, int size);
@@ -69,6 +78,6 @@ void	free_matrix(char **matrix, int size);
 ** Debugging
 */
 char	*get_path(char *dir, char *subdir);
-void	print_list(t_file *head);
+void	print_list(t_file *head, t_opts option);
 
 #endif

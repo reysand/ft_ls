@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/14 13:36:10 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/15 17:14:24 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
+
+typedef struct			s_align
+{
+	int					nlink;
+	int					user;
+	int					group;
+	int					size;
+}						t_align;
 
 /*
 ** Struct:		t_file

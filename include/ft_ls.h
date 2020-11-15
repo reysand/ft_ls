@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/14 20:46:22 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/15 17:47:03 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <sys/errno.h>
 # include <pwd.h>
 # include <grp.h>
+# include <limits.h>
 # include <time.h>
 # include "ft_ls_structs.h"
 # include "libft.h"
@@ -65,6 +66,10 @@ void	ls_output(t_file *not_dirs, t_dirlist *list, int files_c, t_opts option);
 */
 int		get_total(t_file *head);
 void	get_mode(int mode);
+void	get_nlink(t_file *head, t_align *align);
+void	get_user(t_file *head, t_align *align);
+void	get_group(t_file *head, t_align *align);
+void	get_size(t_file *head, t_align *align);
 void	get_time(t_stat stat);
 
 /*

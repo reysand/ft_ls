@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/14 16:49:30 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/15 19:59:59 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	if (!(file = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
 	file->name = ft_strdup(entry->d_name);
+	file->full_path = ft_strdup(full_path);
 	lstat(full_path, &file->stat);
 	file->next = NULL;
 	if (*head == NULL)

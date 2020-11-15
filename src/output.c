@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/14 20:46:04 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/15 19:04:14 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,40 @@
 
 #define OPTIONS	"-Ralrt"
 
-void	align(char *str, size_t max)
+void	init_align(t_align *align)
 {
-	size_t	spaces;
-
-	spaces = max - ft_strlen(str);
-	while (spaces-- > 0)
-	{
-		ft_printf(" ");
-	}
+	align->nlink = 0;
+	align->user = 0;
+	align->group = 0;
+	align->size = 0;
 }
 
 void	print_list(t_file *head, t_opts option)
 {
-	struct passwd	*pw;
-	struct group	*gr;
+	t_align	align_max;
+	char	*l_name;
+	int		len;
 
+	init_align(&align_max);
 	while (head)
 	{
 		if (option.long_format)
 		{
 			get_mode(head->stat.st_mode);
-			//align(ft_itoa(head->stat.st_nlink), 4);
-			ft_printf("%4d ", head->stat.st_nlink);
-			pw = getpwuid(head->stat.st_uid);
-			ft_printf("%s", pw->pw_name);
-			gr = getgrgid(head->stat.st_gid);
-			align("", 2);
-			ft_printf("%s", gr->gr_name);
-			//align(ft_itoa(head->stat.st_size), 7);
-			ft_printf("%7d ", head->stat.st_size);
+			get_nlink(head, &align_max);
+			get_user(head, &align_max);
+			get_group(head, &align_max);
+			get_size(head, &align_max);
 			get_time(head->stat);
-			//ft_printf(" %s ", ctime(&head->stat.st_mtime));
-			//ft_printf("--- -- --:-- ");
 		}
 		ft_printf("%s", head->name);
-		if (option.long_format && ((head->stat.st_mode & S_IFLNK) == S_IFLNK))
+		if (option.long_format && ((head->stat.st_mode & S_IFMT) == S_IFLNK))
 		{
-			ft_printf(" -> ");
-			//ft_printf(" -> %s", readlink(head->namei));
+			if (!(l_name = ft_strnew(PATH_MAX + 1)))
+				return ;
+			if ((len = readlink(head->full_path, l_name, PATH_MAX)) != -1)
+				l_name[len] = '\0';
+			ft_printf(" -> %s", l_name);
 		}
 		ft_printf("\n");
 		head = head->next;

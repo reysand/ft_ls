@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:44:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/15 19:04:14 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,47 @@
 
 #define OPTIONS	"-Ralrt"
 
-/*
-** Prints files that are not directories
-*/
-
-void	print_list_strings(t_list *head)
+void	init_align(t_align *align)
 {
+	align->nlink = 0;
+	align->user = 0;
+	align->group = 0;
+	align->size = 0;
+}
+
+void	print_list(t_file *head, t_opts option)
+{
+	t_align	align_max;
+	char	*l_name;
+	int		len;
+
+	init_align(&align_max);
 	while (head)
 	{
-		ft_printf("%s\n", (char *)head->content);
+		if (option.long_format)
+		{
+			get_mode(head->stat.st_mode);
+			get_nlink(head, &align_max);
+			get_user(head, &align_max);
+			get_group(head, &align_max);
+			get_size(head, &align_max);
+			get_time(head->stat);
+		}
+		ft_printf("%s", head->name);
+		if (option.long_format && ((head->stat.st_mode & S_IFMT) == S_IFLNK))
+		{
+			if (!(l_name = ft_strnew(PATH_MAX + 1)))
+				return ;
+			if ((len = readlink(head->full_path, l_name, PATH_MAX)) != -1)
+				l_name[len] = '\0';
+			ft_printf(" -> %s", l_name);
+		}
+		ft_printf("\n");
 		head = head->next;
 	}
 }
 
-/*
-** Prints files that are the contents of a directory
-*/
-
-void	print_list(t_file *head)
-{
-	while (head)
-	{
-		ft_printf("%s\n", head->d_name);
-		head = head->next;
-	}
-}
-
-/*
-** Prints lists of directory contents with formatting
-*/
-
-void	print_list_lists(t_dirlist *head, int dir_path)
+void	print_list_lists(t_dirlist *head, int dir_path, t_opts option)
 {
 	t_dirlist *first;
 
@@ -52,20 +62,26 @@ void	print_list_lists(t_dirlist *head, int dir_path)
 	while (head)
 	{
 		if (first != head || dir_path)
+		{
 			ft_printf("%s:\n", head->path);
-		print_list(head->dir);
+		}
+		if (option.long_format)
+		{
+			ft_printf("total %d\n", get_total(head->dir));
+		}
+		print_list(head->dir, option);
 		if (head->next)
 			ft_printf("\n");
 		head = head->next;
 	}
 }
 
-void	ls_output(t_list *not_dirs, t_dirlist *dirs, int files_c)
+void	ls_output(t_file *not_dirs, t_dirlist *dirs, int files_c, t_opts option)
 {
 	int	dir_path;
 
 	dir_path = 0;
-	print_list_strings(not_dirs);
+	print_list(not_dirs, option);
 	if (dirs && (not_dirs || files_c > 1))
 	{
 		dir_path = 1;
@@ -74,19 +90,7 @@ void	ls_output(t_list *not_dirs, t_dirlist *dirs, int files_c)
 			ft_printf("\n");
 		}
 	}
-	free_list_strings(&not_dirs);
-	print_list_lists(dirs, dir_path);
+	free_list(&not_dirs);
+	print_list_lists(dirs, dir_path, option);
 	free_list_lists(&dirs);
-}
-
-void	debug_output(t_args ls_data, t_opts options)
-{
-	ft_printf_fd(STDERR_FILENO, "Options\t- %d\n", ls_data.opt_c);
-	ft_printf_fd(STDERR_FILENO, "Files\t- %d\n", ls_data.files_c);
-	ft_printf_fd(STDERR_FILENO, "Options[%s]: ", OPTIONS);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.long_format);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.reverse_order);
-	ft_printf_fd(STDERR_FILENO, "%d\n", options.time_sort);
 }

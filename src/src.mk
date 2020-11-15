@@ -6,6 +6,7 @@ SRC_SRCS	= main.c\
 			  lists.c\
 			  sorting.c\
 			  output.c\
+			  long_format.c\
 			  free.c
 
 SRC			= $(addprefix $(SRC_DIR), $(SRC_SRCS))

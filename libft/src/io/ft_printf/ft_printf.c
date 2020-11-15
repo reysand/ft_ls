@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/21 19:14:11 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/10 01:49:25 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/11 20:48:59 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int			ft_printf(const char *format, ...)
 	int		ret;
 
 	va_start(ap, format);
-	ret = ft_vprintf_fd(STDIN_FILENO, format, ap);
+	ret = ft_vprintf_fd(STDOUT_FILENO, format, ap);
 	va_end(ap);
 	return (ret);
 }

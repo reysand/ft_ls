@@ -6,70 +6,74 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:35:11 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/15 19:59:59 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define ERR_MSG	"ft_ls: %s: %s\n"
-
 static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 {
-	t_file	*dir_info;
-	t_file	*file_info;
+	t_file	*dirs;
+	t_file	*file;
 
-	if (!(file_info = (t_file *)malloc(sizeof(t_file))))
+	if (!(file = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
-	file_info->d_ino = entry->d_ino;
-	file_info->d_type = entry->d_type;
-	file_info->d_reclen = entry->d_reclen;
-	file_info->d_namlen = entry->d_namlen;
-	file_info->d_seekoff = entry->d_seekoff;
-	file_info->d_name = ft_strdup(entry->d_name);
-	stat(full_path, &file_info->f_stat);
-	file_info->next = NULL;
+	file->name = ft_strdup(entry->d_name);
+	file->full_path = ft_strdup(full_path);
+	lstat(full_path, &file->stat);
+	file->next = NULL;
 	if (*head == NULL)
 	{
-		*head = file_info;
+		*head = file;
 		return ;
 	}
-	dir_info = *head;
-	while (dir_info->next)
+	dirs = *head;
+	while (dirs->next)
 	{
-		dir_info = dir_info->next;
+		dirs = dirs->next;
 	}
-	dir_info->next = file_info;
+	dirs->next = file;
 }
 
-int			ft_ls(char *path, t_file **dir_info, t_opts option)
+char		*get_path(char *path, char *name)
+{
+	char	*temp;
+	char	*full_path;
+
+	full_path = ft_strjoin(path, "/");
+	temp = full_path;
+	full_path = ft_strjoin(full_path, name);
+	free(temp);
+	return (full_path);
+}
+
+int			ft_ls(char *path, t_file **dirs, t_opts option)
 {
 	t_dirent	*entry;
-	DIR			*dir;
+	DIR			*dir_stream;
 	char		*full_path;
 
-	ft_printf_fd(STDERR_FILENO, "dir_info(ft_ls)\t\t\t= %p\n", dir_info);
-	if (!(dir = opendir(path)))
+	if (!(dir_stream = opendir(path)))
 	{
-		if (errno == ENOTDIR)
+		if (errno == ENOTDIR || errno == ELOOP)
 		{
 			return (EXIT_SUCCESS);
 		}
-		else
-		{
-			ft_printf_fd(STDERR_FILENO, ERR_MSG, path, strerror(errno));
-			return (EXIT_FAILURE);
-		}
 	}
-	while ((entry = readdir(dir)))
+	while ((entry = readdir(dir_stream)))
 	{
 		if (option.dot_files || (entry->d_name)[0] != '.')
 		{
 			full_path = get_path(path, entry->d_name);
-			get_info(full_path, dir_info, entry);
+			get_info(full_path, dirs, entry);
 			free(full_path);
 		}
 	}
-	closedir(dir);
+	if (!(*dirs))
+	{
+		return (EXIT_FAILURE);
+	}
+	closedir(dir_stream);
 	return (EXIT_SUCCESS);
 }

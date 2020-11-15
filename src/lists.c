@@ -6,25 +6,21 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/10/27 20:44:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/11 17:23:34 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-/*
-** Adding files to the end of the list
-*/
-
-void	enotdir_add(char *file, t_list **head)
+void	enotdir_add(char *file, t_file **head)
 {
-	t_list *not_dirs;
-	t_list *item;
+	t_file	*not_dirs;
+	t_file	*item;
 
-	if (!(item = (t_list *)malloc(sizeof(t_list))))
+	if (!(item = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
-	item->content = file;
-	item->content_size = sizeof(char *);
+	item->name = ft_strdup(file);
+	stat(file, &item->stat);
 	item->next = NULL;
 	if (*head)
 	{
@@ -38,10 +34,6 @@ void	enotdir_add(char *file, t_list **head)
 		*head = item;
 	}
 }
-
-/*
-** Adding lists of directory contents to the end of the list
-*/
 
 void	dir_content_add(char *path, t_dirlist **head, t_file *dir_info)
 {

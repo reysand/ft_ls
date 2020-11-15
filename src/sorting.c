@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/02 12:18:56 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/13 20:28:44 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,67 @@ static t_file	*swap_nodes(t_file *head)
 }
 
 /*
-** Sorting list in ascii order
+** function:	get_time_sorted
+** arguments:	t_file **head
+** description:
+** return:		(void)
+**
+** BUG: Wrong sorting 'Makefile'
+** FIXME:
+** NOTE:
+** TODO:
+** XXX:
 */
+
+void			get_time_sorted(t_file **head)
+{
+	t_file		*list;
+	t_file		*prev;
+	long long	time_curr;
+	long long	time_next;
+	int			is_sorted;
+
+	list = *head;
+	while (list->next)
+	{
+		if (list == *head)
+		{
+			is_sorted = 0;
+			prev = list;
+		}
+		time_curr = list->stat.st_ctimespec.tv_nsec;
+		time_next = list->next->stat.st_ctimespec.tv_nsec;
+		//ft_printf("LOGS: %d prev =\t%s\nLOGS: %d list =\t%s\n", time_curr, prev->name, time_next, list->name);
+		if (time_curr < time_next)
+		{
+			is_sorted = 1;
+			//ft_printf("LOGS: swap:\t----------\n");
+			if (list == *head)
+			{
+				*head = swap_nodes(list);
+				prev = *head;
+				list = (*head)->next;
+			}
+			else
+			{
+				prev->next = swap_nodes(list);
+				list = prev->next->next;
+				prev = prev->next;
+			}
+		}
+		else
+		{
+			prev = list;
+			list = list->next;
+		}
+		if (!list->next && is_sorted)
+		{
+			list = *head;
+		}
+	}
+	//ft_printf("LOGS: list =\t%s\n", list->name);
+	//ft_printf("LOGS: list =\t%s\n", list->next);
+}
 
 void			get_ascii_sorted(t_file **head)
 {
@@ -37,7 +96,6 @@ void			get_ascii_sorted(t_file **head)
 	t_file	*prev;
 	int		is_sorted;
 
-	ft_printf_fd(STDERR_FILENO, "dir_info(ascii_sort)\t= %p\n", head);
 	list = *head;
 	while (list->next)
 	{
@@ -46,55 +104,7 @@ void			get_ascii_sorted(t_file **head)
 			is_sorted = 0;
 			prev = list;
 		}
-		if (ft_strcmp(list->d_name, list->next->d_name) > 0)
-		{
-			is_sorted = 1;
-			if (prev == list && list == *head)
-				*head = swap_nodes(list);
-			else
-				prev->next = swap_nodes(list);
-		}
-		prev = list;
-		list = list->next;
-		if (!list->next && is_sorted)
-			list = *head;
-	}
-}
-
-void			get_reverse_sorted(t_file **head)
-{
-	t_file	*prev;
-	t_file	*list;
-	t_file	*next;
-
-	prev = NULL;
-	list = *head;
-	next = NULL;
-	while (list)
-	{
-		next = list->next;
-		list->next = prev;
-		prev = list;
-		list = next;
-	}
-	*head = prev;
-}
-
-void			get_time_sorted(t_file **head)
-{
-	t_file	*list;
-	t_file	*prev;
-	int		is_sorted;
-
-	list = *head;
-	while (list->next)
-	{
-		if (list == *head)
-		{
-			is_sorted = 0;
-			prev = list;
-		}
-		if (list->f_stat.st_mtimespec.tv_sec < list->next->f_stat.st_mtimespec.tv_sec)
+		if (ft_strcmp(list->name, list->next->name) > 0)
 		{
 			is_sorted = 1;
 			if (prev == list && list == *head)
@@ -110,7 +120,48 @@ void			get_time_sorted(t_file **head)
 }
 
 /*
-** Sorting arguments in ascii order
+** Function:	get_sorted
+** Arguments:	t_file **head, t_opts option
+** Description:
+** Return:		(void)
+*/
+
+void			get_sorted(t_file **head, t_opts option)
+{
+	t_file	*prev;
+	t_file	*list;
+	t_file	*next;
+
+	get_ascii_sorted(head);
+	//print_list(*head);
+	//ft_printf("------------\n");
+	if (option.time_sort)
+	{
+		// if time equal only ascii sort
+		get_time_sorted(head);
+		//ft_printf("++++++++++\n");
+	}
+	if (option.reverse_sort)
+	{
+		prev = NULL;
+		list = *head;
+		next = NULL;
+		while (list)
+		{
+			next = list->next;
+			list->next = prev;
+			prev = list;
+			list = next;
+		}
+		*head = prev;
+	}
+}
+
+/*
+** Function:	get_ascii_sorted_args
+** Arguments:	int argc, char **argv
+** Description:	sorting in ascii order files in array
+** Return:		(char **){argv}
 */
 
 char			**get_ascii_sorted_args(int argc, char **argv)

@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/11/02 10:20:18 by fhelena          ###   ########.fr        #
+#    Updated: 2020/11/06 17:32:02 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,6 +87,6 @@ fclean:			clean
 PHONY			+= re
 re:				fclean all
 
--include $(wildcard $(DEPS))
+-include		$(wildcard $(DEPS))
 
 .PHONY:			$(PHONY)

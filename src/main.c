@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/14 19:25:43 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/16 14:21:54 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ int			main(int argc, char **argv)
 	t_file	*files_list;
 	t_opts	options;
 	char	**files;
-	int		i;
 
 	ls.argc = argc;
 	ls.argv = argv;
@@ -154,7 +153,6 @@ int			main(int argc, char **argv)
 	options_parser(&ls, &options);
 	files = files_parser(&ls);
 	test(files, &ls, options);
-	i = 0;
 	files_list = ls.files;
 	while (files_list)
 	{

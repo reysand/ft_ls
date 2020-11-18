@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 17:47:03 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/16 15:15:31 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <time.h>
 # include "ft_ls_structs.h"
 # include "libft.h"
+
+#ifdef __APPLE__
+	# define ST_CTIME st_timespec
+#elif __linux__
+	# define ST_CTIME st_ctim
+#endif
 
 /*
 ** args_parser.c

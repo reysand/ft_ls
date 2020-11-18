@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/13 20:28:44 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/11/16 15:08:29 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void			get_time_sorted(t_file **head)
 			is_sorted = 0;
 			prev = list;
 		}
-		time_curr = list->stat.st_ctimespec.tv_nsec;
-		time_next = list->next->stat.st_ctimespec.tv_nsec;
+		time_curr = list->stat.ST_CTIME.tv_nsec;
+		time_next = list->next->stat.ST_CTIME.tv_nsec;
 		//ft_printf("LOGS: %d prev =\t%s\nLOGS: %d list =\t%s\n", time_curr, prev->name, time_next, list->name);
 		if (time_curr < time_next)
 		{

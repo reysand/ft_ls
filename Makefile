@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/11/06 17:32:02 by fhelena          ###   ########.fr        #
+#    Updated: 2020/11/17 10:46:19 by reysand          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ check:			norme all
 
 $(NAME):		$(OBJS)
 	@printf "\r$(R_CLEAN)Linking: -> ft_ls\n\t$(subst $(subst ,, ),\n\t,$^)\n"
-	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
+	@$(CC) -o $@ $^ $(CFLAGS) $(IFLAGS) $(LFLAGS)
 
 $(BLD_DIR)/%.o:	%.c $(LIB_DIR)/$(LIB)
 	@$(MKDIR) $(dir $@)

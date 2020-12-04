@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/11 17:23:34 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/03 05:55:33 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ void	enotdir_add(char *file, t_file **head)
 	}
 }
 
-void	dir_content_add(char *path, t_dirlist **head, t_file *dir_info)
+void	dir_content_add(char *path, t_dirs **head, t_file *dir_info)
 {
-	t_dirlist	*dir;
-	t_dirlist	*item;
+	t_dirs	*dir;
+	t_dirs	*item;
 
-	if (!(item = (t_dirlist *)malloc(sizeof(t_dirlist))))
+	if (!(item = (t_dirs *)malloc(sizeof(t_dirs))))
 		exit(EXIT_FAILURE);
 	item->path = ft_strdup(path);
 	item->dir = dir_info;

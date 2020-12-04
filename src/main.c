@@ -6,18 +6,23 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/16 14:21:54 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/03 05:43:58 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define OPTIONS	"-Ralrt"
+/*
+** Function:	is_valid_dir
+** Arguments:	char *dir_path, t_file *file
+** Return:		(int){0,1}
+** Description:
+*/
 
 static int	is_valid_dir(char *dir_path, t_file *file)
 {
 	stat(dir_path, &file->stat);
-	if ((file->stat.st_mode & S_IFDIR) == S_IFDIR)
+	if (IS_DIR(file->stat.st_mode))
 	{
 		if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		{
@@ -27,11 +32,18 @@ static int	is_valid_dir(char *dir_path, t_file *file)
 	return (1);
 }
 
+/*
+** Function:	recursive_handler
+** Arguments:	char *path, t_args *ls, t_opts option
+** Return:		(void)
+** Description:
+*/
+
 static void	recursive_handler(char *path, t_args *ls, t_opts option)
 {
-	t_dirlist	*dirs;
-	t_file		*file;
-	char		*dir_path;
+	t_dirs	*dirs;
+	t_file	*file;
+	char	*dir_path;
 
 	dirs = ls->dirs;
 	while (dirs)
@@ -58,14 +70,10 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 /*
 ** Function:	dir_handler
 ** Arguments:	char *path, int recursion, t_args *ls, t_opts option
-** Description:
 ** Return:		(void)
+** Description:
 **
-** BUG:
 ** FIXME:		rename dir_handler
-** NOTE:
-** TODO:
-** XXX:
 */
 
 void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
@@ -95,14 +103,12 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 /*
 ** Function:	test
 ** Arguments:	char **files, t_args *ls
-** Description:	Test function
 ** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
+** Description:	Test function
 **
 ** TODO:		rename function
 ** TODO:		sort dirs and not dirs in different lists
 */
-
-#define ERR_MSG "ft_ls: %s: %s\n"
 
 static void	test(char **files, t_args *ls, t_opts option)
 {
@@ -133,8 +139,8 @@ static void	test(char **files, t_args *ls, t_opts option)
 /*
 ** Function:	main
 ** Arguments:	int argc, char **argv
-** Description:
 ** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
+** Description:
 **
 ** FIXME:		rename char **files
 */

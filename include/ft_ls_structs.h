@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/16 15:14:50 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/03 05:44:46 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct			s_align
 }						t_align;
 
 /*
-** Struct:		t_file
+** Struct:				t_file
 ** Description:
 */
 
@@ -42,29 +42,29 @@ typedef struct			s_file
 }						t_file;
 
 /*
-** Struct:		t_dirlist
+** Struct:				t_dirs
 ** Description:
 **
-** NOTE: May be instead of add t_file to t_dirlist print t_file,
-**       free them and go to next without using t_dirlist.
-**       dirs change to t_file from t_dirlist
+** NOTE: 				May be instead of add t_file to t_dirs print t_file,
+** 						free them and go to next without using t_dirs.
+** 						dirs change to t_file from t_dirs
 */
 
-typedef struct			s_dirlist
+typedef struct			s_dirs
 {
-	struct s_dirlist	*next;
+	struct s_dirs		*next;
 	t_file				*dir;
 	char				*path;
-}						t_dirlist;
+}						t_dirs;
 
 /*
-** Struct:		t_args
+** Struct:				t_args
 ** Description:
 */
 
 typedef struct			s_args
 {
-	t_dirlist			*dirs;
+	t_dirs				*dirs;
 	t_file				*files;
 	t_file				*not_dirs;
 	char				**argv;
@@ -75,12 +75,13 @@ typedef struct			s_args
 }						t_args;
 
 /*
-** Struct:		t_opts
+** Struct:				t_opts
 ** Desctiption:
 */
 
 typedef struct			s_opts
 {
+	int					size;
 	int					dot_files;
 	int					time_sort;
 	int					long_format;

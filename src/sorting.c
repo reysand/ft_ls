@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/16 15:08:29 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/03 08:21:17 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ static t_file	*swap_nodes(t_file *head)
 ** return:		(void)
 **
 ** BUG: Wrong sorting 'Makefile'
-** FIXME:
-** NOTE:
-** TODO:
-** XXX:
 */
 
 void			get_time_sorted(t_file **head)
@@ -58,11 +54,9 @@ void			get_time_sorted(t_file **head)
 		}
 		time_curr = list->stat.ST_CTIME.tv_nsec;
 		time_next = list->next->stat.ST_CTIME.tv_nsec;
-		//ft_printf("LOGS: %d prev =\t%s\nLOGS: %d list =\t%s\n", time_curr, prev->name, time_next, list->name);
 		if (time_curr < time_next)
 		{
 			is_sorted = 1;
-			//ft_printf("LOGS: swap:\t----------\n");
 			if (list == *head)
 			{
 				*head = swap_nodes(list);
@@ -86,8 +80,6 @@ void			get_time_sorted(t_file **head)
 			list = *head;
 		}
 	}
-	//ft_printf("LOGS: list =\t%s\n", list->name);
-	//ft_printf("LOGS: list =\t%s\n", list->next);
 }
 
 void			get_ascii_sorted(t_file **head)
@@ -133,13 +125,9 @@ void			get_sorted(t_file **head, t_opts option)
 	t_file	*next;
 
 	get_ascii_sorted(head);
-	//print_list(*head);
-	//ft_printf("------------\n");
 	if (option.time_sort)
 	{
-		// if time equal only ascii sort
 		get_time_sorted(head);
-		//ft_printf("++++++++++\n");
 	}
 	if (option.reverse_sort)
 	{

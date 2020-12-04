@@ -6,13 +6,11 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 19:04:14 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/03 05:56:35 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-#define OPTIONS	"-Ralrt"
 
 void	init_align(t_align *align)
 {
@@ -54,9 +52,9 @@ void	print_list(t_file *head, t_opts option)
 	}
 }
 
-void	print_list_lists(t_dirlist *head, int dir_path, t_opts option)
+void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
-	t_dirlist *first;
+	t_dirs *first;
 
 	first = head;
 	while (head)
@@ -76,7 +74,7 @@ void	print_list_lists(t_dirlist *head, int dir_path, t_opts option)
 	}
 }
 
-void	ls_output(t_file *not_dirs, t_dirlist *dirs, int files_c, t_opts option)
+void	ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
 {
 	int	dir_path;
 

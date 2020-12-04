@@ -6,13 +6,11 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/13 18:06:04 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/03 03:05:42 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-#define OPTIONS "-Ralrt"
 
 static int	get_file_position(t_args *ls)
 {
@@ -57,6 +55,7 @@ char		**files_parser(t_args *ls)
 
 static void	get_options(char alpha, t_opts *option)
 {
+	option->size = (alpha == 's') ? 1 : option->size;
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
 	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
 	option->long_format = (alpha == 'l') ? 1 : option->long_format;

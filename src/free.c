@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 10:13:40 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/11 17:24:09 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/03 05:54:33 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	free_list(t_file **head)
 	}
 }
 
-void	free_list_lists(t_dirlist **head)
+void	free_list_lists(t_dirs **head)
 {
-	t_dirlist	*next;
+	t_dirs	*next;
 
 	while (*head)
 	{

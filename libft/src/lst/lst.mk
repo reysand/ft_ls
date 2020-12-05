@@ -17,6 +17,7 @@ LST_SRCS	= ft_lstadd.c \
 			  ft_lstdelone.c \
 			  ft_lstiter.c \
 			  ft_lstmap.c \
-			  ft_lstnew.c
+			  ft_lstnew.c \
+			  ft_lstrev.c
 
 LST = $(addprefix $(LST_DIR), $(LST_SRCS))

@@ -20,6 +20,7 @@ MEM_SRCS	= ft_bzero.c \
 			  ft_memcpy.c \
 			  ft_memdel.c \
 			  ft_memmove.c \
-			  ft_memset.c
+			  ft_memset.c \
+			  ft_realloc.c
 
 MEM	 = $(addprefix $(MEM_DIR), $(MEM_SRCS))

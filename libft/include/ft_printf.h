@@ -14,7 +14,7 @@
 # define FT_PRINTF_H
 
 # include "libft.h"
-# include "structs.h"
+# include "ft_printf_structs.h"
 
 int			ft_printf(const char *format, ...);
 int			ft_printf_fd(int fd, const char *format, ...);

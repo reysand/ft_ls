@@ -12,8 +12,7 @@
 
 STR_DIR		= src/str/
 
-STR_SRCS	= ft_lstrev.c \
-			  ft_strcat.c \
+STR_SRCS	= ft_strcat.c \
 			  ft_strchr.c \
 			  ft_strclr.c \
 			  ft_strcmp.c \

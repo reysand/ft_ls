@@ -55,6 +55,5 @@ dkms.conf
 .idea/
 build/
 cmake-build-debug/
-CMakeLists.txt
 debug
 ft_ls

@@ -12,6 +12,16 @@
 
 #include "ft_ls.h"
 
+/*
+** Function:	get_valid_files
+** Arguments:	char **files, t_args *ls, t_opts option
+** Return:		(void)
+** Description:	check existing files and sort them
+**
+** NOTE:		(malloc){*head,(*head)->name}
+** TODO:		sort dirs and not dirs in different lists
+*/
+
 void	enotdir_add(char *file, t_file **head)
 {
 	t_file	*not_dirs;

@@ -21,44 +21,24 @@
 # include "ft_ls_structs.h"
 # include "libft.h"
 
-# define OPTIONS "-Ralrst"
+# define OPTIONS "-Ralrt"
 # define ERR_MSG "ft_ls: %s %s\n"
 
-# ifdef __APPLE_
+# ifdef __APPLE__
 #  define IS_DIR(m) (m & S_IFDIR) == S_IFDIR
 #  define ST_CTIME st_timespec
 # elif __linux__
 #  define IS_DIR(m) S_ISDIR(m)
-#  define ST_CTIME st_ctim
+#  define ST_MTIME st_mtime
 # endif
 
-/*
-** File:	args_parser.c
-*/
 void	options_parser(t_args *ls, t_opts *option);
 char	**files_parser(t_args *ls);
-
-/*
-** File:	sorting.c
-*/
 char	**get_ascii_sorted_args(int argc, char **argv);
-
-/*
-** File:	main.c
-*/
 void	dir_handler(char *path, int rec, t_args *ls, t_opts option);
-
-/*
-** File:	ft_ls.c
-*/
 int		ft_ls(char *name, t_file **file_info, t_opts option);
-
-/*
-** File:	sorting.c
-*/
 void	get_sorted(t_file **head, t_opts option);
 void	get_ascii_sorted(t_file **head);
-void	get_reverse_sorted(t_file **head);
 void	get_time_sorted(t_file **head);
 
 /*

@@ -12,6 +12,13 @@
 
 #include "ft_ls.h"
 
+/*
+** Function:	get_file_position
+** Arguments:	t_args *ls
+** Return:		(int){0,...,ls->argc}
+** Description:	get position of first file in arguments
+*/
+
 static int	get_file_position(t_args *ls)
 {
 	int i;
@@ -24,6 +31,15 @@ static int	get_file_position(t_args *ls)
 	ls->files_c = ls->argc - i;
 	return (i);
 }
+
+/*
+** Function:	files_parser
+** Arguments:	t_args *ls
+** Return:		(char **){NULL,files}
+** Description:	get array of files, sort and get their number
+**
+** NOTE:		(malloc){files,*files}
+*/
 
 char		**files_parser(t_args *ls)
 {
@@ -53,7 +69,14 @@ char		**files_parser(t_args *ls)
 	return (files);
 }
 
-static void	get_options(char alpha, t_opts *option)
+/*
+** Function:	get_option
+** Arguments:	char alpha, t_opts *option
+** Return:		(void)
+** Description:	option recognition
+*/
+
+static void	get_option(char alpha, t_opts *option)
 {
 	option->size = (alpha == 's') ? 1 : option->size;
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
@@ -62,6 +85,13 @@ static void	get_options(char alpha, t_opts *option)
 	option->reverse_sort = (alpha == 'r') ? 1 : option->reverse_sort;
 	option->recursive_read = (alpha == 'R') ? 1 : option->recursive_read;
 }
+
+/*
+** Function:	is_option
+** Arguments:	char *str, t_opts *option
+** Return:		(int){0,1}
+** Description:	validation options
+*/
 
 static int	is_option(char *str, t_opts *option)
 {
@@ -84,12 +114,19 @@ static int	is_option(char *str, t_opts *option)
 				ft_printf("usage: ft_ls [%s] [file ...]\n", OPTIONS);
 				exit(EXIT_FAILURE);
 			}
-			get_options(str[i++], option);
+			get_option(str[i++], option);
 		}
 		return (0);
 	}
 	return (1);
 }
+
+/*
+** Function:	options_parser
+** Arguments:	t_args *ls, t_opts *option
+** Return:		(void)
+** Description:	initialize structure with options and get their number
+*/
 
 void		options_parser(t_args *ls, t_opts *option)
 {

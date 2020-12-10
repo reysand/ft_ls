@@ -12,6 +12,15 @@
 
 #include "ft_ls.h"
 
+/*
+** Function:	get_info
+** Arguments:	char *full_path, t_file **head, t_dirent *entry
+** Return:		(void)
+** Description:	get all file info
+**
+** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
+*/
+
 static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 {
 	t_file	*dirs;
@@ -23,7 +32,7 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	file->full_path = ft_strdup(full_path);
 	lstat(full_path, &file->stat);
 	file->next = NULL;
-	if (*head == NULL)
+	if (!(*head))
 	{
 		*head = file;
 		return ;
@@ -36,6 +45,15 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	dirs->next = file;
 }
 
+/*
+** Function:	get_path
+** Arguments:	char *path, char *name
+** Return:		(char *){full_path}
+** Description:	get full path string
+**
+** NOTE:		(malloc){full_path}
+*/
+
 char		*get_path(char *path, char *name)
 {
 	char	*temp;
@@ -47,6 +65,13 @@ char		*get_path(char *path, char *name)
 	free(temp);
 	return (full_path);
 }
+
+/*
+** Function:	ft_ls
+** Arguments:	char *path, t_file **dirs, t_opts option
+** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
+** Description:	get a valid dir and info about its contents
+*/
 
 int			ft_ls(char *path, t_file **dirs, t_opts option)
 {
@@ -70,10 +95,8 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 			free(full_path);
 		}
 	}
-	if (!(*dirs))
-	{
-		return (EXIT_FAILURE);
-	}
 	closedir(dir_stream);
+	if (!(*dirs))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

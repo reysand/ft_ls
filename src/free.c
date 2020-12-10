@@ -33,6 +33,7 @@ void	free_list(t_file **head)
 	{
 		next = (*head)->next;
 		free((*head)->name);
+		free((*head)->full_path);
 		ft_memdel((void *)head);
 		*head = next;
 	}

@@ -101,16 +101,15 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 }
 
 /*
-** Function:	test
-** Arguments:	char **files, t_args *ls
-** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
-** Description:	Test function
+** Function:	get_valid_files
+** Arguments:	char **files, t_args *ls, t_opts option
+** Return:		(void)
+** Description:	check existing files and sort them
 **
-** TODO:		rename function
 ** TODO:		sort dirs and not dirs in different lists
 */
 
-static void	test(char **files, t_args *ls, t_opts option)
+static void	get_valid_files(char **files, t_args *ls, t_opts option)
 {
 	t_stat	f_stat;
 	int		i;
@@ -142,7 +141,7 @@ static void	test(char **files, t_args *ls, t_opts option)
 ** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
 ** Description:
 **
-** FIXME:		rename char **files
+** TODO:		write description
 */
 
 int			main(int argc, char **argv)
@@ -158,7 +157,7 @@ int			main(int argc, char **argv)
 	ls.not_dirs = NULL;
 	options_parser(&ls, &options);
 	files = files_parser(&ls);
-	test(files, &ls, options);
+	get_valid_files(files, &ls, options);
 	files_list = ls.files;
 	while (files_list)
 	{

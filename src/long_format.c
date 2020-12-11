@@ -207,16 +207,90 @@ void	get_nlink(t_file *head, t_align *align)
 }
 
 /*
+** Function:	get_mode_perm
+** Arguments:	int mode
+** Return:		(void)
+** Description:	output permissions value
+**
+** TODO:		write description
+** TODO:		rename function
+*/
+
+void	get_mode_perm(int mode, t_perm perm)
+{
+	char	exec_v;
+
+	mode & perm.s_read ? ft_printf("r") : ft_printf("-");
+	mode & perm.s_write ? ft_printf("w") : ft_printf("-");
+	if (mode & perm.s_bit)
+	{
+		if (mode & perm.s_exec)
+			exec_v = perm.is_exec;
+		else
+			exec_v = perm.not_exec;
+	}
+	else
+	{
+		if (mode & perm.s_exec)
+			exec_v = 'x';
+		else
+			exec_v = 'X';
+	}
+	ft_printf("%c", exec_v);
+}
+
+/*
+** Function:	perm_init
+** Arguments:	char who, t_mode *perm
+** Return:		(void)
+** Description:	init t_perm struct for each permissions group
+**
+** TODO:		write description
+** TODO:		rename function
+*/
+
+void	perm_init(char who, t_perm *perm)
+{
+	if (who == 'u')
+	{
+		perm->s_read = S_IRUSR;
+		perm->s_write = S_IWUSR;
+		perm->s_exec = S_IXUSR;
+		perm->s_bit = S_ISUID;
+		perm->is_exec = 's';
+		perm->not_exec = 'S';
+	}
+	else if (who == 'g')
+	{
+		perm->s_read = S_IRGRP;
+		perm->s_write = S_IWGRP;
+		perm->s_exec = S_IXGRP;
+		perm->s_bit = S_ISGID;
+	}
+	else
+	{
+		perm->s_read = S_IROTH;
+		perm->s_write = S_IWOTH;
+		perm->s_exec = S_IXOTH;
+		perm->s_bit = S_ISVTX;
+		perm->is_exec = 't';
+		perm->not_exec = 'T';
+	}
+}
+
+/*
 ** Function:	get_mode
 ** Arguments:	int mode
 ** Return:		(void)
-** Description:
+** Description:	get file entry type
 **
 ** TODO:		write description
 */
 
 void	get_mode(int mode)
 {
+	t_perm	perm;
+
 	if (S_ISDIR(mode))
 		ft_printf("d");
 	else if (S_ISCHR(mode))
@@ -231,24 +305,12 @@ void	get_mode(int mode)
 		ft_printf("s");
 	else
 		ft_printf("-");
-	mode & S_IRUSR ? ft_printf("r") : ft_printf("-");
-	mode & S_IWUSR ? ft_printf("w") : ft_printf("-");
-	if (mode & S_ISUID)
-		mode & S_IXUSR ? ft_printf("s") : ft_printf("S");
-	else
-		mode & S_IXUSR ? ft_printf("x") : ft_printf("-");
-	mode & S_IRGRP ? ft_printf("r") : ft_printf("-");
-	mode & S_IWGRP ? ft_printf("w") : ft_printf("-");
-	if (mode & S_ISGID)
-		mode & S_IXGRP ? ft_printf("s") : ft_printf("S");
-	else
-		mode & S_IXGRP ? ft_printf("x") : ft_printf("-");
-	mode & S_IROTH ? ft_printf("r") : ft_printf("-");
-	mode & S_IWOTH ? ft_printf("w") : ft_printf("-");
-	if (mode & S_ISVTX)
-		mode & S_IXOTH ? ft_printf("t") : ft_printf("T");
-	else
-		mode & S_IXOTH ? ft_printf("x") : ft_printf("-");
+	perm_init('u', &perm);
+	get_mode_perm(mode, perm);
+	perm_init('g', &perm);
+	get_mode_perm(mode, perm);
+	perm_init('o', &perm);
+	get_mode_perm(mode, perm);
 }
 
 int		get_total(t_file *head)

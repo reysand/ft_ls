@@ -19,6 +19,11 @@
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
+/*
+** Struct:				t_align
+** Description:
+*/
+
 typedef struct			s_align
 {
 	int					size;
@@ -26,6 +31,21 @@ typedef struct			s_align
 	int					group;
 	int					nlink;
 }						t_align;
+
+/*
+** Struct:				t_mode
+** Description:
+*/
+
+typedef struct			s_perm
+{
+	int					s_read;
+	int					s_write;
+	int					s_exec;
+	int					s_bit;
+	char				is_exec;
+	char				not_exec;
+}						t_perm;
 
 /*
 ** Struct:				t_file

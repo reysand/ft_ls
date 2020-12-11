@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   ft_printf_structs.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/21 13:51:15 by fhelena           #+#    #+#             */
-/*   Updated: 2020/09/10 01:10:51 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/11 13:32:36 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#ifndef FT_PRINTF_STRUCTS_H
+# define FT_PRINTF_STRUCTS_H
 
 # include <stdarg.h>
 

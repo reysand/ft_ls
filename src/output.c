@@ -12,13 +12,32 @@
 
 #include "ft_ls.h"
 
+/*
+** Function:	init_align
+** Arguments:	t_align *align
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
 void	init_align(t_align *align)
 {
-	align->nlink = 0;
+	align->size = 0;
 	align->user = 0;
 	align->group = 0;
-	align->size = 0;
+	align->nlink = 0;
 }
+
+/*
+** Function:	print_list
+** Arguments:	t_file *head, t_opts option
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+** NOTE:		(malloc){l_name}
+*/
 
 void	print_list(t_file *head, t_opts option)
 {
@@ -52,6 +71,15 @@ void	print_list(t_file *head, t_opts option)
 	}
 }
 
+/*
+** Function:	print_list_lists
+** Arguments:	t_dirs *head, int dir_path, t_opts option
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
 void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
 	t_dirs *first;
@@ -63,7 +91,7 @@ void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 		{
 			ft_printf("%s:\n", head->path);
 		}
-		if (option.long_format)
+		if (option.long_format && head->dir)
 		{
 			ft_printf("total %d\n", get_total(head->dir));
 		}
@@ -73,6 +101,15 @@ void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 		head = head->next;
 	}
 }
+
+/*
+** Function:	ls_output
+** Arguments:	t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
 
 void	ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
 {

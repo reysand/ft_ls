@@ -16,7 +16,7 @@
 ** Function:	get_file_position
 ** Arguments:	t_args *ls
 ** Return:		(int){0,...,ls->argc}
-** Description:	get position of first file in arguments
+** Description:	get the position of first file in arguments
 */
 
 static int	get_file_position(t_args *ls)
@@ -36,7 +36,7 @@ static int	get_file_position(t_args *ls)
 ** Function:	files_parser
 ** Arguments:	t_args *ls
 ** Return:		(char **){NULL,files}
-** Description:	get array of files, sort and get their number
+** Description:	get an array of files, sort and get their number
 **
 ** NOTE:		(malloc){files,*files}
 */
@@ -78,8 +78,8 @@ char		**files_parser(t_args *ls)
 
 static void	get_option(char alpha, t_opts *option)
 {
-	option->size = (alpha == 's') ? 1 : option->size;
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
+	option->fs_blocks = (alpha == 's') ? 1 : option->fs_blocks;
 	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
 	option->long_format = (alpha == 'l') ? 1 : option->long_format;
 	option->reverse_sort = (alpha == 'r') ? 1 : option->reverse_sort;
@@ -98,11 +98,11 @@ static int	is_option(char *str, t_opts *option)
 	size_t	i;
 	size_t	j;
 
-	i = 1;
-	if (str[i - 1] == '-' && str[i])
+	if (str[0] == OPTIONS[0] && str[1])
 	{
-		if (str[i] == '-' && !str[i + 1])
+		if (str[1] == OPTIONS[0] && !str[2])
 			return (1);
+		i = 1;
 		while (str[i])
 		{
 			j = 1;
@@ -125,7 +125,7 @@ static int	is_option(char *str, t_opts *option)
 ** Function:	options_parser
 ** Arguments:	t_args *ls, t_opts *option
 ** Return:		(void)
-** Description:	initialize structure with options and get their number
+** Description:	initialize the structure with options and get their number
 */
 
 void		options_parser(t_args *ls, t_opts *option)

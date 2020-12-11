@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/03 08:21:17 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/11 13:34:54 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Function:	swap_nodes
 ** Arguments:	t_file *head
 ** Return:		(t_file *){head}
-** Description:	swap two nodes in t_file structure
+** Description:	swap two nodes in the t_file structure
 */
 
 static t_file	*swap_nodes(t_file *head)
@@ -38,7 +38,7 @@ static t_file	*swap_nodes(t_file *head)
 ** Function:	get_time_sorted
 ** Arguments:	t_file **head
 ** Return:		(void)
-** Description:	sort files and dirs by modify time
+** Description:	sort files and dirs by modification time
 **
 ** TODO:		limit 25 lines
 */
@@ -59,8 +59,8 @@ void			get_time_sorted(t_file **head)
 			is_sorted = 0;
 			prev = list;
 		}
-		time_curr = list->stat.ST_MTIME;
-		time_next = list->next->stat.ST_MTIME;
+		time_curr = list->stat.st_mtime;
+		time_next = list->next->stat.st_mtime;
 		if (time_curr < time_next)
 		{
 			is_sorted = 1;
@@ -127,7 +127,7 @@ void			get_ascii_sorted(t_file **head)
 ** Function:	get_sorted
 ** Arguments:	t_file **head, t_opts option
 ** Return:		(void)
-** Description:	sort in ascii and if needed by tine and reverse order
+** Description:	sort in ascii and, if necessary, in time and in reverse order
 */
 
 void			get_sorted(t_file **head, t_opts option)
@@ -161,7 +161,7 @@ void			get_sorted(t_file **head, t_opts option)
 ** Function:	get_ascii_sorted_args
 ** Arguments:	int argc, char **argv
 ** Return:		(char **){argv}
-** Description:	sorting in ascii order files in array
+** Description:	sorting files array in ascii order
 */
 
 char			**get_ascii_sorted_args(int argc, char **argv)

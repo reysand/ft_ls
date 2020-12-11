@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/04 13:35:13 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/11 13:51:04 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@
 # include "ft_ls_structs.h"
 # include "libft.h"
 
-# define OPTIONS "-Ralrt"
-# define ERR_MSG "ft_ls: %s %s\n"
+# define OPTIONS "-Ralrst1"
+# define ERR_MSG "ft_ls: %s: %s\n"
 
 # ifdef __APPLE__
 #  define IS_DIR(m) (m & S_IFDIR) == S_IFDIR
-#  define ST_CTIME st_timespec
 # elif __linux__
 #  define IS_DIR(m) S_ISDIR(m)
-#  define ST_MTIME st_mtime
 # endif
 
 void	options_parser(t_args *ls, t_opts *option);

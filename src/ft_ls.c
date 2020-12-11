@@ -16,7 +16,7 @@
 ** Function:	get_info
 ** Arguments:	char *full_path, t_file **head, t_dirent *entry
 ** Return:		(void)
-** Description:	get all file info
+** Description:	get all info about a file
 **
 ** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
 */
@@ -70,7 +70,7 @@ char		*get_path(char *path, char *name)
 ** Function:	ft_ls
 ** Arguments:	char *path, t_file **dirs, t_opts option
 ** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
-** Description:	get a valid dir and info about its contents
+** Description:	get the valid dir and info about its contents
 */
 
 int			ft_ls(char *path, t_file **dirs, t_opts option)
@@ -82,9 +82,7 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 	if (!(dir_stream = opendir(path)))
 	{
 		if (errno == ENOTDIR || errno == ELOOP)
-		{
 			return (EXIT_SUCCESS);
-		}
 	}
 	while ((entry = readdir(dir_stream)))
 	{

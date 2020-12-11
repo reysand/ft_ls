@@ -6,20 +6,19 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/03 05:55:33 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/11 14:15:25 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /*
-** Function:	get_valid_files
-** Arguments:	char **files, t_args *ls, t_opts option
+** Function:	enotdir_add
+** Arguments:	char *file, t_file **head
 ** Return:		(void)
-** Description:	check existing files and sort them
+** Description:	Add files to t_file structure
 **
 ** NOTE:		(malloc){*head,(*head)->name}
-** TODO:		sort dirs and not dirs in different lists
 */
 
 void	enotdir_add(char *file, t_file **head)
@@ -30,7 +29,7 @@ void	enotdir_add(char *file, t_file **head)
 	if (!(item = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
 	item->name = ft_strdup(file);
-	stat(file, &item->stat);
+	lstat(file, &item->stat);
 	item->next = NULL;
 	if (*head)
 	{
@@ -44,6 +43,15 @@ void	enotdir_add(char *file, t_file **head)
 		*head = item;
 	}
 }
+
+/*
+** Function:	dir_content_add
+** Arguments:	char *path, t_dirs **head, t_file *dir_info
+** Return:		(void)
+** Description:	Add dirs content to t_dirs structure
+**
+** NOTE:		(malloc){*head,(*head)->path}
+*/
 
 void	dir_content_add(char *path, t_dirs **head, t_file *dir_info)
 {

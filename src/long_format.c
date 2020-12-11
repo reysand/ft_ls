@@ -12,6 +12,15 @@
 
 #include "ft_ls.h"
 
+/*
+** Function:	get_time
+** Arguments:	t_stat stat
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
 void	get_time(t_stat stat)
 {
 	time_t	now;
@@ -41,6 +50,15 @@ void	get_time(t_stat stat)
 	free_matrix(temp_time, 4);
 }
 
+/*
+** Function:	get_size
+** Arguments:	t_file *head, t_align *align
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
 void	get_size(t_file *head, t_align *align)
 {
 	t_file	*curr_file;
@@ -68,6 +86,16 @@ void	get_size(t_file *head, t_align *align)
 	}
 	ft_printf("%d", curr_file->stat.st_size);
 }
+
+/*
+** Function:	get_user
+** Arguments:	t_file *head, t_align *align
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+** TODO:		limit 25 lines
+*/
 
 void	get_group(t_file *head, t_align *align)
 {
@@ -100,6 +128,16 @@ void	get_group(t_file *head, t_align *align)
 	ft_printf("%s", gr->gr_name);
 }
 
+/*
+** Function:	get_user
+** Arguments:	t_file *head, t_align *align
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+** TODO:		limit 25 lines
+*/
+
 void	get_user(t_file *head, t_align *align)
 {
 	struct passwd	*pw;
@@ -131,6 +169,15 @@ void	get_user(t_file *head, t_align *align)
 	ft_printf("%s", pw->pw_name);
 }
 
+/*
+** Function:	get_mode
+** Arguments:	t_file *head, t_align *align
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
 void	get_nlink(t_file *head, t_align *align)
 {
 	t_file	*curr_file;
@@ -159,6 +206,15 @@ void	get_nlink(t_file *head, t_align *align)
 	ft_printf("%d", curr_file->stat.st_nlink);
 }
 
+/*
+** Function:	get_mode
+** Arguments:	int mode
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
 void	get_mode(int mode)
 {
 	if (S_ISDIR(mode))
@@ -177,13 +233,22 @@ void	get_mode(int mode)
 		ft_printf("-");
 	mode & S_IRUSR ? ft_printf("r") : ft_printf("-");
 	mode & S_IWUSR ? ft_printf("w") : ft_printf("-");
-	mode & S_IXUSR ? ft_printf("x") : ft_printf("-");
+	if (mode & S_ISUID)
+		mode & S_IXUSR ? ft_printf("s") : ft_printf("S");
+	else
+		mode & S_IXUSR ? ft_printf("x") : ft_printf("-");
 	mode & S_IRGRP ? ft_printf("r") : ft_printf("-");
 	mode & S_IWGRP ? ft_printf("w") : ft_printf("-");
-	mode & S_IXGRP ? ft_printf("x") : ft_printf("-");
+	if (mode & S_ISGID)
+		mode & S_IXGRP ? ft_printf("s") : ft_printf("S");
+	else
+		mode & S_IXGRP ? ft_printf("x") : ft_printf("-");
 	mode & S_IROTH ? ft_printf("r") : ft_printf("-");
 	mode & S_IWOTH ? ft_printf("w") : ft_printf("-");
-	mode & S_IXOTH ? ft_printf("x") : ft_printf("-");
+	if (mode & S_ISVTX)
+		mode & S_IXOTH ? ft_printf("t") : ft_printf("T");
+	else
+		mode & S_IXOTH ? ft_printf("x") : ft_printf("-");
 }
 
 int		get_total(t_file *head)

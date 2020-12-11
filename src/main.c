@@ -16,12 +16,12 @@
 ** Function:	is_valid_dir
 ** Arguments:	char *dir_path, t_file *file
 ** Return:		(int){0,1}
-** Description:
+** Description:	Check dir for recursive reading
 */
 
 static int	is_valid_dir(char *dir_path, t_file *file)
 {
-	stat(dir_path, &file->stat);
+	lstat(dir_path, &file->stat);
 	if (IS_DIR(file->stat.st_mode))
 	{
 		if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
@@ -37,6 +37,8 @@ static int	is_valid_dir(char *dir_path, t_file *file)
 ** Arguments:	char *path, t_args *ls, t_opts option
 ** Return:		(void)
 ** Description:
+**
+** TODO:		write description
 */
 
 static void	recursive_handler(char *path, t_args *ls, t_opts option)
@@ -73,6 +75,7 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 ** Return:		(void)
 ** Description:
 **
+** TODO:		write description
 ** FIXME:		rename dir_handler
 */
 
@@ -105,8 +108,6 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 ** Arguments:	char **files, t_args *ls, t_opts option
 ** Return:		(void)
 ** Description:	check existing files and sort them
-**
-** TODO:		sort dirs and not dirs in different lists
 */
 
 static void	get_valid_files(char **files, t_args *ls, t_opts option)

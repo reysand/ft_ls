@@ -21,10 +21,10 @@ typedef struct stat		t_stat;
 
 typedef struct			s_align
 {
-	int					nlink;
+	int					size;
 	int					user;
 	int					group;
-	int					size;
+	int					nlink;
 }						t_align;
 
 /*
@@ -76,13 +76,13 @@ typedef struct			s_args
 
 /*
 ** Struct:				t_opts
-** Desctiption:
+** Description:
 */
 
 typedef struct			s_opts
 {
-	int					size;
 	int					dot_files;
+	int					fs_blocks;
 	int					time_sort;
 	int					long_format;
 	int					reverse_sort;

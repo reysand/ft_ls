@@ -18,7 +18,8 @@
 ** Return:		(void)
 ** Description:	Add files to t_file structure
 **
-** NOTE:		(malloc){*head,(*head)->name}
+** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
+** TODO:		delete item->name
 */
 
 void	enotdir_add(char *file, t_file **head)
@@ -29,6 +30,7 @@ void	enotdir_add(char *file, t_file **head)
 	if (!(item = (t_file *)malloc(sizeof(t_file))))
 		exit(EXIT_FAILURE);
 	item->name = ft_strdup(file);
+	item->full_path = ft_strdup(file);
 	lstat(file, &item->stat);
 	item->next = NULL;
 	if (*head)

@@ -234,7 +234,7 @@ void	get_mode_perm(int mode, t_perm perm)
 		if (mode & perm.s_exec)
 			exec_v = 'x';
 		else
-			exec_v = 'X';
+			exec_v = '-';
 	}
 	ft_printf("%c", exec_v);
 }

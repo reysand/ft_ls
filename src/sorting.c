@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/11 13:34:54 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/12 20:40:52 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,29 +97,29 @@ void			get_time_sorted(t_file **head)
 void			get_ascii_sorted(t_file **head)
 {
 	t_file	*list;
-	t_file	*prev;
-	int		is_sorted;
+	t_file	**first;
+	t_file	**second;
 
 	list = *head;
-	while (list->next)
+	first = &(*head);
+	second = &(*first)->next;
+	while ((*first)->next)
 	{
-		if (list == *head)
+		ft_printf_fd(STDERR_FILENO, "%s ", (*first)->name);
+		ft_printf_fd(STDERR_FILENO, "%s\n", (*second)->name);
+		if (ft_strcmp((*first)->name, (*second)->name) > 0)
 		{
-			is_sorted = 0;
-			prev = list;
+			ft_printf_fd(STDERR_FILENO, "NEED_SWAP\t");
+			*first = (*first)->next;
+			ft_printf_fd(STDERR_FILENO, "%s ", (*first)->name);
+			ft_printf_fd(STDERR_FILENO, "%s\n", (*second)->name);
+			ft_printf_fd(STDERR_FILENO, "---open---\n");
+			ft_printf_fd(STDERR_FILENO, "%s ", (*first)->next->name);
+			ft_printf_fd(STDERR_FILENO, "%s\n", (*second)->next->name);
+			ft_printf_fd(STDERR_FILENO, "---close---\n");
 		}
-		if (ft_strcmp(list->name, list->next->name) > 0)
-		{
-			is_sorted = 1;
-			if (prev == list && list == *head)
-				*head = swap_nodes(list);
-			else
-				prev->next = swap_nodes(list);
-		}
-		prev = list;
-		list = list->next;
-		if (!list->next && is_sorted)
-			list = *head;
+		first = &(*first)->next;
+		second = &(*second)->next;
 	}
 }
 

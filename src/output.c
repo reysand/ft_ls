@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/03 05:56:35 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/13 14:34:20 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void	print_list(t_file *head, t_opts option)
 				return ;
 			if ((len = readlink(head->full_path, l_name, PATH_MAX)) != -1)
 				l_name[len] = '\0';
-			else
-				ft_printf_fd(STDERR_FILENO, "%s\n", strerror(errno));
 			ft_printf(" -> %s", l_name);
 		}
 		ft_printf("\n");

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/13 18:29:21 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/13 19:00:31 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,51 +39,32 @@ static t_file	*swap_nodes(t_file *head)
 ** Arguments:	t_file **head
 ** Return:		(void)
 ** Description:	sort files and dirs by modification time
-**
-** TODO:		limit 25 lines
 */
 
 void			get_time_sorted(t_file **head)
 {
+	t_file		**curr;
 	t_file		*list;
-	t_file		*prev;
-	long long	time_curr;
-	long long	time_next;
 	int			is_sorted;
 
-	list = *head;
-	while (list->next)
+	curr = &(*head);
+	while ((*curr)->next)
 	{
-		if (list == *head)
+		if (curr == head)
 		{
 			is_sorted = 0;
-			prev = list;
+			list = (*head)->next;
 		}
-		time_curr = list->stat.st_mtime;
-		time_next = list->next->stat.st_mtime;
-		if (time_curr < time_next)
+		if ((*curr)->stat.st_mtime < list->stat.st_mtime)
 		{
 			is_sorted = 1;
-			if (list == *head)
-			{
-				*head = swap_nodes(list);
-				prev = *head;
-				list = (*head)->next;
-			}
-			else
-			{
-				prev->next = swap_nodes(list);
-				list = prev->next->next;
-				prev = prev->next;
-			}
+			*curr = swap_nodes(*curr);
+			list = (*curr)->next;
 		}
-		else
-		{
-			prev = list;
-			list = list->next;
-		}
-		if (!list->next && is_sorted)
-			list = *head;
+		curr = &(*curr)->next;
+		list = list->next;
+		if (!list && is_sorted)
+			curr = &(*head);
 	}
 }
 

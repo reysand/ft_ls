@@ -34,30 +34,23 @@
 void	options_parser(t_args *ls, t_opts *option);
 char	**files_parser(t_args *ls);
 char	**get_ascii_sorted_args(int argc, char **argv);
+void	err_out(char *name, t_args *ls);
+void	enotdir_add(char *file, t_file **head);
+void	get_sorted(t_file **head, t_opts option);
 void	dir_handler(char *path, int rec, t_args *ls, t_opts option);
 int		ft_ls(char *name, t_file **file_info, t_opts option);
-void	get_sorted(t_file **head, t_opts option);
-void	get_ascii_sorted(t_file **head);
-void	get_time_sorted(t_file **head);
+char	*get_path(char *dir, char *subdir);
 void	dir_content_add(char *path, t_dirs **head, t_file *dir_info);
-void	enotdir_add(char *file, t_file **head);
+void	free_list(t_file **head);
 void	ls_output(t_file *not_dirs, t_dirs *list, int files_c, t_opts option);
-int		get_total(t_file *head);
 void	get_mode(int mode);
 void	get_nlink(t_file *head, t_align *align);
 void	get_user(t_file *head, t_align *align);
 void	get_group(t_file *head, t_align *align);
 void	get_size(t_file *head, t_align *align);
 void	get_time(t_stat stat);
+int		get_total(t_file *head);
 void	free_list_lists(t_dirs **head);
-void	free_list(t_file **head);
 void	free_matrix(char **matrix, int size);
-
-/*
-** NOTE:	Debugging
-** TODO:	Delete
-*/
-char	*get_path(char *dir, char *subdir);
-void	print_list(t_file *head, t_opts option);
 
 #endif

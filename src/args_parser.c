@@ -79,7 +79,6 @@ char		**files_parser(t_args *ls)
 static void	get_option(char alpha, t_opts *option)
 {
 	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
-	option->fs_blocks = (alpha == 's') ? 1 : option->fs_blocks;
 	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
 	option->long_format = (alpha == 'l') ? 1 : option->long_format;
 	option->reverse_sort = (alpha == 'r') ? 1 : option->reverse_sort;

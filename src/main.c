@@ -114,20 +114,24 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 {
 	t_stat	f_stat;
 	int		i;
+	int		stat_res;
 
 	i = 0;
 	ls->ret_v = EXIT_SUCCESS;
 	while (i < ls->files_c)
 	{
-		if (lstat(files[i], &f_stat) != -1)
+		if (option.long_format)
+			stat_res = lstat(files[i], &f_stat);
+		else
+			stat_res = stat(files[i], &f_stat);
+		if ((!stat_res && !((f_stat.st_mode >> 8) & 1)) || stat_res == -1)
 		{
-			enotdir_add(files[i], &ls->files);
+			if (!stat_res)
+				errno = EACCES;
+			err_out(files[i], ls);
 		}
 		else
-		{
-			ls->ret_v = EXIT_FAILURE;
-			ft_printf_fd(STDERR_FILENO, ERR_MSG, files[i], strerror(errno));
-		}
+			enotdir_add(files[i], &ls->files);
 		++i;
 	}
 	if (ls->files)

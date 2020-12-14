@@ -17,6 +17,8 @@
 ** Arguments:	t_file *head
 ** Return:		(t_file *){head}
 ** Description:	swap two nodes in the t_file structure
+**
+** TODO:		Rewrite
 */
 
 static t_file	*swap_nodes(t_file *head)
@@ -41,7 +43,7 @@ static t_file	*swap_nodes(t_file *head)
 ** Description:	sort files and dirs by modification time
 */
 
-void			get_time_sorted(t_file **head)
+static void		get_time_sorted(t_file **head)
 {
 	t_file		**curr;
 	t_file		*list;
@@ -75,7 +77,7 @@ void			get_time_sorted(t_file **head)
 ** Description:	sort files and dirs in ascii order
 */
 
-void			get_ascii_sorted(t_file **head)
+static void		get_ascii_sorted(t_file **head)
 {
 	t_file	**curr;
 	t_file	*list;
@@ -107,6 +109,8 @@ void			get_ascii_sorted(t_file **head)
 ** Arguments:	t_file **head, t_opts option
 ** Return:		(void)
 ** Description:	sort in ascii and, if necessary, in time and in reverse order
+**
+** TODO:		Rewrite
 */
 
 void			get_sorted(t_file **head, t_opts option)

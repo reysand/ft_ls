@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/14 11:27:36 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/14 20:03:23 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** TODO:		write description
 */
 
-void	init_align(t_align *align)
+void		init_align(t_align *align)
 {
 	align->permissions = 0;
 	align->nlink = 0;
@@ -32,9 +32,11 @@ void	init_align(t_align *align)
 
 /*
 ** TODO:		write description
+** TODO:		add get_major()
+** TODO:		add get_minor()
 */
 
-void	long_format(t_file *head, t_align *align_max)
+void		long_format(t_file *head, t_align *align_max)
 {
 	get_mode(head->stat.st_mode);
 	get_nlink(head, align_max);
@@ -54,7 +56,7 @@ void	long_format(t_file *head, t_align *align_max)
 ** NOTE:		(malloc){l_name}
 */
 
-void	print_list(t_file *head, t_opts option)
+static void	print_list(t_file *head, t_opts option)
 {
 	t_align	align_max;
 	char	*l_name;
@@ -88,7 +90,7 @@ void	print_list(t_file *head, t_opts option)
 ** TODO:		write description
 */
 
-void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
+void		print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
 	t_dirs *first;
 
@@ -119,7 +121,7 @@ void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 ** TODO:		write description
 */
 
-void	ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
+void		ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
 {
 	int	dir_path;
 
@@ -136,4 +138,17 @@ void	ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
 	free_list(&not_dirs);
 	print_list_lists(dirs, dir_path, option);
 	free_list_lists(&dirs);
+}
+
+/*
+** Function:	err_out
+** Arguments:	char *name, t_args *ls
+** Return:		(void)
+** Description:	error output requiring program exit
+*/
+
+void		err_out(char *name, t_args *ls)
+{
+	ls->ret_v = EXIT_FAILURE;
+	ft_printf_fd(STDERR_FILENO, ERR_MSG, name, strerror(errno));
 }

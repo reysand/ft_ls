@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/03 05:44:46 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/13 19:20:45 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ typedef struct stat		t_stat;
 
 typedef struct			s_align
 {
-	int					size;
+	int					permissions;
+	int					nlink;
 	int					user;
 	int					group;
-	int					nlink;
+	int					size;
 }						t_align;
 
 /*

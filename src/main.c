@@ -131,9 +131,7 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 		++i;
 	}
 	if (ls->files)
-	{
 		get_sorted(&ls->files, option);
-	}
 }
 
 /*

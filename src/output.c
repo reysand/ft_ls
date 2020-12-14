@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/13 14:34:20 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/14 11:27:36 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,25 @@
 
 void	init_align(t_align *align)
 {
-	align->size = 0;
+	align->permissions = 0;
+	align->nlink = 0;
 	align->user = 0;
 	align->group = 0;
-	align->nlink = 0;
+	align->size = 0;
+}
+
+/*
+** TODO:		write description
+*/
+
+void	long_format(t_file *head, t_align *align_max)
+{
+	get_mode(head->stat.st_mode);
+	get_nlink(head, align_max);
+	get_user(head, align_max);
+	get_group(head, align_max);
+	get_size(head, align_max);
+	get_time(head->stat);
 }
 
 /*
@@ -49,14 +64,7 @@ void	print_list(t_file *head, t_opts option)
 	while (head)
 	{
 		if (option.long_format)
-		{
-			get_mode(head->stat.st_mode);
-			get_nlink(head, &align_max);
-			get_user(head, &align_max);
-			get_group(head, &align_max);
-			get_size(head, &align_max);
-			get_time(head->stat);
-		}
+			long_format(head, &align_max);
 		ft_printf("%s", head->name);
 		if (option.long_format && ((head->stat.st_mode & S_IFMT) == S_IFLNK))
 		{

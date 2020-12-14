@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 19:16:10 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 17:25:36 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/14 13:03:27 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	get_size(t_file *head, t_align *align)
 				nbrlen = temp;
 			head = head->next;
 		}
-		align->size = nbrlen + 2;
+		align->size = nbrlen;
 	}
 	curr_len = ft_nbrlen(curr_file->stat.st_size);
 	while (curr_len < align->size)
@@ -84,7 +84,7 @@ void	get_size(t_file *head, t_align *align)
 		ft_printf(" ");
 		++curr_len;
 	}
-	ft_printf("%d", curr_file->stat.st_size);
+	ft_printf("  %d", curr_file->stat.st_size);
 }
 
 /*
@@ -116,16 +116,16 @@ void	get_group(t_file *head, t_align *align)
 				strlen = temp;
 			head = head->next;
 		}
-		align->group = strlen + 2;
+		align->group = strlen;
 	}
 	gr = getgrgid(curr_file->stat.st_gid);
 	curr_len = ft_strlen(gr->gr_name);
+	ft_printf("  %s", gr->gr_name);
 	while (curr_len < align->group)
 	{
 		ft_printf(" ");
 		++curr_len;
 	}
-	ft_printf("%s", gr->gr_name);
 }
 
 /*
@@ -157,16 +157,16 @@ void	get_user(t_file *head, t_align *align)
 				strlen = temp;
 			head = head->next;
 		}
-		align->user = strlen + 1;
+		align->user = strlen;
 	}
 	pw = getpwuid(curr_file->stat.st_uid);
 	curr_len = ft_strlen(pw->pw_name);
+	ft_printf(" %s", pw->pw_name);
 	while (curr_len < align->user)
 	{
 		ft_printf(" ");
 		++curr_len;
 	}
-	ft_printf("%s", pw->pw_name);
 }
 
 /*
@@ -195,7 +195,7 @@ void	get_nlink(t_file *head, t_align *align)
 				nbrlen = temp;
 			head = head->next;
 		}
-		align->nlink = nbrlen + 2;
+		align->nlink = nbrlen;
 	}
 	curr_len = ft_nbrlen(curr_file->stat.st_nlink);
 	while (curr_len < align->nlink)
@@ -203,7 +203,7 @@ void	get_nlink(t_file *head, t_align *align)
 		ft_printf(" ");
 		++curr_len;
 	}
-	ft_printf("%d", curr_file->stat.st_nlink);
+	ft_printf(" %d", curr_file->stat.st_nlink);
 }
 
 /*
@@ -311,6 +311,7 @@ void	get_mode(int mode)
 	get_mode_perm(mode, perm);
 	perm_init('o', &perm);
 	get_mode_perm(mode, perm);
+	ft_printf(" ");
 }
 
 int		get_total(t_file *head)

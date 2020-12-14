@@ -17,11 +17,12 @@
 # include <limits.h>
 # include <pwd.h>
 # include <sys/errno.h>
+# include <sys/types.h>
 # include <time.h>
 # include "ft_ls_structs.h"
 # include "libft.h"
 
-# define OPTIONS "-Ralrst1"
+# define OPTIONS "-Ralrt1"
 # define ERR_MSG "ft_ls: %s: %s\n"
 
 # ifdef __APPLE__

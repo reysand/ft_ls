@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 19:59:59 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/14 14:52:52 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,24 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 	t_dirent	*entry;
 	DIR			*dir_stream;
 	char		*full_path;
+	char		**matrix;
+	int			i;
 
 	if (!(dir_stream = opendir(path)))
 	{
 		if (errno == ENOTDIR || errno == ELOOP)
 			return (EXIT_SUCCESS);
+		if (errno == EACCES)
+		{
+			matrix = ft_strsplit(path, '/');
+			i = 0;
+			while (matrix[i])
+			{
+				++i;
+			}
+			ft_printf_fd(STDERR_FILENO, ERR_MSG, matrix[i - 1], strerror(errno));
+			exit(EXIT_FAILURE);
+		}
 	}
 	while ((entry = readdir(dir_stream)))
 	{

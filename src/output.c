@@ -13,24 +13,6 @@
 #include "ft_ls.h"
 
 /*
-** Function:	init_align
-** Arguments:	t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
-void		init_align(t_align *align)
-{
-	align->permissions = 0;
-	align->nlink = 0;
-	align->user = 0;
-	align->group = 0;
-	align->size = 0;
-}
-
-/*
 ** TODO:		write description
 ** TODO:		add get_major()
 ** TODO:		add get_minor()
@@ -62,7 +44,11 @@ static void	print_list(t_file *head, t_opts option)
 	char	*l_name;
 	int		len;
 
-	init_align(&align_max);
+	align_max.permissions = 0;
+	align_max.nlink = 0;
+	align_max.user = 0;
+	align_max.group = 0;
+	align_max.size = 0;
 	while (head)
 	{
 		if (option.long_format)
@@ -144,7 +130,7 @@ void		ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
 ** Function:	err_out
 ** Arguments:	char *name, t_args *ls
 ** Return:		(void)
-** Description:	error output requiring program exit
+** Description:	error output
 */
 
 void		err_out(char *name, t_args *ls)

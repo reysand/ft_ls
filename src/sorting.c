@@ -50,6 +50,7 @@ static void		get_time_sorted(t_file **head)
 	int			is_sorted;
 
 	curr = &(*head);
+	list = (*head)->next;
 	while ((*curr)->next)
 	{
 		if (curr == head)
@@ -84,6 +85,7 @@ static void		get_ascii_sorted(t_file **head)
 	int		is_sorted;
 
 	curr = &(*head);
+	list = (*head)->next;
 	while ((*curr)->next)
 	{
 		if (curr == head)

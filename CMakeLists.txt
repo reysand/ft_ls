@@ -9,7 +9,8 @@ add_subdirectory(libft)
 set(HEADERS
         include/ft_ls.h include/ft_ls_structs.h)
 set(SOURCES
-        src/args_parser.c src/free.c src/ft_ls.c src/lists.c src/long_format.c src/main.c src/output.c src/sorting.c)
+        src/args_parser.c src/free.c src/ft_ls.c src/lists.c src/long_format.c src/main.c src/output.c src/sorting.c
+		src/long_format_2.c)
 
 add_executable(ft_ls ${SOURCES} ${HEADERS})
 target_include_directories(ft_ls PRIVATE include libft/include)

@@ -83,6 +83,7 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 	{
 		if (errno == ENOTDIR || errno == ELOOP)
 			return (EXIT_SUCCESS);
+		return (EXIT_FAILURE);
 	}
 	while ((entry = readdir(dir_stream)))
 	{

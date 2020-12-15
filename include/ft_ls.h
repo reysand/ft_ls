@@ -23,13 +23,8 @@
 # include "libft.h"
 
 # define OPTIONS "-Ralrt1"
+# define USE_MSG "ft_ls: illegal option -- %c\nusage: ft_ls [%s] [file ...]\n"
 # define ERR_MSG "ft_ls: %s: %s\n"
-
-# ifdef __APPLE__
-#  define IS_DIR(m) (m & S_IFDIR) == S_IFDIR
-# elif __linux__
-#  define IS_DIR(m) S_ISDIR(m)
-# endif
 
 void	options_parser(t_args *ls, t_opts *option);
 char	**files_parser(t_args *ls);
@@ -43,6 +38,7 @@ char	*get_path(char *dir, char *subdir);
 void	dir_content_add(char *path, t_dirs **head, t_file *dir_info);
 void	free_list(t_file **head);
 void	ls_output(t_file *not_dirs, t_dirs *list, int files_c, t_opts option);
+void	long_format(t_file *head, t_align *align_max);
 void	get_mode(int mode);
 void	get_nlink(t_file *head, t_align *align);
 void	get_user(t_file *head, t_align *align);

@@ -22,7 +22,7 @@
 static int	is_valid_dir(char *dir_path, t_file *file)
 {
 	lstat(dir_path, &file->stat);
-	if (IS_DIR(file->stat.st_mode))
+	if (S_ISDIR(file->stat.st_mode))
 	{
 		if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		{
@@ -76,7 +76,6 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 ** Description:
 **
 ** TODO:		write description
-** FIXME:		rename dir_handler
 */
 
 void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
@@ -93,11 +92,11 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 		if (option.recursive_read)
 			recursive_handler(path, ls, option);
 	}
-	else if (!dir_info && ret)
+	else if (ret)
 	{
 		dir_content_add(path, &ls->dirs, dir_info);
 	}
-	else if (!dir_info && !ret && !recursion)
+	else if (!recursion)
 	{
 		enotdir_add(path, &ls->not_dirs);
 	}
@@ -120,10 +119,7 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 	ls->ret_v = EXIT_SUCCESS;
 	while (i < ls->files_c)
 	{
-		if (option.long_format)
-			stat_res = lstat(files[i], &f_stat);
-		else
-			stat_res = stat(files[i], &f_stat);
+		stat_res = lstat(files[i], &f_stat);
 		if ((!stat_res && !((f_stat.st_mode >> 8) & 1)) || stat_res == -1)
 		{
 			if (!stat_res)
@@ -131,7 +127,9 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 			err_out(files[i], ls);
 		}
 		else
+		{
 			enotdir_add(files[i], &ls->files);
+		}
 		++i;
 	}
 	if (ls->files)

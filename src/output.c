@@ -67,6 +67,24 @@ static void	print_list(t_file *head, t_opts option)
 	}
 }
 
+char	*get_name(char *full_path)
+{
+	char	**list;
+	int		len;
+	int		i;
+
+	len = ft_strlen(full_path);
+	list = ft_strsplit(full_path, '/');
+	i = 0;
+	while (list[i])
+	{
+		++i;
+	}
+	if (full_path[len - 1] == '/')
+		return ("");
+	return (list[i - 1]);
+}
+
 /*
 ** Function:	print_list_lists
 ** Arguments:	t_dirs *head, int dir_path, t_opts option
@@ -78,7 +96,8 @@ static void	print_list(t_file *head, t_opts option)
 
 void		print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
-	t_dirs *first;
+	t_dirs	*first;
+	t_stat	f_stat;
 
 	first = head;
 	while (head)
@@ -90,6 +109,18 @@ void		print_list_lists(t_dirs *head, int dir_path, t_opts option)
 		if (option.long_format && head->dir)
 		{
 			ft_printf("total %d\n", get_total(head->dir));
+		}
+		if (!head->dir)
+		{
+			/*
+			 * lstat check
+			 */
+			lstat(head->path, &f_stat);
+			if (!((f_stat.st_mode >> 8) & 1))
+			{
+				errno = EACCES;
+				ft_printf_fd(STDERR_FILENO, ERR_MSG, get_name(head->path), strerror(errno));
+			}
 		}
 		print_list(head->dir, option);
 		if (head->next)

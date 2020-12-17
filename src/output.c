@@ -18,12 +18,14 @@
 ** TODO:		add get_minor()
 */
 
-void		long_format(t_file *head, t_align *align_max)
+static void	long_format(t_file *head, t_align *align_max)
 {
 	get_mode(head->stat.st_mode);
 	get_nlink(head, align_max);
 	get_user(head, align_max);
 	get_group(head, align_max);
+	get_major(head, align_max);
+	get_minor(head, align_max);
 	get_size(head, align_max);
 	get_time(head->stat);
 }
@@ -49,6 +51,8 @@ static void	print_list(t_file *head, t_opts option)
 	align_max.user = 0;
 	align_max.group = 0;
 	align_max.size = 0;
+	align_max.major = 0;
+	align_max.minor = 0;
 	while (head)
 	{
 		if (option.long_format)
@@ -67,7 +71,7 @@ static void	print_list(t_file *head, t_opts option)
 	}
 }
 
-char	*get_name(char *full_path)
+static char	*get_name(char *full_path)
 {
 	char	**list;
 	int		len;
@@ -94,7 +98,7 @@ char	*get_name(char *full_path)
 ** TODO:		write description
 */
 
-void		print_list_lists(t_dirs *head, int dir_path, t_opts option)
+static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
 	t_dirs	*first;
 	t_stat	f_stat;

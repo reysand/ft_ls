@@ -13,6 +13,39 @@
 #include "ft_ls.h"
 
 /*
+** Function:	get_mode
+** Arguments:	t_file *head, t_align *align
+** Return:		(void)
+** Description:
+**
+** TODO:		write description
+*/
+
+void	get_nlink(t_file *head, t_align *align)
+{
+	t_file	*curr_file;
+	int		temp;
+	int		nbrlen;
+	int		curr_len;
+
+	curr_file = head;
+	if (!align->nlink)
+	{
+		nbrlen = 0;
+		while (head)
+		{
+			if (nbrlen < (temp = ft_nbrlen(head->stat.st_nlink)))
+				nbrlen = temp;
+			head = head->next;
+		}
+		align->nlink = nbrlen;
+	}
+	curr_len = ft_nbrlen(curr_file->stat.st_nlink);
+	output_align(curr_len, align->nlink);
+	ft_printf(" %d", curr_file->stat.st_nlink);
+}
+
+/*
 ** acl function
 */
 

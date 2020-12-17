@@ -61,12 +61,12 @@ void	get_time(t_stat stat)
 
 void	get_size(t_file *head, t_align *align)
 {
-	t_file	*curr_file;
+	t_file	*curr;
 	int		temp;
 	int		nbrlen;
 	int		curr_len;
 
-	curr_file = head;
+	curr = head;
 	if (!align->size)
 	{
 		nbrlen = 0;
@@ -78,18 +78,82 @@ void	get_size(t_file *head, t_align *align)
 		}
 		align->size = nbrlen;
 	}
-	curr_len = ft_nbrlen(curr_file->stat.st_size);
-	while (curr_len < align->size)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
-	ft_printf("  %d", curr_file->stat.st_size);
+	if (S_ISCHR(curr->stat.st_mode) || S_ISBLK(curr->stat.st_mode))
+		return ;
+	curr_len = ft_nbrlen(curr->stat.st_size);
+	temp = align->size;
+	if (align->major)
+		temp = align->major + align->minor + 2;
+	output_align(curr_len, temp);
+	ft_printf("  %d", curr->stat.st_size);
 }
 
-/*
-** major minor function
-*/
+void	get_minor(t_file *head, t_align *align)
+{
+	t_file	*curr;
+	int		temp;
+	int		nbrlen;
+	int		curr_len;
+
+	curr = head;
+	if (!align->minor)
+	{
+		nbrlen = 0;
+		while (head)
+		{
+			temp = minor(head->stat.st_rdev);
+			if (minor(temp) != 0)
+			{
+				if (temp < 255 && nbrlen < (temp = ft_nbrlen(temp)))
+					nbrlen = temp;
+			}
+			head = head->next;
+		}
+		align->minor = nbrlen;
+		if (align->minor != 0)
+			align->minor = 3;
+	}
+	if (!S_ISCHR(curr->stat.st_mode) && !S_ISBLK(curr->stat.st_mode))
+		return ;
+	curr_len = ft_nbrlen(minor(curr->stat.st_rdev));
+	output_align(curr_len, align->minor);
+	if (minor(curr->stat.st_rdev) > 255)
+		ft_printf(" %#010x", minor(curr->stat.st_rdev));
+	else
+		ft_printf(" %d", minor(curr->stat.st_rdev));
+}
+
+void	get_major(t_file *head, t_align *align)
+{
+	t_file	*curr;
+	int		temp;
+	int		nbrlen;
+	int		curr_len;
+
+	curr = head;
+	if (!align->major)
+	{
+		nbrlen = 0;
+		while (head)
+		{
+			temp = minor(head->stat.st_rdev);
+			if (minor(temp) != 0)
+			{
+				if (nbrlen < (temp = ft_nbrlen(temp)))
+					nbrlen = temp;
+			}
+			head = head->next;
+		}
+		align->major = nbrlen;
+		if (align->major != 0)
+			align->major = 3;
+	}
+	if (!S_ISCHR(curr->stat.st_mode) && !S_ISBLK(curr->stat.st_mode))
+		return ;
+	curr_len = ft_nbrlen(major(curr->stat.st_rdev));
+	output_align(curr_len, align->major);
+	ft_printf("  %d,", major(curr->stat.st_rdev));
+}
 
 /*
 ** Function:	get_user
@@ -125,11 +189,7 @@ void	get_group(t_file *head, t_align *align)
 	gr = getgrgid(curr_file->stat.st_gid);
 	curr_len = ft_strlen(gr->gr_name);
 	ft_printf("  %s", gr->gr_name);
-	while (curr_len < align->group)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
+	output_align(curr_len, align->group);
 }
 
 /*
@@ -166,46 +226,5 @@ void	get_user(t_file *head, t_align *align)
 	pw = getpwuid(curr_file->stat.st_uid);
 	curr_len = ft_strlen(pw->pw_name);
 	ft_printf(" %s", pw->pw_name);
-	while (curr_len < align->user)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
-}
-
-/*
-** Function:	get_mode
-** Arguments:	t_file *head, t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
-void	get_nlink(t_file *head, t_align *align)
-{
-	t_file	*curr_file;
-	int		temp;
-	int		nbrlen;
-	int		curr_len;
-
-	curr_file = head;
-	if (!align->nlink)
-	{
-		nbrlen = 0;
-		while (head)
-		{
-			if (nbrlen < (temp = ft_nbrlen(head->stat.st_nlink)))
-				nbrlen = temp;
-			head = head->next;
-		}
-		align->nlink = nbrlen;
-	}
-	curr_len = ft_nbrlen(curr_file->stat.st_nlink);
-	while (curr_len < align->nlink)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
-	ft_printf(" %d", curr_file->stat.st_nlink);
+	output_align(curr_len, align->user);
 }

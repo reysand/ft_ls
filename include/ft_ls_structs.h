@@ -31,6 +31,8 @@ typedef struct			s_align
 	int					user;
 	int					group;
 	int					size;
+	int					major;
+	int					minor;
 }						t_align;
 
 /*

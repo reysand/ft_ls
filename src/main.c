@@ -113,8 +113,6 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 {
 	t_stat	f_stat;
 	int		i;
-	int		len;
-	//int		stat_res;
 
 	i = 0;
 	ls->ret_v = EXIT_SUCCESS;
@@ -125,48 +123,18 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 			if (!((f_stat.st_mode >> 8) & 1))
 			{
 				ls->ret_v = EXIT_FAILURE;
-				len = ft_strlen(files[i]);
-				char	**list;
-				int		x;
-
-				list = ft_strsplit(files[i], '/');
-				x = 0;
-				while (list[x])
-				{
-					++x;
-				}
-				len -= ft_strlen(list[x - 1]);
-				if (files[i][len - 1] == '/')
-					len++;
-				lstat(ft_strsub(files[i], 0, len - 1), &f_stat);
-				if (!((f_stat.st_mode >> 8) & 1))
-					err_out(files[i], ls);
+				check_link(files[i], ls);
 			}
 			enotdir_add(files[i], &ls->files);
 		}
 		else
-		{
 			err_out(files[i], ls);
-		}
-		/*
-		stat_res = lstat(files[i], &f_stat);
-		if ((!stat_res && !((f_stat.st_mode >> 8) & 1)) || stat_res == -1)
-		{
-			if (!stat_res)
-			{
-				errno = EACCES;
-				err_out(get_name(files[i]), ls);
-			}
-			else
-				err_out(files[i], ls);
-		}
-		else
-			enotdir_add(files[i], &ls->files);
-		*/
 		++i;
 	}
 	if (ls->files)
+	{
 		get_sorted(&ls->files, option);
+	}
 }
 
 /*

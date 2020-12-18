@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/11 13:51:04 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/18 13:29:01 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <pwd.h>
 # include <sys/errno.h>
 # include <sys/types.h>
+# include <sys/xattr.h>
 # include <time.h>
 # include "ft_ls_structs.h"
 # include "libft.h"
@@ -30,7 +31,7 @@ void	options_parser(t_args *ls, t_opts *option);
 char	**files_parser(t_args *ls);
 char	**get_ascii_sorted_args(int argc, char **argv);
 void	check_link(char *file, t_args *ls);
-void	err_out(char *name, t_args *ls);
+void	err_out(char *name);
 void	enotdir_add(char *file, t_file **head);
 void	get_sorted(t_file **head, t_opts option);
 void	dir_handler(char *path, int rec, t_args *ls, t_opts option);
@@ -39,7 +40,10 @@ char	*get_path(char *dir, char *subdir);
 void	dir_content_add(char *path, t_dirs **head, t_file *dir_info);
 void	free_list(t_file **head);
 void	ls_output(t_file *not_dirs, t_dirs *list, int files_c, t_opts option);
+void	init_align(t_align *align);
+void	long_format(t_file *head, t_align *align_max);
 void	get_mode(int mode);
+void	get_xattr(char *name);
 void	get_nlink(t_file *head, t_align *align);
 void	output_align(int len, int align);
 void	get_user(t_file *head, t_align *align);

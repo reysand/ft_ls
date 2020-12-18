@@ -128,13 +128,14 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 			enotdir_add(files[i], &ls->files);
 		}
 		else
-			err_out(files[i], ls);
+		{
+			ls->ret_v = EXIT_FAILURE;
+			err_out(files[i]);
+		}
 		++i;
 	}
 	if (ls->files)
-	{
 		get_sorted(&ls->files, option);
-	}
 }
 
 /*

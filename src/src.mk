@@ -9,6 +9,7 @@ SRC_SRCS	= main.c\
 			  output.c\
 			  long_format.c\
 			  long_format_2.c\
+			  long_format_3.c\
 			  free.c
 
 SRC			= $(addprefix $(SRC_DIR), $(SRC_SRCS))

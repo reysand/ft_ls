@@ -6,48 +6,11 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 19:16:10 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/14 13:03:27 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/18 13:28:36 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-/*
-** Function:	get_mode
-** Arguments:	t_file *head, t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
-void	get_nlink(t_file *head, t_align *align)
-{
-	t_file	*curr_file;
-	int		temp;
-	int		nbrlen;
-	int		curr_len;
-
-	curr_file = head;
-	if (!align->nlink)
-	{
-		nbrlen = 0;
-		while (head)
-		{
-			if (nbrlen < (temp = ft_nbrlen(head->stat.st_nlink)))
-				nbrlen = temp;
-			head = head->next;
-		}
-		align->nlink = nbrlen;
-	}
-	curr_len = ft_nbrlen(curr_file->stat.st_nlink);
-	output_align(curr_len, align->nlink);
-	ft_printf(" %d", curr_file->stat.st_nlink);
-}
-
-/*
-** acl function
-*/
 
 /*
 ** Function:	get_mode_perm
@@ -154,7 +117,6 @@ void	get_mode(int mode)
 	get_mode_perm(mode, perm);
 	perm_init('o', &perm);
 	get_mode_perm(mode, perm);
-	ft_printf(" ");
 }
 
 int		get_total(t_file *head)
@@ -168,4 +130,23 @@ int		get_total(t_file *head)
 		head = head->next;
 	}
 	return (total);
+}
+
+/*
+** TODO:		write description
+** TODO:		add get_major()
+** TODO:		add get_minor()
+*/
+
+void	long_format(t_file *head, t_align *align_max)
+{
+	get_mode(head->stat.st_mode);
+	get_xattr(head->full_path);
+	get_nlink(head, align_max);
+	get_user(head, align_max);
+	get_group(head, align_max);
+	get_major(head, align_max);
+	get_minor(head, align_max);
+	get_size(head, align_max);
+	get_time(head->stat);
 }

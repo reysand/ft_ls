@@ -13,24 +13,6 @@
 #include "ft_ls.h"
 
 /*
-** TODO:		write description
-** TODO:		add get_major()
-** TODO:		add get_minor()
-*/
-
-static void	long_format(t_file *head, t_align *align_max)
-{
-	get_mode(head->stat.st_mode);
-	get_nlink(head, align_max);
-	get_user(head, align_max);
-	get_group(head, align_max);
-	get_major(head, align_max);
-	get_minor(head, align_max);
-	get_size(head, align_max);
-	get_time(head->stat);
-}
-
-/*
 ** Function:	print_list
 ** Arguments:	t_file *head, t_opts option
 ** Return:		(void)
@@ -46,13 +28,7 @@ static void	print_list(t_file *head, t_opts option)
 	char	*l_name;
 	int		len;
 
-	align_max.permissions = 0;
-	align_max.nlink = 0;
-	align_max.user = 0;
-	align_max.group = 0;
-	align_max.size = 0;
-	align_max.major = 0;
-	align_max.minor = 0;
+	init_align(&align_max);
 	while (head)
 	{
 		if (option.long_format)
@@ -107,23 +83,16 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 	while (head)
 	{
 		if (first != head || dir_path)
-		{
 			ft_printf("%s:\n", head->path);
-		}
 		if (option.long_format && head->dir)
-		{
 			ft_printf("total %d\n", get_total(head->dir));
-		}
 		if (!head->dir)
 		{
-			/*
-			 * lstat check
-			 */
 			lstat(head->path, &f_stat);
 			if (!((f_stat.st_mode >> 8) & 1))
 			{
 				errno = EACCES;
-				ft_printf_fd(STDERR_FILENO, ERR_MSG, get_name(head->path), strerror(errno));
+				err_out(get_name(head->path));
 			}
 		}
 		print_list(head->dir, option);
@@ -142,21 +111,21 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 ** TODO:		write description
 */
 
-void		ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
+void		ls_output(t_file *no_dirs, t_dirs *dirs, int files_c, t_opts option)
 {
 	int	dir_path;
 
 	dir_path = 0;
-	print_list(not_dirs, option);
-	if (dirs && (not_dirs || files_c > 1))
+	print_list(no_dirs, option);
+	if (dirs && (no_dirs || files_c > 1))
 	{
 		dir_path = 1;
-		if (not_dirs)
+		if (no_dirs)
 		{
 			ft_printf("\n");
 		}
 	}
-	free_list(&not_dirs);
+	free_list(&no_dirs);
 	print_list_lists(dirs, dir_path, option);
 	free_list_lists(&dirs);
 }
@@ -168,8 +137,7 @@ void		ls_output(t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option)
 ** Description:	error output
 */
 
-void		err_out(char *name, t_args *ls)
+void		err_out(char *name)
 {
-	ls->ret_v = EXIT_FAILURE;
 	ft_printf_fd(STDERR_FILENO, ERR_MSG, name, strerror(errno));
 }

@@ -21,6 +21,17 @@ void		output_align(int len, int align)
 	}
 }
 
+void		init_align(t_align *align)
+{
+	align->permissions = 0;
+	align->nlink = 0;
+	align->user = 0;
+	align->group = 0;
+	align->size = 0;
+	align->major = 0;
+	align->minor = 0;
+}
+
 static int	get_matrix_count(char **matrix)
 {
 	int	i;
@@ -48,15 +59,14 @@ void		check_link(char *file, t_args *ls)
 	{
 		len -= ft_strlen(matrix[i - 1]);
 		if (file[len - 1] == '/')
-		{
 			++len;
-		}
 		prev_name = ft_strsub(file, 0, len - 1);
 		lstat(prev_name, &f_stat);
 		free(prev_name);
 		if (!((f_stat.st_mode >> 8) & 1))
 		{
-			err_out(file, ls);
+			ls->ret_v = EXIT_FAILURE;
+			err_out(file);
 		}
 	}
 	free_matrix(matrix, i);

@@ -13,12 +13,7 @@
 #include "ft_ls.h"
 
 /*
-** Function:	swap_nodes
-** Arguments:	t_file *head
-** Return:		(t_file *){head}
 ** Description:	swap two nodes in the t_file structure
-**
-** TODO:		Rewrite
 */
 
 static t_file	*swap_nodes(t_file *head)
@@ -37,9 +32,6 @@ static t_file	*swap_nodes(t_file *head)
 }
 
 /*
-** Function:	get_time_sorted
-** Arguments:	t_file **head
-** Return:		(void)
 ** Description:	sort files and dirs by modification time
 */
 
@@ -72,9 +64,6 @@ static void		get_time_sorted(t_file **head)
 }
 
 /*
-** Function:	get_ascii_sorted
-** Arguments:	t_file **head
-** Return:		(void)
 ** Description:	sort files and dirs in ascii order
 */
 
@@ -107,12 +96,7 @@ static void		get_ascii_sorted(t_file **head)
 }
 
 /*
-** Function:	get_sorted
-** Arguments:	t_file **head, t_opts option
-** Return:		(void)
 ** Description:	sort in ascii and, if necessary, in time and in reverse order
-**
-** TODO:		Rewrite
 */
 
 void			get_sorted(t_file **head, t_opts option)
@@ -143,9 +127,6 @@ void			get_sorted(t_file **head, t_opts option)
 }
 
 /*
-** Function:	get_ascii_sorted_args
-** Arguments:	int argc, char **argv
-** Return:		(char **){argv}
 ** Description:	sorting files array in ascii order
 */
 

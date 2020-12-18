@@ -13,9 +13,6 @@
 #include "ft_ls.h"
 
 /*
-** Function:	get_file_position
-** Arguments:	t_args *ls
-** Return:		(int){0,...,ls->argc}
 ** Description:	get the position of first file in arguments
 */
 
@@ -33,12 +30,7 @@ static int	get_file_position(t_args *ls)
 }
 
 /*
-** Function:	files_parser
-** Arguments:	t_args *ls
-** Return:		(char **){NULL,files}
 ** Description:	get an array of files, sort and get their number
-**
-** NOTE:		(malloc){files,*files}
 */
 
 char		**files_parser(t_args *ls)
@@ -70,9 +62,6 @@ char		**files_parser(t_args *ls)
 }
 
 /*
-** Function:	get_option
-** Arguments:	char alpha, t_opts *option
-** Return:		(void)
 ** Description:	option recognition
 */
 
@@ -86,9 +75,6 @@ static void	get_option(char alpha, t_opts *option)
 }
 
 /*
-** Function:	is_option
-** Arguments:	char *str, t_opts *option
-** Return:		(int){0,1}
 ** Description:	validation options
 */
 
@@ -120,9 +106,6 @@ static int	is_option(char *str, t_opts *option)
 }
 
 /*
-** Function:	options_parser
-** Arguments:	t_args *ls, t_opts *option
-** Return:		(void)
 ** Description:	initialize the structure with options and get their number
 */
 

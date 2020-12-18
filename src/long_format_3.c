@@ -12,15 +12,6 @@
 
 #include "ft_ls.h"
 
-/*
-** Function:	get_time
-** Arguments:	t_stat stat
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
 void	get_time(t_stat stat)
 {
 	time_t	now;
@@ -49,15 +40,6 @@ void	get_time(t_stat stat)
 	}
 	free_matrix(temp_time, 4);
 }
-
-/*
-** Function:	get_size
-** Arguments:	t_file *head, t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
 
 void	get_size(t_file *head, t_align *align)
 {

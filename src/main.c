@@ -13,9 +13,6 @@
 #include "ft_ls.h"
 
 /*
-** Function:	is_valid_dir
-** Arguments:	char *dir_path, t_file *file
-** Return:		(int){0,1}
 ** Description:	Check dir for recursive reading
 */
 
@@ -31,15 +28,6 @@ static int	is_valid_dir(char *dir_path, t_file *file)
 	}
 	return (1);
 }
-
-/*
-** Function:	recursive_handler
-** Arguments:	char *path, t_args *ls, t_opts option
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
 
 static void	recursive_handler(char *path, t_args *ls, t_opts option)
 {
@@ -69,15 +57,6 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 	}
 }
 
-/*
-** Function:	dir_handler
-** Arguments:	char *path, int recursion, t_args *ls, t_opts option
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
 void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 {
 	t_file	*dir_info;
@@ -85,6 +64,14 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 
 	dir_info = NULL;
 	ret = ft_ls(path, &dir_info, option);
+	if (!recursion && !ls->ret_v && option.long_format)
+	{
+		if (check_link_dir(path))
+		{
+			dir_info = NULL;
+			ret = 0;
+		}
+	}
 	if (dir_info)
 	{
 		get_sorted(&dir_info, option);
@@ -93,19 +80,12 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 			recursive_handler(path, ls, option);
 	}
 	else if (ret)
-	{
 		dir_content_add(path, &ls->dirs, dir_info);
-	}
 	else if (!recursion)
-	{
 		enotdir_add(path, &ls->not_dirs);
-	}
 }
 
 /*
-** Function:	get_valid_files
-** Arguments:	char **files, t_args *ls, t_opts option
-** Return:		(void)
 ** Description:	check existing files and sort them
 */
 
@@ -137,15 +117,6 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 	if (ls->files)
 		get_sorted(&ls->files, option);
 }
-
-/*
-** Function:	main
-** Arguments:	int argc, char **argv
-** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
-** Description:
-**
-** TODO:		write description
-*/
 
 int			main(int argc, char **argv)
 {

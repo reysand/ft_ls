@@ -19,14 +19,8 @@
 typedef struct dirent	t_dirent;
 typedef struct stat		t_stat;
 
-/*
-** Struct:				t_align
-** Description:
-*/
-
 typedef struct			s_align
 {
-	int					permissions;
 	int					nlink;
 	int					user;
 	int					group;
@@ -34,11 +28,6 @@ typedef struct			s_align
 	int					major;
 	int					minor;
 }						t_align;
-
-/*
-** Struct:				t_mode
-** Description:
-*/
 
 typedef struct			s_perm
 {
@@ -50,11 +39,6 @@ typedef struct			s_perm
 	char				not_exec;
 }						t_perm;
 
-/*
-** Struct:				t_file
-** Description:
-*/
-
 typedef struct			s_file
 {
 	struct s_file		*next;
@@ -64,26 +48,12 @@ typedef struct			s_file
 	char				*full_path;
 }						t_file;
 
-/*
-** Struct:				t_dirs
-** Description:
-**
-** NOTE: 				May be instead of add t_file to t_dirs print t_file,
-** 						free them and go to next without using t_dirs.
-** 						dirs change to t_file from t_dirs
-*/
-
 typedef struct			s_dirs
 {
 	struct s_dirs		*next;
 	t_file				*dir;
 	char				*path;
 }						t_dirs;
-
-/*
-** Struct:				t_args
-** Description:
-*/
 
 typedef struct			s_args
 {
@@ -96,11 +66,6 @@ typedef struct			s_args
 	int					opt_c;
 	int					files_c;
 }						t_args;
-
-/*
-** Struct:				t_opts
-** Description:
-*/
 
 typedef struct			s_opts
 {

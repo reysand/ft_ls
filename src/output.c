@@ -12,16 +12,6 @@
 
 #include "ft_ls.h"
 
-/*
-** Function:	print_list
-** Arguments:	t_file *head, t_opts option
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-** NOTE:		(malloc){l_name}
-*/
-
 static void	print_list(t_file *head, t_opts option)
 {
 	t_align	align_max;
@@ -65,15 +55,6 @@ static char	*get_name(char *full_path)
 	return (list[i - 1]);
 }
 
-/*
-** Function:	print_list_lists
-** Arguments:	t_dirs *head, int dir_path, t_opts option
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
 static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
 	t_dirs	*first;
@@ -102,15 +83,6 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 	}
 }
 
-/*
-** Function:	ls_output
-** Arguments:	t_file *not_dirs, t_dirs *dirs, int files_c, t_opts option
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
-
 void		ls_output(t_file *no_dirs, t_dirs *dirs, int files_c, t_opts option)
 {
 	int	dir_path;
@@ -131,9 +103,6 @@ void		ls_output(t_file *no_dirs, t_dirs *dirs, int files_c, t_opts option)
 }
 
 /*
-** Function:	err_out
-** Arguments:	char *name, t_args *ls
-** Return:		(void)
 ** Description:	error output
 */
 

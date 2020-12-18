@@ -41,16 +41,6 @@ void	get_major(t_file *head, t_align *align)
 	ft_printf("  %d,", major(curr->stat.st_rdev));
 }
 
-/*
-** Function:	get_user
-** Arguments:	t_file *head, t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-** TODO:		limit 25 lines
-*/
-
 void	get_group(t_file *head, t_align *align)
 {
 	struct group	*gr;
@@ -78,16 +68,6 @@ void	get_group(t_file *head, t_align *align)
 	output_align(curr_len, align->group);
 }
 
-/*
-** Function:	get_user
-** Arguments:	t_file *head, t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-** TODO:		limit 25 lines
-*/
-
 void	get_user(t_file *head, t_align *align)
 {
 	struct passwd	*pw;
@@ -114,15 +94,6 @@ void	get_user(t_file *head, t_align *align)
 	ft_printf(" %s", pw->pw_name);
 	output_align(curr_len, align->user);
 }
-
-/*
-** Function:	get_mode
-** Arguments:	t_file *head, t_align *align
-** Return:		(void)
-** Description:
-**
-** TODO:		write description
-*/
 
 void	get_nlink(t_file *head, t_align *align)
 {

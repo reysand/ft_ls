@@ -23,7 +23,6 @@ void		output_align(int len, int align)
 
 void		init_align(t_align *align)
 {
-	align->permissions = 0;
 	align->nlink = 0;
 	align->user = 0;
 	align->group = 0;
@@ -42,6 +41,20 @@ static int	get_matrix_count(char **matrix)
 		++i;
 	}
 	return (i);
+}
+
+int			check_link_dir(char *file)
+{
+	t_stat	f_stat;
+	int		len;
+
+	len = ft_strlen(file);
+	lstat(file, &f_stat);
+	if (S_ISLNK(f_stat.st_mode) && file[len - 1] != '/')
+	{
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 void		check_link(char *file, t_args *ls)

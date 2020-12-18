@@ -35,6 +35,7 @@ void	err_out(char *name);
 void	enotdir_add(char *file, t_file **head);
 void	get_sorted(t_file **head, t_opts option);
 void	dir_handler(char *path, int rec, t_args *ls, t_opts option);
+int		check_link_dir(char *name);
 int		ft_ls(char *name, t_file **file_info, t_opts option);
 char	*get_path(char *dir, char *subdir);
 void	dir_content_add(char *path, t_dirs **head, t_file *dir_info);

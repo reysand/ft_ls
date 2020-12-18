@@ -13,12 +13,7 @@
 #include "ft_ls.h"
 
 /*
-** Function:	dir_content_add
-** Arguments:	char *path, t_dirs **head, t_file *dir_info
-** Return:		(void)
 ** Description:	Add dirs content to t_dirs structure
-**
-** NOTE:		(malloc){*head,(*head)->path}
 */
 
 void	dir_content_add(char *path, t_dirs **head, t_file *dir_info)
@@ -45,13 +40,7 @@ void	dir_content_add(char *path, t_dirs **head, t_file *dir_info)
 }
 
 /*
-** Function:	enotdir_add
-** Arguments:	char *file, t_file **head
-** Return:		(void)
 ** Description:	Add files to t_file structure
-**
-** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
-** TODO:		delete item->name
 */
 
 void	enotdir_add(char *file, t_file **head)

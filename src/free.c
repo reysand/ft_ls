@@ -13,9 +13,6 @@
 #include "ft_ls.h"
 
 /*
-** Function:	free_matrix
-** Arguments:	char **matrix, int size
-** Return:		(void)
 ** Description:	freeing memory from the matrix
 */
 
@@ -33,9 +30,6 @@ void	free_matrix(char **matrix, int size)
 }
 
 /*
-** Function:	free_list
-** Arguments:	t_file **head
-** Return:		(void)
 ** Description:	freeing memory from the t_file structure
 */
 
@@ -54,9 +48,6 @@ void	free_list(t_file **head)
 }
 
 /*
-** Function:	free_list_lists
-** Arguments:	t_dirs **head
-** Return:		(void)
 ** Description:	freeing memory from the t_dirs structure
 */
 

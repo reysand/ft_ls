@@ -13,13 +13,7 @@
 #include "ft_ls.h"
 
 /*
-** Function:	get_mode_perm
-** Arguments:	int mode
-** Return:		(void)
 ** Description:	output permissions value
-**
-** TODO:		write description
-** TODO:		rename function
 */
 
 void	get_mode_perm(int mode, t_perm perm)
@@ -46,13 +40,7 @@ void	get_mode_perm(int mode, t_perm perm)
 }
 
 /*
-** Function:	perm_init
-** Arguments:	char who, t_mode *perm
-** Return:		(void)
 ** Description:	init t_perm struct for each permissions group
-**
-** TODO:		write description
-** TODO:		rename function
 */
 
 void	perm_init(char who, t_perm *perm)
@@ -85,12 +73,7 @@ void	perm_init(char who, t_perm *perm)
 }
 
 /*
-** Function:	get_mode
-** Arguments:	int mode
-** Return:		(void)
 ** Description:	get file entry type
-**
-** TODO:		write description
 */
 
 void	get_mode(int mode)
@@ -131,12 +114,6 @@ int		get_total(t_file *head)
 	}
 	return (total);
 }
-
-/*
-** TODO:		write description
-** TODO:		add get_major()
-** TODO:		add get_minor()
-*/
 
 void	long_format(t_file *head, t_align *align_max)
 {

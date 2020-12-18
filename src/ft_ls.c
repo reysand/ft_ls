@@ -13,12 +13,7 @@
 #include "ft_ls.h"
 
 /*
-** Function:	get_info
-** Arguments:	char *full_path, t_file **head, t_dirent *entry
-** Return:		(void)
 ** Description:	get all info about a file
-**
-** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
 */
 
 static void	get_info(char *full_path, t_file **head, t_dirent *entry)
@@ -46,12 +41,7 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 }
 
 /*
-** Function:	get_path
-** Arguments:	char *path, char *name
-** Return:		(char *){full_path}
 ** Description:	get full path string
-**
-** NOTE:		(malloc){full_path}
 */
 
 char		*get_path(char *path, char *name)
@@ -67,9 +57,6 @@ char		*get_path(char *path, char *name)
 }
 
 /*
-** Function:	ft_ls
-** Arguments:	char *path, t_file **dirs, t_opts option
-** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
 ** Description:	get the valid dir and info about its contents
 */
 
@@ -81,7 +68,7 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 
 	if (!(dir_stream = opendir(path)))
 	{
-		if (errno == ENOTDIR || errno == ELOOP)
+		if (errno == ENOTDIR || errno == ELOOP || errno == ENOENT)
 			return (EXIT_SUCCESS);
 		return (EXIT_FAILURE);
 	}

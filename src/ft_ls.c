@@ -6,11 +6,17 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 19:02:37 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 19:59:59 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/14 14:52:52 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+/*
+** Description:	get all info about a file
+**
+** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
+*/
 
 static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 {
@@ -18,12 +24,14 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	t_file	*file;
 
 	if (!(file = (t_file *)malloc(sizeof(t_file))))
+	{
 		exit(EXIT_FAILURE);
+	}
 	file->name = ft_strdup(entry->d_name);
 	file->full_path = ft_strdup(full_path);
 	lstat(full_path, &file->stat);
 	file->next = NULL;
-	if (*head == NULL)
+	if (!(*head))
 	{
 		*head = file;
 		return ;
@@ -35,6 +43,10 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	}
 	dirs->next = file;
 }
+
+/*
+** Description:	get full path string
+*/
 
 char		*get_path(char *path, char *name)
 {
@@ -48,6 +60,10 @@ char		*get_path(char *path, char *name)
 	return (full_path);
 }
 
+/*
+** Description:	get the valid dir and info about its contents
+*/
+
 int			ft_ls(char *path, t_file **dirs, t_opts option)
 {
 	t_dirent	*entry;
@@ -56,10 +72,9 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 
 	if (!(dir_stream = opendir(path)))
 	{
-		if (errno == ENOTDIR || errno == ELOOP)
-		{
+		if (errno == ENOTDIR || errno == ELOOP || errno == ENOENT)
 			return (EXIT_SUCCESS);
-		}
+		return (EXIT_FAILURE);
 	}
 	while ((entry = readdir(dir_stream)))
 	{
@@ -70,10 +85,8 @@ int			ft_ls(char *path, t_file **dirs, t_opts option)
 			free(full_path);
 		}
 	}
-	if (!(*dirs))
-	{
-		return (EXIT_FAILURE);
-	}
 	closedir(dir_stream);
+	if (!(*dirs))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

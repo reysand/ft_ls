@@ -6,11 +6,15 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:10:29 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/13 20:28:44 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/13 19:00:31 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+/*
+** Description:	swap two nodes in the t_file structure
+*/
 
 static t_file	*swap_nodes(t_file *head)
 {
@@ -28,102 +32,71 @@ static t_file	*swap_nodes(t_file *head)
 }
 
 /*
-** function:	get_time_sorted
-** arguments:	t_file **head
-** description:
-** return:		(void)
-**
-** BUG: Wrong sorting 'Makefile'
-** FIXME:
-** NOTE:
-** TODO:
-** XXX:
+** Description:	sort files and dirs by modification time
 */
 
-void			get_time_sorted(t_file **head)
+static void		get_time_sorted(t_file **head)
 {
+	t_file		**curr;
 	t_file		*list;
-	t_file		*prev;
-	long long	time_curr;
-	long long	time_next;
 	int			is_sorted;
 
-	list = *head;
-	while (list->next)
+	curr = &(*head);
+	list = (*head)->next;
+	while ((*curr)->next)
 	{
-		if (list == *head)
+		if (curr == head)
 		{
 			is_sorted = 0;
-			prev = list;
+			list = (*head)->next;
 		}
-		time_curr = list->stat.st_ctimespec.tv_nsec;
-		time_next = list->next->stat.st_ctimespec.tv_nsec;
-		//ft_printf("LOGS: %d prev =\t%s\nLOGS: %d list =\t%s\n", time_curr, prev->name, time_next, list->name);
-		if (time_curr < time_next)
+		if ((*curr)->stat.st_mtime < list->stat.st_mtime)
 		{
 			is_sorted = 1;
-			//ft_printf("LOGS: swap:\t----------\n");
-			if (list == *head)
-			{
-				*head = swap_nodes(list);
-				prev = *head;
-				list = (*head)->next;
-			}
-			else
-			{
-				prev->next = swap_nodes(list);
-				list = prev->next->next;
-				prev = prev->next;
-			}
+			*curr = swap_nodes(*curr);
+			list = (*curr)->next;
 		}
-		else
-		{
-			prev = list;
-			list = list->next;
-		}
-		if (!list->next && is_sorted)
-		{
-			list = *head;
-		}
-	}
-	//ft_printf("LOGS: list =\t%s\n", list->name);
-	//ft_printf("LOGS: list =\t%s\n", list->next);
-}
-
-void			get_ascii_sorted(t_file **head)
-{
-	t_file	*list;
-	t_file	*prev;
-	int		is_sorted;
-
-	list = *head;
-	while (list->next)
-	{
-		if (list == *head)
-		{
-			is_sorted = 0;
-			prev = list;
-		}
-		if (ft_strcmp(list->name, list->next->name) > 0)
-		{
-			is_sorted = 1;
-			if (prev == list && list == *head)
-				*head = swap_nodes(list);
-			else
-				prev->next = swap_nodes(list);
-		}
-		prev = list;
+		curr = &(*curr)->next;
 		list = list->next;
-		if (!list->next && is_sorted)
-			list = *head;
+		if (!list && is_sorted)
+			curr = &(*head);
 	}
 }
 
 /*
-** Function:	get_sorted
-** Arguments:	t_file **head, t_opts option
-** Description:
-** Return:		(void)
+** Description:	sort files and dirs in ascii order
+*/
+
+static void		get_ascii_sorted(t_file **head)
+{
+	t_file	**curr;
+	t_file	*list;
+	int		is_sorted;
+
+	curr = &(*head);
+	list = (*head)->next;
+	while ((*curr)->next)
+	{
+		if (curr == head)
+		{
+			is_sorted = 0;
+			list = (*head)->next;
+		}
+		if (ft_strcmp((*curr)->name, list->name) > 0)
+		{
+			is_sorted = 1;
+			*curr = swap_nodes(*curr);
+			list = (*curr)->next;
+		}
+		curr = &(*curr)->next;
+		list = list->next;
+		if (!list && is_sorted)
+			curr = &(*head);
+	}
+}
+
+/*
+** Description:	sort in ascii and, if necessary, in time and in reverse order
 */
 
 void			get_sorted(t_file **head, t_opts option)
@@ -133,13 +106,9 @@ void			get_sorted(t_file **head, t_opts option)
 	t_file	*next;
 
 	get_ascii_sorted(head);
-	//print_list(*head);
-	//ft_printf("------------\n");
 	if (option.time_sort)
 	{
-		// if time equal only ascii sort
 		get_time_sorted(head);
-		//ft_printf("++++++++++\n");
 	}
 	if (option.reverse_sort)
 	{
@@ -158,10 +127,7 @@ void			get_sorted(t_file **head, t_opts option)
 }
 
 /*
-** Function:	get_ascii_sorted_args
-** Arguments:	int argc, char **argv
-** Description:	sorting in ascii order files in array
-** Return:		(char **){argv}
+** Description:	sorting files array in ascii order
 */
 
 char			**get_ascii_sorted_args(int argc, char **argv)

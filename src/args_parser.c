@@ -6,13 +6,15 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/13 18:06:04 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/03 03:05:42 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define OPTIONS "-Ralrt"
+/*
+** Description:	get the position of first file in arguments
+*/
 
 static int	get_file_position(t_args *ls)
 {
@@ -26,6 +28,12 @@ static int	get_file_position(t_args *ls)
 	ls->files_c = ls->argc - i;
 	return (i);
 }
+
+/*
+** Description:	get an array of files, sort and get their number
+**
+** NOTE:		(malloc){files,*files}
+*/
 
 char		**files_parser(t_args *ls)
 {
@@ -55,42 +63,55 @@ char		**files_parser(t_args *ls)
 	return (files);
 }
 
-static void	get_options(char alpha, t_opts *option)
+/*
+** Description:	option recognition
+*/
+
+static void	get_option(char alpha, t_opts *option)
 {
-	option->dot_files = (alpha == 'a') ? 1 : option->dot_files;
-	option->time_sort = (alpha == 't') ? 1 : option->time_sort;
-	option->long_format = (alpha == 'l') ? 1 : option->long_format;
-	option->reverse_sort = (alpha == 'r') ? 1 : option->reverse_sort;
-	option->recursive_read = (alpha == 'R') ? 1 : option->recursive_read;
+	option->dot_files = (alpha == OPTIONS[2]) ? 1 : option->dot_files;
+	option->time_sort = (alpha == OPTIONS[5]) ? 1 : option->time_sort;
+	option->long_format = (alpha == OPTIONS[3]) ? 1 : option->long_format;
+	option->reverse_sort = (alpha == OPTIONS[4]) ? 1 : option->reverse_sort;
+	option->recursive_read = (alpha == OPTIONS[1]) ? 1 : option->recursive_read;
 }
+
+/*
+** Description:	validation options
+*/
 
 static int	is_option(char *str, t_opts *option)
 {
 	size_t	i;
 	size_t	j;
 
-	i = 1;
-	if (str[i - 1] == '-' && str[i])
+	if (str[0] == OPTIONS[0] && str[1])
 	{
-		if (str[i] == '-' && !str[i + 1])
+		if (str[1] == OPTIONS[0] && !str[2])
+		{
 			return (1);
+		}
+		i = 1;
 		while (str[i])
 		{
 			j = 1;
-			while (OPTIONS[j] != str[i] && j < ft_strlen(OPTIONS))
+			while (j < ft_strlen(OPTIONS) && str[i] != OPTIONS[j])
 				++j;
 			if (str[i] != OPTIONS[j])
 			{
-				ft_printf("ft_ls: illegal option -- %c\n", str[i]);
-				ft_printf("usage: ft_ls [%s] [file ...]\n", OPTIONS);
+				ft_printf(USE_MSG, str[i], OPTIONS);
 				exit(EXIT_FAILURE);
 			}
-			get_options(str[i++], option);
+			get_option(str[i++], option);
 		}
-		return (0);
+		return (EXIT_SUCCESS);
 	}
-	return (1);
+	return (EXIT_FAILURE);
 }
+
+/*
+** Description:	initialize the structure with options and get their number
+*/
 
 void		options_parser(t_args *ls, t_opts *option)
 {

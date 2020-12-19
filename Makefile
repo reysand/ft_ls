@@ -6,7 +6,7 @@
 #    By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/14 15:31:39 by fhelena           #+#    #+#              #
-#    Updated: 2020/11/06 17:32:02 by fhelena          ###   ########.fr        #
+#    Updated: 2020/12/12 17:03:34 by fhelena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ RM				= rm -rf
 NORME			= $(shell norminette $(SRCS) $(INC_DIR)\
 				  | grep "Error" | wc -l | tr -d ' ')
 
-CFLAGS			= -g -Wall -Wextra -Werror# -Wpadded
+CFLAGS			= -g -Wall -Wextra -Werror
 DFLAGS			= -MT $@ -MMD -MP
 IFLAGS			= -I $(INC_DIR) -I $(LIB_DIR)/$(INC_DIR)
 LFLAGS			= -L $(LIB_DIR) -lft
@@ -65,7 +65,7 @@ check:			norme all
 
 $(NAME):		$(OBJS)
 	@printf "\r$(R_CLEAN)Linking: -> ft_ls\n\t$(subst $(subst ,, ),\n\t,$^)\n"
-	@$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) -o $@ $^
+	@$(CC) -o $@ $^ $(CFLAGS) $(IFLAGS) $(LFLAGS)
 
 $(BLD_DIR)/%.o:	%.c $(LIB_DIR)/$(LIB)
 	@$(MKDIR) $(dir $@)

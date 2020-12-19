@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 17:14:24 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/14 20:01:55 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,38 @@ typedef struct			s_align
 	int					user;
 	int					group;
 	int					size;
+	int					major;
+	int					minor;
 }						t_align;
 
-/*
-** Struct:		t_file
-** Description:
-*/
+typedef struct			s_perm
+{
+	int					s_read;
+	int					s_write;
+	int					s_exec;
+	int					s_bit;
+	char				is_exec;
+	char				not_exec;
+}						t_perm;
 
 typedef struct			s_file
 {
 	struct s_file		*next;
 	struct stat			stat;
 	char				*name;
-	char				*path;
 	char				*full_path;
 }						t_file;
 
-/*
-** Struct:		t_dirlist
-** Description:
-**
-** NOTE: May be instead of add t_file to t_dirlist print t_file,
-**       free them and go to next without using t_dirlist.
-**       dirs change to t_file from t_dirlist
-*/
-
-typedef struct			s_dirlist
+typedef struct			s_dirs
 {
-	struct s_dirlist	*next;
+	struct s_dirs		*next;
 	t_file				*dir;
 	char				*path;
-}						t_dirlist;
-
-/*
-** Struct:		t_args
-** Description:
-*/
+}						t_dirs;
 
 typedef struct			s_args
 {
-	t_dirlist			*dirs;
+	t_dirs				*dirs;
 	t_file				*files;
 	t_file				*not_dirs;
 	char				**argv;
@@ -73,11 +65,6 @@ typedef struct			s_args
 	int					opt_c;
 	int					files_c;
 }						t_args;
-
-/*
-** Struct:		t_opts
-** Desctiption:
-*/
 
 typedef struct			s_opts
 {

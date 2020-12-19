@@ -6,11 +6,17 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/05 10:13:40 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/11 17:24:09 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/13 14:34:57 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+/*
+** Description:	freeing memory from the matrix
+**
+** NOTE:		(free){matrix,*matrix}
+*/
 
 void	free_matrix(char **matrix, int size)
 {
@@ -25,6 +31,12 @@ void	free_matrix(char **matrix, int size)
 	free(matrix);
 }
 
+/*
+** Description:	freeing memory from the t_file structure
+**
+** NOTE:		(free){*head,(*head)->name,(*head)->full_path}
+*/
+
 void	free_list(t_file **head)
 {
 	t_file	*next;
@@ -33,14 +45,19 @@ void	free_list(t_file **head)
 	{
 		next = (*head)->next;
 		free((*head)->name);
+		free((*head)->full_path);
 		ft_memdel((void *)head);
 		*head = next;
 	}
 }
 
-void	free_list_lists(t_dirlist **head)
+/*
+** Description:	freeing memory from the t_dirs structure
+*/
+
+void	free_list_lists(t_dirs **head)
 {
-	t_dirlist	*next;
+	t_dirs	*next;
 
 	while (*head)
 	{

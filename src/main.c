@@ -6,18 +6,20 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/14 19:25:43 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/03 05:43:58 by reysand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-#define OPTIONS	"-Ralrt"
+/*
+** Description:	Check dir for recursive reading
+*/
 
 static int	is_valid_dir(char *dir_path, t_file *file)
 {
-	stat(dir_path, &file->stat);
-	if ((file->stat.st_mode & S_IFDIR) == S_IFDIR)
+	lstat(dir_path, &file->stat);
+	if (S_ISDIR(file->stat.st_mode))
 	{
 		if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		{
@@ -29,9 +31,9 @@ static int	is_valid_dir(char *dir_path, t_file *file)
 
 static void	recursive_handler(char *path, t_args *ls, t_opts option)
 {
-	t_dirlist	*dirs;
-	t_file		*file;
-	char		*dir_path;
+	t_dirs	*dirs;
+	t_file	*file;
+	char	*dir_path;
 
 	dirs = ls->dirs;
 	while (dirs)
@@ -55,19 +57,6 @@ static void	recursive_handler(char *path, t_args *ls, t_opts option)
 	}
 }
 
-/*
-** Function:	dir_handler
-** Arguments:	char *path, int recursion, t_args *ls, t_opts option
-** Description:
-** Return:		(void)
-**
-** BUG:
-** FIXME:		rename dir_handler
-** NOTE:
-** TODO:
-** XXX:
-*/
-
 void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 {
 	t_file	*dir_info;
@@ -75,6 +64,16 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 
 	dir_info = NULL;
 	ret = ft_ls(path, &dir_info, option);
+	if (!recursion && !ls->ret_v && option.long_format)
+	{
+		if (check_link_dir(path))
+		{
+			if (dir_info)
+				free_list(&dir_info);
+			dir_info = NULL;
+			ret = 0;
+		}
+	}
 	if (dir_info)
 	{
 		get_sorted(&dir_info, option);
@@ -82,29 +81,17 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 		if (option.recursive_read)
 			recursive_handler(path, ls, option);
 	}
-	else if (!dir_info && ret)
-	{
+	else if (ret)
 		dir_content_add(path, &ls->dirs, dir_info);
-	}
-	else if (!dir_info && !ret && !recursion)
-	{
+	else if (!recursion)
 		enotdir_add(path, &ls->not_dirs);
-	}
 }
 
 /*
-** Function:	test
-** Arguments:	char **files, t_args *ls
-** Description:	Test function
-** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
-**
-** TODO:		rename function
-** TODO:		sort dirs and not dirs in different lists
+** Description:	check existing files and sort them
 */
 
-#define ERR_MSG "ft_ls: %s: %s\n"
-
-static void	test(char **files, t_args *ls, t_opts option)
+static void	get_valid_files(char **files, t_args *ls, t_opts option)
 {
 	t_stat	f_stat;
 	int		i;
@@ -115,29 +102,23 @@ static void	test(char **files, t_args *ls, t_opts option)
 	{
 		if (lstat(files[i], &f_stat) != -1)
 		{
+			if (!((f_stat.st_mode >> 8) & 1))
+			{
+				ls->ret_v = EXIT_FAILURE;
+				check_link(files[i], ls);
+			}
 			enotdir_add(files[i], &ls->files);
 		}
 		else
 		{
 			ls->ret_v = EXIT_FAILURE;
-			ft_printf_fd(STDERR_FILENO, ERR_MSG, files[i], strerror(errno));
+			err_out(files[i]);
 		}
 		++i;
 	}
 	if (ls->files)
-	{
 		get_sorted(&ls->files, option);
-	}
 }
-
-/*
-** Function:	main
-** Arguments:	int argc, char **argv
-** Description:
-** Return:		(int){EXIT_SUCCESS,EXIT_FAILURE}
-**
-** FIXME:		rename char **files
-*/
 
 int			main(int argc, char **argv)
 {
@@ -145,7 +126,6 @@ int			main(int argc, char **argv)
 	t_file	*files_list;
 	t_opts	options;
 	char	**files;
-	int		i;
 
 	ls.argc = argc;
 	ls.argv = argv;
@@ -153,8 +133,8 @@ int			main(int argc, char **argv)
 	ls.not_dirs = NULL;
 	options_parser(&ls, &options);
 	files = files_parser(&ls);
-	test(files, &ls, options);
-	i = 0;
+	get_valid_files(files, &ls, options);
+	free_matrix(files, ls.files_c);
 	files_list = ls.files;
 	while (files_list)
 	{
@@ -165,6 +145,5 @@ int			main(int argc, char **argv)
 	if (ls.not_dirs)
 		get_sorted(&ls.not_dirs, options);
 	ls_output(ls.not_dirs, ls.dirs, ls.files_c, options);
-	free_matrix(files, ls.files_c);
 	return (ls.ret_v);
 }

@@ -6,161 +6,80 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 19:16:10 by fhelena           #+#    #+#             */
-/*   Updated: 2020/11/15 17:25:36 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/18 13:28:36 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	get_time(t_stat stat)
-{
-	time_t	now;
-	char	*date_time;
-	char	**temp_hms;
-	char	**temp_time;
+/*
+** Description:	output permissions value
+*/
 
-	time(&now);
-	date_time = ctime(&stat.st_mtime);
-	temp_time = ft_strsplit(date_time, ' ');
-	ft_printf(" %s ", temp_time[1]);
-	if (ft_nbrlen(ft_atoi(temp_time[2])) == 1)
+void	get_mode_perm(int mode, t_perm perm)
+{
+	char	exec_v;
+
+	mode & perm.s_read ? ft_printf("r") : ft_printf("-");
+	mode & perm.s_write ? ft_printf("w") : ft_printf("-");
+	if (mode & perm.s_bit)
 	{
-		ft_printf(" ");
-	}
-	ft_printf("%s ", temp_time[2]);
-	if ((now - stat.st_mtime) >= 15724800 || (now - stat.st_mtime) < 0)
-	{
-		ft_printf(" %d ", ft_atoi(temp_time[4]));
+		if (mode & perm.s_exec)
+			exec_v = perm.is_exec;
+		else
+			exec_v = perm.not_exec;
 	}
 	else
 	{
-		temp_hms = ft_strsplit(temp_time[3], ':');
-		ft_printf("%s:%s ", temp_hms[0], temp_hms[1]);
-		free_matrix(temp_hms, 3);
+		if (mode & perm.s_exec)
+			exec_v = 'x';
+		else
+			exec_v = '-';
 	}
-	free_matrix(temp_time, 4);
+	ft_printf("%c", exec_v);
 }
 
-void	get_size(t_file *head, t_align *align)
+/*
+** Description:	init t_perm struct for each permissions group
+*/
+
+void	perm_init(char who, t_perm *perm)
 {
-	t_file	*curr_file;
-	int		temp;
-	int		nbrlen;
-	int		curr_len;
-
-	curr_file = head;
-	if (!align->size)
+	if (who == 'u')
 	{
-		nbrlen = 0;
-		while (head)
-		{
-			if (nbrlen < (temp = ft_nbrlen(head->stat.st_size)))
-				nbrlen = temp;
-			head = head->next;
-		}
-		align->size = nbrlen + 2;
+		perm->s_read = S_IRUSR;
+		perm->s_write = S_IWUSR;
+		perm->s_exec = S_IXUSR;
+		perm->s_bit = S_ISUID;
+		perm->is_exec = 's';
+		perm->not_exec = 'S';
 	}
-	curr_len = ft_nbrlen(curr_file->stat.st_size);
-	while (curr_len < align->size)
+	else if (who == 'g')
 	{
-		ft_printf(" ");
-		++curr_len;
+		perm->s_read = S_IRGRP;
+		perm->s_write = S_IWGRP;
+		perm->s_exec = S_IXGRP;
+		perm->s_bit = S_ISGID;
 	}
-	ft_printf("%d", curr_file->stat.st_size);
+	else
+	{
+		perm->s_read = S_IROTH;
+		perm->s_write = S_IWOTH;
+		perm->s_exec = S_IXOTH;
+		perm->s_bit = S_ISVTX;
+		perm->is_exec = 't';
+		perm->not_exec = 'T';
+	}
 }
 
-void	get_group(t_file *head, t_align *align)
-{
-	struct group	*gr;
-	t_file			*curr_file;
-	int				temp;
-	int				strlen;
-	int				curr_len;
-
-	curr_file = head;
-	if (!align->group)
-	{
-		strlen = 0;
-		while (head)
-		{
-			gr = getgrgid(head->stat.st_gid);
-			if (strlen < (temp = ft_strlen(gr->gr_name)))
-				strlen = temp;
-			head = head->next;
-		}
-		align->group = strlen + 2;
-	}
-	gr = getgrgid(curr_file->stat.st_gid);
-	curr_len = ft_strlen(gr->gr_name);
-	while (curr_len < align->group)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
-	ft_printf("%s", gr->gr_name);
-}
-
-void	get_user(t_file *head, t_align *align)
-{
-	struct passwd	*pw;
-	t_file			*curr_file;
-	int				temp;
-	int				strlen;
-	int				curr_len;
-
-	curr_file = head;
-	if (!align->user)
-	{
-		strlen = 0;
-		while (head)
-		{
-			pw = getpwuid(head->stat.st_uid);
-			if (strlen < (temp = ft_strlen(pw->pw_name)))
-				strlen = temp;
-			head = head->next;
-		}
-		align->user = strlen + 1;
-	}
-	pw = getpwuid(curr_file->stat.st_uid);
-	curr_len = ft_strlen(pw->pw_name);
-	while (curr_len < align->user)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
-	ft_printf("%s", pw->pw_name);
-}
-
-void	get_nlink(t_file *head, t_align *align)
-{
-	t_file	*curr_file;
-	int		temp;
-	int		nbrlen;
-	int		curr_len;
-
-	curr_file = head;
-	if (!align->nlink)
-	{
-		nbrlen = 0;
-		while (head)
-		{
-			if (nbrlen < (temp = ft_nbrlen(head->stat.st_nlink)))
-				nbrlen = temp;
-			head = head->next;
-		}
-		align->nlink = nbrlen + 2;
-	}
-	curr_len = ft_nbrlen(curr_file->stat.st_nlink);
-	while (curr_len < align->nlink)
-	{
-		ft_printf(" ");
-		++curr_len;
-	}
-	ft_printf("%d", curr_file->stat.st_nlink);
-}
+/*
+** Description:	get file entry type
+*/
 
 void	get_mode(int mode)
 {
+	t_perm	perm;
+
 	if (S_ISDIR(mode))
 		ft_printf("d");
 	else if (S_ISCHR(mode))
@@ -175,15 +94,12 @@ void	get_mode(int mode)
 		ft_printf("s");
 	else
 		ft_printf("-");
-	mode & S_IRUSR ? ft_printf("r") : ft_printf("-");
-	mode & S_IWUSR ? ft_printf("w") : ft_printf("-");
-	mode & S_IXUSR ? ft_printf("x") : ft_printf("-");
-	mode & S_IRGRP ? ft_printf("r") : ft_printf("-");
-	mode & S_IWGRP ? ft_printf("w") : ft_printf("-");
-	mode & S_IXGRP ? ft_printf("x") : ft_printf("-");
-	mode & S_IROTH ? ft_printf("r") : ft_printf("-");
-	mode & S_IWOTH ? ft_printf("w") : ft_printf("-");
-	mode & S_IXOTH ? ft_printf("x") : ft_printf("-");
+	perm_init('u', &perm);
+	get_mode_perm(mode, perm);
+	perm_init('g', &perm);
+	get_mode_perm(mode, perm);
+	perm_init('o', &perm);
+	get_mode_perm(mode, perm);
 }
 
 int		get_total(t_file *head)
@@ -197,4 +113,17 @@ int		get_total(t_file *head)
 		head = head->next;
 	}
 	return (total);
+}
+
+void	long_format(t_file *head, t_align *align_max)
+{
+	get_mode(head->stat.st_mode);
+	get_xattr(head->full_path);
+	get_nlink(head, align_max);
+	get_user(head, align_max);
+	get_group(head, align_max);
+	get_major(head, align_max);
+	get_minor(head, align_max);
+	get_size(head, align_max);
+	get_time(head->stat);
 }

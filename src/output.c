@@ -22,7 +22,9 @@ static void	print_list(t_file *head, t_opts option)
 	while (head)
 	{
 		if (option.long_format)
+		{
 			long_format(head, &align_max);
+		}
 		ft_printf("%s", head->name);
 		if (option.long_format && ((head->stat.st_mode & S_IFMT) == S_IFLNK))
 		{
@@ -31,6 +33,7 @@ static void	print_list(t_file *head, t_opts option)
 			if ((len = readlink(head->full_path, l_name, PATH_MAX)) != -1)
 				l_name[len] = '\0';
 			ft_printf(" -> %s", l_name);
+			free(l_name);
 		}
 		ft_printf("\n");
 		head = head->next;
@@ -40,6 +43,7 @@ static void	print_list(t_file *head, t_opts option)
 static char	*get_name(char *full_path)
 {
 	char	**list;
+	char	*name;
 	int		len;
 	int		i;
 
@@ -52,7 +56,9 @@ static char	*get_name(char *full_path)
 	}
 	if (full_path[len - 1] == '/')
 		return ("");
-	return (list[i - 1]);
+	name = list[i - 1];
+	free_matrix(list, i);
+	return (name);
 }
 
 static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
@@ -69,12 +75,12 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 			ft_printf("total %d\n", get_total(head->dir));
 		if (!head->dir)
 		{
-			lstat(head->path, &f_stat);
-			if (!((f_stat.st_mode >> 8) & 1))
-			{
-				errno = EACCES;
-				err_out(get_name(head->path));
-			}
+			if ((lstat(head->path, &f_stat)) != -1)
+				if (!((f_stat.st_mode >> 8) & 1))
+				{
+					errno = EACCES;
+					err_out(get_name(head->path));
+				}
 		}
 		print_list(head->dir, option);
 		if (head->next)

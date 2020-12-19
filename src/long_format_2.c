@@ -82,17 +82,21 @@ void	get_user(t_file *head, t_align *align)
 		strlen = 0;
 		while (head)
 		{
-			pw = getpwuid(head->stat.st_uid);
-			if (strlen < (temp = ft_strlen(pw->pw_name)))
-				strlen = temp;
+			if ((pw = getpwuid(head->stat.st_uid)))
+			{
+				if (strlen < (temp = ft_strlen(pw->pw_name)))
+					strlen = temp;
+			}
 			head = head->next;
 		}
 		align->user = strlen;
 	}
-	pw = getpwuid(curr_file->stat.st_uid);
-	curr_len = ft_strlen(pw->pw_name);
-	ft_printf(" %s", pw->pw_name);
-	output_align(curr_len, align->user);
+	if ((pw = getpwuid(curr_file->stat.st_uid)))
+	{
+		curr_len = ft_strlen(pw->pw_name);
+		ft_printf(" %s", pw->pw_name);
+		output_align(curr_len, align->user);
+	}
 }
 
 void	get_nlink(t_file *head, t_align *align)

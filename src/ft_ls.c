@@ -14,6 +14,8 @@
 
 /*
 ** Description:	get all info about a file
+**
+** NOTE:		(malloc){*head,(*head)->name,(*head)->full_path}
 */
 
 static void	get_info(char *full_path, t_file **head, t_dirent *entry)
@@ -22,7 +24,9 @@ static void	get_info(char *full_path, t_file **head, t_dirent *entry)
 	t_file	*file;
 
 	if (!(file = (t_file *)malloc(sizeof(t_file))))
+	{
 		exit(EXIT_FAILURE);
+	}
 	file->name = ft_strdup(entry->d_name);
 	file->full_path = ft_strdup(full_path);
 	lstat(full_path, &file->stat);

@@ -31,6 +31,7 @@ void	options_parser(t_args *ls, t_opts *option);
 char	**files_parser(t_args *ls);
 char	**get_ascii_sorted_args(int argc, char **argv);
 void	check_link(char *file, t_args *ls);
+int		get_matrix_size(char **matrix);
 void	err_out(char *name);
 void	enotdir_add(char *file, t_file **head);
 void	get_sorted(t_file **head, t_opts option);

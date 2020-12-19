@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void		output_align(int len, int align)
+void	output_align(int len, int align)
 {
 	while (len < align)
 	{
@@ -21,7 +21,7 @@ void		output_align(int len, int align)
 	}
 }
 
-void		init_align(t_align *align)
+void	init_align(t_align *align)
 {
 	align->nlink = 0;
 	align->user = 0;
@@ -31,7 +31,7 @@ void		init_align(t_align *align)
 	align->minor = 0;
 }
 
-static int	get_matrix_count(char **matrix)
+int		get_matrix_size(char **matrix)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ static int	get_matrix_count(char **matrix)
 	return (i);
 }
 
-int			check_link_dir(char *file)
+int		check_link_dir(char *file)
 {
 	t_stat	f_stat;
 	int		len;
@@ -57,7 +57,7 @@ int			check_link_dir(char *file)
 	return (EXIT_SUCCESS);
 }
 
-void		check_link(char *file, t_args *ls)
+void	check_link(char *file, t_args *ls)
 {
 	t_stat	f_stat;
 	char	**matrix;
@@ -67,12 +67,14 @@ void		check_link(char *file, t_args *ls)
 
 	len = ft_strlen(file);
 	matrix = ft_strsplit(file, '/');
-	i = get_matrix_count(matrix);
-	if (i > 1)
+	if ((i = get_matrix_size(matrix)) > 1)
 	{
 		len -= ft_strlen(matrix[i - 1]);
+		free_matrix(matrix, i);
 		if (file[len - 1] == '/')
+		{
 			++len;
+		}
 		prev_name = ft_strsub(file, 0, len - 1);
 		lstat(prev_name, &f_stat);
 		free(prev_name);
@@ -82,5 +84,4 @@ void		check_link(char *file, t_args *ls)
 			err_out(file);
 		}
 	}
-	free_matrix(matrix, i);
 }

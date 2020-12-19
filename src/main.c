@@ -68,6 +68,8 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 	{
 		if (check_link_dir(path))
 		{
+			if (dir_info)
+				free_list(&dir_info);
 			dir_info = NULL;
 			ret = 0;
 		}
@@ -132,6 +134,7 @@ int			main(int argc, char **argv)
 	options_parser(&ls, &options);
 	files = files_parser(&ls);
 	get_valid_files(files, &ls, options);
+	free_matrix(files, ls.files_c);
 	files_list = ls.files;
 	while (files_list)
 	{
@@ -142,6 +145,5 @@ int			main(int argc, char **argv)
 	if (ls.not_dirs)
 		get_sorted(&ls.not_dirs, options);
 	ls_output(ls.not_dirs, ls.dirs, ls.files_c, options);
-	free_matrix(files, ls.files_c);
 	return (ls.ret_v);
 }

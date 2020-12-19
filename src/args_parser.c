@@ -31,6 +31,8 @@ static int	get_file_position(t_args *ls)
 
 /*
 ** Description:	get an array of files, sort and get their number
+**
+** NOTE:		(malloc){files,*files}
 */
 
 char		**files_parser(t_args *ls)
@@ -86,7 +88,9 @@ static int	is_option(char *str, t_opts *option)
 	if (str[0] == OPTIONS[0] && str[1])
 	{
 		if (str[1] == OPTIONS[0] && !str[2])
+		{
 			return (1);
+		}
 		i = 1;
 		while (str[i])
 		{

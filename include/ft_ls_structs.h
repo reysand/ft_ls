@@ -44,7 +44,6 @@ typedef struct			s_file
 	struct s_file		*next;
 	struct stat			stat;
 	char				*name;
-	char				*path;
 	char				*full_path;
 }						t_file;
 

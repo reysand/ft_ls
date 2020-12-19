@@ -38,7 +38,7 @@ void	get_time(t_stat stat)
 		ft_printf("%s:%s ", temp_hms[0], temp_hms[1]);
 		free_matrix(temp_hms, 3);
 	}
-	free_matrix(temp_time, 4);
+	free_matrix(temp_time, get_matrix_size(temp_time));
 }
 
 void	get_size(t_file *head, t_align *align)

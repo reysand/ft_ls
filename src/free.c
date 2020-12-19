@@ -14,6 +14,8 @@
 
 /*
 ** Description:	freeing memory from the matrix
+**
+** NOTE:		(free){matrix,*matrix}
 */
 
 void	free_matrix(char **matrix, int size)
@@ -31,6 +33,8 @@ void	free_matrix(char **matrix, int size)
 
 /*
 ** Description:	freeing memory from the t_file structure
+**
+** NOTE:		(free){*head,(*head)->name,(*head)->full_path}
 */
 
 void	free_list(t_file **head)

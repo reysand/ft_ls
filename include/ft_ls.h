@@ -23,6 +23,13 @@
 # include "ft_ls_structs.h"
 # include "libft.h"
 
+# ifdef __APPLE__
+#  define LISTXATTR(p, l, s) listxattr(p, l, s, XATTR_NOFOLLOW)
+# elif __linux__
+#  include <sys/sysmacros.h>
+#  define LISTXATTR(p, l, s) listxattr(p, l, s)
+# endif
+
 # define OPTIONS "-Ralrt1"
 # define USE_MSG "ft_ls: illegal option -- %c\nusage: ft_ls [%s] [file ...]\n"
 # define ERR_MSG "ft_ls: %s: %s\n"

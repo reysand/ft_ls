@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 17:33:25 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/15 17:33:27 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/20 02:32:38 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	get_xattr(char *file)
 {
 	int	xattr;
 
-	xattr = listxattr(file, NULL, 0, XATTR_NOFOLLOW);
+	xattr = LISTXATTR(file, NULL, 0);
 	if (xattr > 0)
 	{
 		ft_printf("@");

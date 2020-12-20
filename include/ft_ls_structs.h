@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 14:04:38 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/14 20:01:55 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/20 20:11:02 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ typedef struct			s_args
 	t_dirs				*dirs;
 	t_file				*files;
 	t_file				*not_dirs;
-	char				**argv;
-	int					argc;
 	int					ret_v;
 	int					opt_c;
 	int					files_c;

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/18 13:29:01 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/20 20:10:41 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,19 @@
 # include "libft.h"
 
 # ifdef __APPLE__
-#  define LISTXATTR(p, l, s) listxattr(p, l, s, XATTR_NOFOLLOW)
+#  define XATTR_OPT XATTR_NOFOLLOW
+#  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size, XATTR_OPT)
 # elif __linux__
 #  include <sys/sysmacros.h>
-#  define LISTXATTR(p, l, s) listxattr(p, l, s)
+#  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size)
 # endif
 
-# define OPTIONS "-Ralrt1"
+# define OPTIONS "-Ralrt"
 # define USE_MSG "ft_ls: illegal option -- %c\nusage: ft_ls [%s] [file ...]\n"
 # define ERR_MSG "ft_ls: %s: %s\n"
 
-void	options_parser(t_args *ls, t_opts *option);
-char	**files_parser(t_args *ls);
+int		options_parser(int argc, char **argv, t_opts *option);
+char	**files_parser(int argc, char **argv, t_args *ls);
 char	**get_ascii_sorted_args(int argc, char **argv);
 void	check_link(char *file, t_args *ls);
 int		get_matrix_size(char **matrix);

@@ -1,0 +1,18 @@
+main: argc = 8
+main: argv[0] = ./ft_ls
+main: argv[1] = author
+main: argv[2] = Makefile
+main: argv[3] = src
+main: argv[4] = help
+main: argv[5] = BIOS
+main: argv[6] = fucker
+main: argv[7] = build
+options_parser: Options count: 0
+main: OPTIONS (-Ralrt): 0 0 0 0 0
+get_file_position: i = 1
+files_parser: first file position = 1
+files_parser: i = 1
+files_parser: files_c = 7
+ft_ls: BIOS: No such file or directory
+ft_ls: fucker: No such file or directory
+ft_ls: help: No such file or directory

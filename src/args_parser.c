@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/20 20:47:02 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/21 13:19:48 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ static int	get_file_position(int argc, t_args *ls)
 	{
 		++i;
 	}
+#ifdef DEBUG
+	ft_printf_fd(STDERR_FILENO, "get_file_position: i = %d\n", i);
+#endif
 	ls->files_c = argc - i;
 	return (i);
 }
@@ -43,7 +46,7 @@ char		**files_parser(int argc, char **argv, t_args *ls)
 
 	i = get_file_position(argc, ls);
 #ifdef DEBUG
-	ft_printf_fd(STDERR_FILENO, "files_c = %d\n", ls->files_c);
+	ft_printf_fd(STDERR_FILENO, "files_parser: first file position = %d\n", i);
 #endif
 	if (!(files = (char **)malloc(sizeof(char *) * (ls->files_c))))
 		exit(EXIT_FAILURE);
@@ -51,6 +54,9 @@ char		**files_parser(int argc, char **argv, t_args *ls)
 	if (ft_strcmp(argv[i], "--") == 0)
 		if (++i == argc)
 			files[j++] = ft_strdup(".");
+#ifdef DEBUG
+	ft_printf_fd(STDERR_FILENO, "files_parser: i = %d\n", i);
+#endif
 	while (i < argc)
 	{
 		if (ls->files_c == 1 && ls->files_c + ls->opt_c == argc)
@@ -62,7 +68,7 @@ char		**files_parser(int argc, char **argv, t_args *ls)
 	}
 	ls->files_c = j;
 #ifdef DEBUG
-	ft_printf_fd(STDERR_FILENO, "files_c = %d\n", ls->files_c);
+	ft_printf_fd(STDERR_FILENO, "files_parser: files_c = %d\n", ls->files_c);
 #endif
 	files = get_ascii_sorted_args(ls->files_c, files);
 	return (files);
@@ -134,7 +140,7 @@ int			options_parser(int argc, char **argv, t_opts *option)
 		++i;
 	}
 #ifdef DEBUG
-	ft_printf_fd(STDERR_FILENO, "Options count: %d\n", i - 1);
+	ft_printf_fd(STDERR_FILENO, "options_parser: Options count: %d\n", i - 1);
 #endif
 	return (i - 1);
 }

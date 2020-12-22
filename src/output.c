@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/14 20:03:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/22 20:11:57 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*get_name(char *full_path)
 	}
 	if (full_path[len - 1] == '/')
 		return ("");
-	name = list[i - 1];
+	name = ft_strdup(list[i - 1]);
 	free_matrix(list, i);
 	return (name);
 }
@@ -65,6 +65,7 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 {
 	t_dirs	*first;
 	t_stat	f_stat;
+	char	*name;
 
 	first = head;
 	while (head)
@@ -75,12 +76,11 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 			ft_printf("total %d\n", get_total(head->dir));
 		if (!head->dir)
 		{
-			if ((lstat(head->path, &f_stat)) != -1)
-				if (!((f_stat.st_mode >> 8) & 1))
-				{
-					errno = EACCES;
-					err_out(get_name(head->path));
-				}
+			if ((lstat(head->path, &f_stat)) != -1 && errno == EACCES)
+			{
+				err_out((name = get_name(head->path)));
+				free(name);
+			}
 		}
 		print_list(head->dir, option);
 		if (head->next)

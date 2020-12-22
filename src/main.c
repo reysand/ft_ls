@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/21 13:58:49 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/22 19:14:48 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,28 +123,11 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 int			main(int argc, char **argv)
 {
 	t_args	ls;
-	
+	t_file	*files_list;
 	t_opts	options;
 	char	**files;
 
-#ifdef DEBUG
-	ft_printf_fd(STDERR_FILENO, "main: argc = %d\n", argc);
-	int i = 0;
-	while (argv[i])
-	{
-		ft_printf_fd(STDERR_FILENO, "main: argv[%d] = %s\n", i, argv[i]);
-		++i;
-	}
-#endif
 	ls.opt_c = options_parser(argc, argv, &options);
-#ifdef DEBUG
-	ft_printf_fd(STDERR_FILENO, "main: OPTIONS (%s): ", OPTIONS);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.recursive_read);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.dot_files);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.long_format);
-	ft_printf_fd(STDERR_FILENO, "%d ", options.reverse_sort);
-	ft_printf_fd(STDERR_FILENO, "%d\n", options.time_sort);
-#endif
 	files = files_parser(argc, argv, &ls);
 	ls.files = NULL;
 	ls.ret_v = EXIT_SUCCESS;

@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 17:55:55 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/21 13:29:23 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/22 19:14:20 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	enotdir_add(char *file, t_file **head)
 	}
 	item->name = ft_strdup(file);
 	item->full_path = ft_strdup(file);
-	//lstat(file, &item->stat);
+	lstat(file, &item->stat);
 	item->next = NULL;
 	if (*head)
 	{

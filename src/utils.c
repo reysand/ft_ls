@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 19:59:33 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/17 19:59:35 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/22 20:25:22 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	check_link(char *file, t_args *ls)
 	if ((i = get_matrix_size(matrix)) > 1)
 	{
 		len -= ft_strlen(matrix[i - 1]);
-		free_matrix(matrix, i);
 		if (file[len - 1] == '/')
 		{
 			++len;
@@ -84,4 +83,5 @@ void	check_link(char *file, t_args *ls)
 			err_out(file);
 		}
 	}
+	free_matrix(matrix, i);
 }

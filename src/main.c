@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/03 05:43:58 by reysand          ###   ########.fr       */
+/*   Updated: 2020/12/23 16:45:29 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 		{
 			if (dir_info)
 				free_list(&dir_info);
-			dir_info = NULL;
 			ret = 0;
 		}
 	}
@@ -97,7 +96,6 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 	int		i;
 
 	i = 0;
-	ls->ret_v = EXIT_SUCCESS;
 	while (i < ls->files_c)
 	{
 		if (lstat(files[i], &f_stat) != -1)
@@ -108,6 +106,7 @@ static void	get_valid_files(char **files, t_args *ls, t_opts option)
 				check_link(files[i], ls);
 			}
 			enotdir_add(files[i], &ls->files);
+			ls->files->stat = f_stat;
 		}
 		else
 		{
@@ -127,15 +126,15 @@ int			main(int argc, char **argv)
 	t_opts	options;
 	char	**files;
 
-	ls.argc = argc;
-	ls.argv = argv;
-	ls.dirs = NULL;
-	ls.not_dirs = NULL;
-	options_parser(&ls, &options);
-	files = files_parser(&ls);
+	ls.opt_c = options_parser(argc, argv, &options);
+	files = files_parser(argc, argv, &ls);
+	ls.files = NULL;
+	ls.ret_v = EXIT_SUCCESS;
 	get_valid_files(files, &ls, options);
 	free_matrix(files, ls.files_c);
 	files_list = ls.files;
+	ls.dirs = NULL;
+	ls.not_dirs = NULL;
 	while (files_list)
 	{
 		dir_handler(files_list->name, 0, &ls, options);

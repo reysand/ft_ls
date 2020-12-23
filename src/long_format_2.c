@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 17:33:25 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/15 17:33:27 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 16:38:55 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,59 +44,55 @@ void	get_major(t_file *head, t_align *align)
 void	get_group(t_file *head, t_align *align)
 {
 	struct group	*gr;
-	t_file			*curr_file;
+	t_file			*file;
 	int				temp;
-	int				strlen;
-	int				curr_len;
+	int				len;
 
-	curr_file = head;
+	file = head;
 	if (!align->group)
 	{
-		strlen = 0;
-		while (head)
+		len = 0;
+		while (file)
 		{
-			gr = getgrgid(head->stat.st_gid);
-			if (strlen < (temp = ft_strlen(gr->gr_name)))
-				strlen = temp;
-			head = head->next;
+			gr = getgrgid(file->stat.st_gid);
+			if (len < (temp = ft_strlen(gr->gr_name)))
+				len = temp;
+			file = file->next;
 		}
-		align->group = strlen;
+		align->group = len;
 	}
-	gr = getgrgid(curr_file->stat.st_gid);
-	curr_len = ft_strlen(gr->gr_name);
-	ft_printf("  %s", gr->gr_name);
-	output_align(curr_len, align->group);
+	if ((gr = getgrgid(head->stat.st_gid)))
+		len = print_user_group(gr->gr_name);
+	else
+		len = print_user_group(ft_itoa(head->stat.st_gid));
+	output_align(len, align->group);
 }
 
 void	get_user(t_file *head, t_align *align)
 {
 	struct passwd	*pw;
-	t_file			*curr_file;
+	t_file			*file;
 	int				temp;
-	int				strlen;
-	int				curr_len;
+	int				len;
 
-	curr_file = head;
+	file = head;
 	if (!align->user)
 	{
-		strlen = 0;
-		while (head)
+		len = 0;
+		while (file)
 		{
-			if ((pw = getpwuid(head->stat.st_uid)))
-			{
-				if (strlen < (temp = ft_strlen(pw->pw_name)))
-					strlen = temp;
-			}
-			head = head->next;
+			if ((pw = getpwuid(file->stat.st_uid)))
+				if (len < (temp = ft_strlen(pw->pw_name)))
+					len = temp;
+			file = file->next;
 		}
-		align->user = strlen;
+		align->user = len + 1;
 	}
-	if ((pw = getpwuid(curr_file->stat.st_uid)))
-	{
-		curr_len = ft_strlen(pw->pw_name);
-		ft_printf(" %s", pw->pw_name);
-		output_align(curr_len, align->user);
-	}
+	if ((pw = getpwuid(head->stat.st_uid)))
+		len = print_user_group(pw->pw_name);
+	else
+		len = print_user_group(ft_itoa(head->stat.st_uid));
+	output_align(len, align->user);
 }
 
 void	get_nlink(t_file *head, t_align *align)
@@ -127,7 +123,7 @@ void	get_xattr(char *file)
 {
 	int	xattr;
 
-	xattr = listxattr(file, NULL, 0, XATTR_NOFOLLOW);
+	xattr = LISTXATTR(file, NULL, 0);
 	if (xattr > 0)
 	{
 		ft_printf("@");

@@ -6,11 +6,17 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 15:29:13 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/18 15:29:16 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 16:38:54 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+int		print_user_group(char *str)
+{
+	ft_printf(" %s", str);
+	return (ft_strlen(str));
+}
 
 void	get_time(t_stat stat)
 {

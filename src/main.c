@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:44 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/22 19:14:48 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 16:45:29 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void		dir_handler(char *path, int recursion, t_args *ls, t_opts option)
 		{
 			if (dir_info)
 				free_list(&dir_info);
-			dir_info = NULL;
 			ret = 0;
 		}
 	}

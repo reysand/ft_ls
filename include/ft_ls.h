@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/21 12:08:25 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 15:56:20 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size)
 # endif
 
-# define OPTIONS "-Ralrt"
+# define OPTIONS "-Ralrt1"
 # define USE_MSG "ft_ls: illegal option -- %c\nusage: ft_ls [%s] [file ...]\n"
 # define ERR_MSG "ft_ls: %s: %s\n"
 
@@ -57,6 +57,7 @@ void	get_xattr(char *name);
 void	get_nlink(t_file *head, t_align *align);
 void	output_align(int len, int align);
 void	get_user(t_file *head, t_align *align);
+int		print_user_group(char *str);
 void	get_group(t_file *head, t_align *align);
 void	get_major(t_file *head, t_align *align);
 void	get_minor(t_file *head, t_align *align);

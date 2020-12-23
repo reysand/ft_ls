@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/14 14:12:22 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/22 17:11:08 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 15:33:48 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	get_file_position(int argc, t_args *ls)
 	int i;
 
 	i = ls->opt_c;
-	if ((i == 0 && argc > 1) || (argc - i >= i + 1 && i != 0))
+	if ((i == 0 && argc > 1) || (argc - i >= i + 1 && i != 0) || argc - 2 == i)
 	{
 		++i;
 	}

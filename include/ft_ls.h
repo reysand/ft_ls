@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/23 15:56:20 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 19:39:06 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define FT_LS_H
 
 # include <grp.h>
-# include <limits.h>
 # include <pwd.h>
 # include <sys/errno.h>
-# include <sys/types.h>
 # include <sys/xattr.h>
 # include <time.h>
 # include "ft_ls_structs.h"
@@ -27,9 +25,12 @@
 #  define XATTR_OPT XATTR_NOFOLLOW
 #  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size, XATTR_OPT)
 # elif __linux__
-#  include <sys/sysmacros.h>
+#  define major(x) (int)(((unsigned int)(x) >> 24) & oxff)
+#  define minor(x) (int)(x & 0xffffff)
 #  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size)
 # endif
+
+# define PATH_MAX	1024
 
 # define OPTIONS "-Ralrt1"
 # define USE_MSG "ft_ls: illegal option -- %c\nusage: ft_ls [%s] [file ...]\n"

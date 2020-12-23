@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 19:18:17 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/22 20:11:57 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/23 19:11:39 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static void	print_list_lists(t_dirs *head, int dir_path, t_opts option)
 			if ((lstat(head->path, &f_stat)) != -1 && errno == EACCES)
 			{
 				err_out((name = get_name(head->path)));
-				free(name);
+				if (ft_strcmp(name, "") != 0)
+					free(name);
 			}
 		}
 		print_list(head->dir, option);

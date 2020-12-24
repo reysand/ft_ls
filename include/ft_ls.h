@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 13:08:39 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/23 19:39:06 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/24 20:25:48 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 # include "libft.h"
 
 # ifdef __APPLE__
+#  define PATH_MAX 1024
 #  define XATTR_OPT XATTR_NOFOLLOW
 #  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size, XATTR_OPT)
 # elif __linux__
-#  define major(x) (int)(((unsigned int)(x) >> 24) & oxff)
-#  define minor(x) (int)(x & 0xffffff)
 #  define LISTXATTR(_path, _list, size) listxattr(_path, _list, size)
 # endif
 
-# define PATH_MAX	1024
+# define MAJOR(x) (int)(((unsigned int)(x) >> 24) & 0xff)
+# define MINOR(x) (int)(x & 0xffffff)
 
 # define OPTIONS "-Ralrt1"
 # define USE_MSG "ft_ls: illegal option -- %c\nusage: ft_ls [%s] [file ...]\n"

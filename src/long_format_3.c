@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 15:29:13 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/23 16:38:54 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/24 19:39:09 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	get_minor(t_file *head, t_align *align)
 		nbrlen = 0;
 		while (head)
 		{
-			if ((temp = minor(head->stat.st_rdev)) != 0)
+			if ((temp = MINOR(head->stat.st_rdev)) != 0)
 				if (temp < 255 && nbrlen < (temp = ft_nbrlen(temp)))
 					nbrlen = temp;
 			head = head->next;
@@ -98,9 +98,9 @@ void	get_minor(t_file *head, t_align *align)
 	}
 	if (!S_ISCHR(curr->stat.st_mode) && !S_ISBLK(curr->stat.st_mode))
 		return ;
-	output_align(ft_nbrlen(minor(curr->stat.st_rdev)), align->minor);
-	if (minor(curr->stat.st_rdev) > 255)
-		ft_printf(" %#010x", minor(curr->stat.st_rdev));
+	output_align(ft_nbrlen(MINOR(curr->stat.st_rdev)), align->minor);
+	if (MINOR(curr->stat.st_rdev) > 255)
+		ft_printf(" %#010x", MINOR(curr->stat.st_rdev));
 	else
-		ft_printf(" %d", minor(curr->stat.st_rdev));
+		ft_printf(" %d", MINOR(curr->stat.st_rdev));
 }

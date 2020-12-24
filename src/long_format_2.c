@@ -6,7 +6,7 @@
 /*   By: fhelena <fhelena@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/15 17:33:25 by fhelena           #+#    #+#             */
-/*   Updated: 2020/12/23 16:38:55 by fhelena          ###   ########.fr       */
+/*   Updated: 2020/12/24 19:36:46 by fhelena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	get_major(t_file *head, t_align *align)
 		nbrlen = 0;
 		while (head)
 		{
-			temp = minor(head->stat.st_rdev);
-			if (minor(temp) != 0)
+			temp = MAJOR(head->stat.st_rdev);
+			if (MAJOR(temp) != 0)
 				if (nbrlen < (temp = ft_nbrlen(temp)))
 					nbrlen = temp;
 			head = head->next;
@@ -36,9 +36,9 @@ void	get_major(t_file *head, t_align *align)
 	}
 	if (!S_ISCHR(curr->stat.st_mode) && !S_ISBLK(curr->stat.st_mode))
 		return ;
-	curr_len = ft_nbrlen(major(curr->stat.st_rdev));
+	curr_len = ft_nbrlen(MAJOR(curr->stat.st_rdev));
 	output_align(curr_len, align->major);
-	ft_printf("  %d,", major(curr->stat.st_rdev));
+	ft_printf("  %d,", MAJOR(curr->stat.st_rdev));
 }
 
 void	get_group(t_file *head, t_align *align)

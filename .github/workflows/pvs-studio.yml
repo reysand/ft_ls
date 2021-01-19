@@ -1,0 +1,42 @@
+name: PVS-Studio
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        wget -q -O - https://files.viva64.com/etc/pubkey.txt | sudo apt-key add -
+        sudo wget -O /etc/apt/sources.list.d/viva64.list https://files.viva64.com/etc/viva64.list
+        sudo apt-get update && sudo apt-get install pvs-studio
+    - name: License
+      env:
+        MAIL: ${{ secrets.PVS_MAIL }}
+        KEY: ${{ secrets.PVS_KEY }}
+      run: pvs-studio-analyzer credentials $MAIL $KEY
+    - name: Build
+      run: pvs-studio-analyzer trace -- make
+    - name: Analyze
+      run: |
+        pvs-studio-analyzer analyze -l ~/.config/PVS-Studio/PVS-Studio.lic --incremental -e libft
+        plog-converter -a GA:1,2 -t fullhtml -o html PVS-Studio.log
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: github_pages
+        FOLDER: html
+        CLEAN: true

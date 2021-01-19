@@ -1,4 +1,4 @@
-name: ft-ls
+name: macOS
 
 on:
   push:
@@ -9,11 +9,20 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest ]
 
     steps:
     - uses: actions/checkout@v2
-    - name: make
+    - name: Install dependencies
+      run: |
+        sudo gem install bundler
+        git clone https://github.com/42Paris/norminette.git ~/norminette
+        cd ~/norminette && bundle
+    - name: Norminette
+      run: ~/norminette/norminette.rb .
+    - name: Build
       run: make
-    - name: make check
-      run: make check
